@@ -9,7 +9,7 @@
   "test": {
     "username": "andeladeveloper",
     "password": null,
-    "database": "document-manager",
+    "database": "document-manager-test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
