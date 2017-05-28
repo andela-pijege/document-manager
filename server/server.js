@@ -1,7 +1,7 @@
 const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-
+const db = require('./models/index');
 // Set up the express app
 const app = express();
 
@@ -20,7 +20,9 @@ app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the Documento API.',
 }));
 
-app.listen(port, () => {
+db.sequelize.sync({ force: true }).done(() => {
+  app.listen(port, () => {
   console.log(`Started up at port port ${port}`);
+	});
 });
 
