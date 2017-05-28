@@ -20,9 +20,13 @@ app.get('*', (req, res) => res.status(200).send({
   message: 'Welcome to the Documento API.',
 }));
 
-db.sequelize.sync({ force: true }).done(() => {
-  app.listen(port, () => {
-  console.log(`Started up at port port ${port}`);
-	});
-});
+if(process.env.NODE_ENV !== 'test') {
+  db.sequelize.sync({ force: true }).done(() => {
+    app.listen(port, () => {
+      console.log(`Started up at port port ${port}`);
+	  });
+  });
+}
+
+module.exports = app;
 

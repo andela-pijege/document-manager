@@ -41,7 +41,7 @@ module.exports = function(sequelize, DataTypes) {
           args: true,
           msg: 'Email is not valid'
         },
-      }
+      },
     },
     password: {
       type: DataTypes.STRING,
@@ -68,8 +68,6 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'userID',
           onDelete: 'CASCADE'
         })
-        // associations can be defined here
-
       }
     }
   });
