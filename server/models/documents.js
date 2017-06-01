@@ -5,10 +5,6 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          args: ['^[a-z\'-]+$', 'i'],
-          msg: 'title can only contain letters and/or - or \''
-        },
         len: {
           args: [2, 50],
           msg: 'title cannot be less than 2 or greater than 50 characters'
@@ -31,8 +27,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         documents.belongsTo(models.users, {
-          foreignKey: 'userID',
-          onDelete: 'CASCADE'
+          foreignKey: 'userID'
         });
         // associations can be defined here
       }

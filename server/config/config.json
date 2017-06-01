@@ -11,7 +11,8 @@
     "password": null,
     "database": "document-manager-test",
     "host": "127.0.0.1",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "logging": false
   },
   "production": {
     "username": "postgres",
