@@ -1,6 +1,6 @@
 describe('Users model', () => {
   beforeEach((done) => {
-    db.sequelize.sync({force: true}).done(() =>{
+    db.sequelize.sync({force: true}).done(() => {
       db.roles.create({ title: 'admin' })
         .then(() => {
           db.users.create({firstName: 'pHRESH', lastName: 'presh', email: 'presh@presh.com', password: '123456789', roleID: 1 })
@@ -43,7 +43,7 @@ describe('Users model', () => {
       db.users.findById(1)
         .then((user) => {
           user.update({firstName: 'precious' })
-            .then((updatedUser) => {
+            .then(() => {
               expect(user.firstName).to.equal('precious');
               expect(user.lastName).to.equal('presh');
               expect(user.email).to.equal('presh@presh.com');
