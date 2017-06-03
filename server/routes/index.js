@@ -11,6 +11,9 @@ const Routes = (app) => {
   app.post(
     '/api/users', UserController.create
   );
+  app.post(
+    '/api/users/login', UserController.login
+  );
   app.get(
     '/api/users', UserController.getAll
   );

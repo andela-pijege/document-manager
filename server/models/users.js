@@ -1,4 +1,5 @@
 'use strict';
+const bcrypt = require('bcrypt');
 module.exports = function(sequelize, DataTypes) {
   var users = sequelize.define('users', {
     firstName: {
@@ -68,6 +69,19 @@ module.exports = function(sequelize, DataTypes) {
           foreignKey: 'userID',
           onDelete: 'CASCADE'
         })
+      }
+    },
+    instanceMethods: {
+      encryptPassword() {
+        this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
+      },
+      validate(password) {
+        return bcrypt.compareSync(password, this.password);
+      }
+    },
+    hooks: {
+      beforeCreate(user) {
+        user.encryptPassword();
       }
     }
   });

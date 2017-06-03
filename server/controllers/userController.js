@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt');
 const Users = require('../models').users;
 
 const displayUserDetails = (user) => {
@@ -9,8 +8,30 @@ const displayUserDetails = (user) => {
 }
 
 const userController = {
+  login(req, res) {
+    console.log(req.body);
+    if(req.body.email && req.body.password) {
+      Users
+        .findOne({where: {email: req.body.email}})
+        .then((user) => {
+          console.log('Out here', user.password);
+          if(!user) {
+            console.log('first branch, email does not exist::::::::::::::::::::::::');
+            return res.status(404).send({message: 'Wrong email'});
+          }
+          if(user.validate(req.body.password)) {
+            console.log('Second branch Login successful::::::::::::::::::::::::::');
+            res.status(200).send({message: 'Login successful'});
+          } else {
+            console.log('third branch, Wrong password::::::::::::::::::::::::::::::');
+            return res.status(404).send({message: 'its some wrong password shit'})
+          }
+        })
+    }
+  },
+  logout(req, res) {
+  },
   create(req, res) {
-    req.body.password = bcrypt.hashSync(req.body.password, 10);
     Users
       .create(req.body)
       .then((user) => {
@@ -78,3 +99,4 @@ const userController = {
   }
 };
 module.exports = userController;
+
