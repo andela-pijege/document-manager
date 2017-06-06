@@ -1,10 +1,10 @@
-var UserController = require('../controllers/userController');
-var DocumentController = require('../controllers/documentController');
-var RoleController  = require('../controllers/roleController');
+const UserController = require('../controllers/userController');
+const DocumentController = require('../controllers/documentController');
+const RoleController = require('../controllers/roleController');
 
 const Routes = (app) => {
   app.get('/', (req, res) => res.status(200).send({
-  message: 'Welcome to the Documento API by Ghost .........',
+    message: 'Welcome to the Documento API by Ghost .........',
   }));
 
   // users routes
@@ -20,7 +20,7 @@ const Routes = (app) => {
   app.get(
     '/api/users/:id', UserController.getOneUser
   );
-    app.put(
+  app.put(
     '/api/users/:id', UserController.update
   );
 

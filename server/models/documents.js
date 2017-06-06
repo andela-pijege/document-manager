@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         documents.belongsTo(models.users, {
-          foreignKey: 'userID'
+          foreignKey: 'userID',
         });
         // associations can be defined here
       }
