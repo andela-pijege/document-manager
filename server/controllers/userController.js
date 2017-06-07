@@ -1,32 +1,39 @@
 const Users = require('../models').users;
+const jwt = require('jsonwebtoken');
+
+const skey = 'mysecretkey';
 
 const displayUserDetails = (user) => {
   return {
     firstName: user.firstName,
-    lastName: user.lastName
-  }
-}
+    lastName: user.lastName,
+  };
+};
 
 const userController = {
   login(req, res) {
     console.log(req.body);
-    if(req.body.email && req.body.password) {
+    if (req.body.email && req.body.password) {
       Users
-        .findOne({where: {email: req.body.email}})
+        .findOne({ where: { email: req.body.email } })
         .then((user) => {
           console.log('Out here', user.password);
-          if(!user) {
+          if (!user) {
             console.log('first branch, email does not exist::::::::::::::::::::::::');
-            return res.status(404).send({message: 'Wrong email'});
+            return res.status(404).send({ message: 'Wrong email' });
           }
-          if(user.validate(req.body.password)) {
+          if (user.validate(req.body.password)) {
             console.log('Second branch Login successful::::::::::::::::::::::::::');
-            res.status(200).send({message: 'Login successful'});
+            const token = jwt.sign({
+              data: user.id,
+              expiresIn: '2h',
+            }, skey);
+            res.status(200).send({ message: 'Login successful', token });
           } else {
             console.log('third branch, Wrong password::::::::::::::::::::::::::::::');
-            return res.status(404).send({message: 'its some wrong password shit'})
+            return res.status(404).send({ message: 'its some wrong password shit' });
           }
-        })
+        });
     }
   },
   logout(req, res) {
@@ -35,8 +42,13 @@ const userController = {
     Users
       .create(req.body)
       .then((user) => {
-        let userAttributes = displayUserDetails(user)
-        res.status(201).send({message: 'user created succesfully', userAttributes })
+        const userAttributes = displayUserDetails(user);
+        console.log('my secret key::::::::::::::::::::::', process.env.SECRET_KEY);
+        const token = jwt.sign({
+          data: user.id,
+          expiresIn: '2h',
+        }, skey);
+        res.status(201).send({ message: 'user created succesfully', userAttributes, token });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -50,12 +62,12 @@ const userController = {
     Users
       .findById(req.params.id)
       .then((user) => {
-        if(user) {
+        if (user) {
           return res.status(200).send(user);
         } else {
           return res.status(404).send({
-            message: 'User does not exist'
-          })
+            message: 'User does not exist',
+          });
         }
       })
       .catch(error => res.status(400).send(error));
@@ -64,15 +76,15 @@ const userController = {
     Users
       .findById(req.params.id)
       .then((user) => {
-        if(user) {
+        if (user) {
           user
             .update(req.body)
             .then(() => res.status(200).send({
-              message: 'user updated successfully'}))
+              message: 'user updated successfully' }));
         } else {
           return res.status(404).send({
-            message: 'User not Found'
-          })
+            message: 'User not Found',
+          });
         }
       })
       .catch(error => res.status(500).send(error));
@@ -81,22 +93,22 @@ const userController = {
     Users
       .findById(req.params.id)
       .then((user) => {
-        if(user){
+        if (user) {
           user
             .destroy()
             .then(() => {
               res.status(200).send({
-                message: 'User successfully Deleted'
-              })
-            })
+                message: 'User successfully Deleted',
+              });
+            });
         } else {
           return res.status(400).send({
-            message: 'User not found'
-          })
+            message: 'User not found',
+          });
         }
       })
-      .catch(error => res.status(500).send(error))
-  }
+      .catch(error => res.status(500).send(error));
+  },
 };
 module.exports = userController;
 
