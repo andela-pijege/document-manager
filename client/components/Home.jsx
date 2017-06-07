@@ -2,7 +2,7 @@ import React from 'react';
 
 const Home = () => (
   <div>
-    <p>This is Documento home page!!!!!!</p>
+    <p>This is Documento home page by ghost!!!!!!</p>
     <a className="waves-effect waves-teal btn-flat">Sign up</a>
     <a className="waves-effect waves-teal btn-flat">Sign in</a>
     <div className="fixed-action-btn horizontal click-to-toggle">

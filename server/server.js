@@ -5,6 +5,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const db = require('./models/index');
 const serverRoutes = require('./routes/index');
+const jwt = require('jsonwebtoken');
 // Set up the express app
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 

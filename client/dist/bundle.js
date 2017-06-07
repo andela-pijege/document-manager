@@ -13599,7 +13599,7 @@ var Home = function Home() {
     _react2.default.createElement(
       "p",
       null,
-      "This is Documento home page!!!!!!"
+      "This is Documento home page by ghost!!!!!!"
     ),
     _react2.default.createElement(
       "a",
