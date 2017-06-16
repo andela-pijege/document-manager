@@ -15,8 +15,7 @@ class Nav extends Component {
           <div className="nav-wrapper container">
             <a href="/" className="brand-logo">Documento</a>
             <ul id="nav-mobile" className="right hide-on-med-and-down">
-              <li><a href="/">Link1</a></li>
-              <li><a>Link2</a></li>
+              <li><a>Logout</a></li>
             </ul>
           </div>
         </nav>
