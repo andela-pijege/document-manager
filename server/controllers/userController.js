@@ -1,4 +1,5 @@
 const Users = require('../models').users;
+const Documents = require('../models').documents;
 const jwt = require('jsonwebtoken');
 
 const skey = 'mysecretkey';
@@ -24,11 +25,13 @@ const userController = {
           }
           if (user.validate(req.body.password)) {
             console.log('Second branch Login successful::::::::::::::::::::::::::');
+            console.log('my secret key::::::::::::::::::::::', process.env.SECRET_KEY);
+            const userID = user.id;
             const token = jwt.sign({
               data: user.id,
               expiresIn: '2h',
             }, skey);
-            res.status(200).send({ message: 'Login successful', token });
+            res.status(200).send({ message: 'Login successful', token, userID });
           } else {
             console.log('third branch, Wrong password::::::::::::::::::::::::::::::');
             return res.status(404).send({ message: 'its some wrong password shit' });
@@ -39,6 +42,7 @@ const userController = {
   logout(req, res) {
   },
   create(req, res) {
+    console.log('::::::::::', req.body);
     Users
       .create(req.body)
       .then((user) => {
@@ -108,6 +112,18 @@ const userController = {
         }
       })
       .catch(error => res.status(500).send(error));
+  },
+  getDocuments(req, res) {
+    Documents
+      .findAll({
+        where: { userID: req.params.id },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents });
+      })
+      .catch(error =>
+        res.status(400).json({ msg: error.message }),
+      );
   },
 };
 module.exports = userController;
