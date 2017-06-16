@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
         },
         len: {
           args: [2, 12],
-          msg: 'firstName cannot be less than 2 or greater than 12 characters'
+          msg: 'firstName cannot be less than 2 or greater than 12 characters',
         }
       }
     },
@@ -22,11 +22,11 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         is: {
           args: ['^[a-z-]+$', 'i'],
-          msg: 'lasttName can only contain letters and/or -'
+          msg: 'lasttName can only contain letters and/or -',
         },
         len: {
           args: [2, 12],
-          msg: 'lastName cannot be less than 2 or greater than 12 characters'
+          msg: 'lastName cannot be less than 2 or greater than 12 characters',
         }
       }
     },
@@ -35,12 +35,12 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       unique: {
         args: true,
-        msg: 'This email is already in use'
+        msg: 'This email is already in use',
       },
       validate: {
         isEmail: {
           args: true,
-          msg: 'Email is not valid'
+          msg: 'Email is not valid',
         },
       },
     },
