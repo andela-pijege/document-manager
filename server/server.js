@@ -19,11 +19,11 @@ app.use(express.static('client'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => {
+serverRoutes(app);
+
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
-
-serverRoutes(app);
 
 if (process.env.NODE_ENV !== 'test') {
   db.sequelize.sync().done(() => {
