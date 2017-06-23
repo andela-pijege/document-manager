@@ -1,12 +1,9 @@
 const UserController = require('../controllers/userController');
 const DocumentController = require('../controllers/documentController');
 const RoleController = require('../controllers/roleController');
+const authorization = require('../middleware/authorization');
 
 const Routes = (app) => {
-  // app.get('/', (req, res) => res.status(200).send({
-  //   message: 'Welcome to the Documento API by Ghost .........',
-  // }));
-
   app.post(
     '/api/roles', RoleController.create,
   );
@@ -42,6 +39,9 @@ const Routes = (app) => {
   );
   app.get(
     '/api/documents', DocumentController.getAll,
+  );
+  app.get(
+    '/api/documents/public', DocumentController.getAllPublic,
   );
   app.get(
     '/api/documents/:id', DocumentController.getOneDocument,
