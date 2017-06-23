@@ -5,12 +5,18 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const db = require('./models/index');
 const serverRoutes = require('./routes/index');
+const config = require('./config/config.json');
 const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 // Set up the express app
+
+dotenv.config();
 const app = express();
 
 const port = parseInt(process.env.PORT, 10) || 9000;
 app.set('port', port);
+
+app.set('my secret key', config.secret);
 
 // Log requests to the console.
 app.use(logger('dev'));
