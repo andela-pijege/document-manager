@@ -9,6 +9,18 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  getAllPublic(req, res) {
+    Documents
+      .findAll({
+        where: { access: 'public' },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents });
+      })
+      .catch(error =>
+        res.status(400).json({ msg: error.message }),
+      );
+  },
   getAll(req, res) {
     Documents
       .findAll()
@@ -36,7 +48,7 @@ const documentController = {
         if (document) {
           document
             .update(req.body)
-            .then(() => res.status(200).send({ message: 'Document updated successfully' }))
+            .then(() => res.status(200).send({ message: 'Document updated successfully' }));
         } else {
           return res.status(404).send({ message: 'Document not found' });
         }
