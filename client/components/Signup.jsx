@@ -6,8 +6,8 @@ import * as SignUpAction from '../actions/SignUpAction';
 
 class Signup extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       firstName: '',
       lastName: '',
@@ -26,35 +26,38 @@ class Signup extends Component {
   onSubmit(event) {
     event.preventDefault();
     this.props.SignUpAction.createUser(this.state)
-      .then(() => { browserHistory.push('dashboard'); })
+      .then(() => { browserHistory.push('/dashboard'); })
       .catch((error) => { message: error });
   }
 
   render() {
     return (
-      <div className="row">
-        <form className="col s12" onSubmit={this.onSubmit}>
+      <div className="container">
+        <form className="col s8" onSubmit={this.onSubmit}>
           <h3>Sign up</h3>
           <div className="row">
-            <div className="input-field col s6">
+            <div className="input-field col s6">centered
               <input id="firstName" type="text" className="validate" name="firstName" value={this.state.firstName} onChange={this.onChange} />
               <label htmlFor="firstName">First Name</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s6">
+              <i className="material-icons prefix">account_circle</i>
               <input id="lastName" type="text" className="validate" name="lastName" value={this.state.lastName} onChange={this.onChange} />
               <label htmlFor="lastName">Last Name</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s6">
+              <i className="material-icons prefix">email</i>
               <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
               <label htmlFor="email">Email</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field col s6">
+              <i className="material-icons prefix">lock</i>
               <input id="password" type="password" className="validate" name="password" value={this.state.password} onChange={this.onChange} />
               <label htmlFor="password">Password</label>
             </div>
@@ -75,10 +78,8 @@ class Signup extends Component {
 // };
 
 function mapStateToProps(state, ownProps) {
-  console.log('map state to props function here is state variable', state);
-  console.log('map state to props function here is own props variable', ownProps);
   return {
-    user: state.user,
+    newUser: state.SignupReducer.newUser,
   };
 }
 
