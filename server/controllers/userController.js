@@ -1,6 +1,7 @@
 const Users = require('../models').users;
 const Documents = require('../models').documents;
 const jwt = require('jsonwebtoken');
+import omit from 'lodash/omit';
 
 const skey = 'mysecretkey';
 
@@ -13,27 +14,22 @@ const displayUserDetails = (user) => {
 
 const userController = {
   login(req, res) {
-    console.log(req.body);
     if (req.body.email && req.body.password) {
       Users
         .findOne({ where: { email: req.body.email } })
         .then((user) => {
-          console.log('Out here', user.password);
           if (!user) {
-            console.log('first branch, email does not exist::::::::::::::::::::::::');
             return res.status(404).send({ message: 'Wrong email' });
           }
           if (user.validate(req.body.password)) {
-            console.log('Second branch Login successful::::::::::::::::::::::::::');
-            console.log('my secret key::::::::::::::::::::::', process.env.SECRET_KEY);
             const userID = user.id;
-            const token = jwt.sign({
-              data: user.id,
-              expiresIn: '2h',
-            }, skey);
-            res.status(200).send({ message: 'Login successful', token, userID });
+            const roleID = user.roleID;
+            const filteredData = omit(user, [
+              'password',
+            ]);
+            const token = jwt.sign(filteredData, process.env.SECRET_KEY);
+            res.status(200).send({ message: 'Login successful', token, userID, roleID });
           } else {
-            console.log('third branch, Wrong password::::::::::::::::::::::::::::::');
             return res.status(404).send({ message: 'its some wrong password shit' });
           }
         });
@@ -42,17 +38,16 @@ const userController = {
   logout(req, res) {
   },
   create(req, res) {
-    console.log('::::::::::', req.body);
     Users
       .create(req.body)
       .then((user) => {
         const userAttributes = displayUserDetails(user);
-        console.log('my secret key::::::::::::::::::::::', process.env.SECRET_KEY);
+        const userID = user.id;
         const token = jwt.sign({
           data: user.id,
           expiresIn: '2h',
-        }, skey);
-        res.status(201).send({ message: 'user created succesfully', userAttributes, token });
+        }, process.env.SECRET_KEY);
+        res.status(201).send({ message: 'user created succesfully', userAttributes, token, userID });
       })
       .catch(error => res.status(400).send(error));
   },
