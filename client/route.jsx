@@ -8,16 +8,19 @@ import Dashboard from './components/Dashboard';
 import CreateDocument from './components/CreateDocument';
 import OpenDocument from './components/OpenDocument';
 import EditDocument from './components/EditDocument';
+import AllUsers from './components/AllUsers';
+import Authenticate from './utils/Authenticate';
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
     <Route path="/login" components={Login} />
     <Route path="/signUp" components={SignUp} />
-    <Route path="/dashboard" components={Dashboard} />
-    <Route path="/createDocument" components={CreateDocument} />
-    <Route path="/openDocument" components={OpenDocument} />
-    <Route path="/editDocument" components={EditDocument} />
+    <Route path="/dashboard" components={Authenticate(Dashboard)} />
+    <Route path="/createDocument" components={Authenticate(CreateDocument)} />
+    <Route path="/openDocument" components={Authenticate(OpenDocument)} />
+    <Route path="/editDocument" components={Authenticate(EditDocument)} />
+    <Route path="/allUsers" components={Authenticate(AllUsers)} />
   </Route>
 );
 
