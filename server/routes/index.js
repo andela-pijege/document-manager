@@ -1,3 +1,5 @@
+import { adminCheck, ownerCheck, isOwnerOrAdmin } from '../middleware/usersAuthorization';
+
 const UserController = require('../controllers/userController');
 const DocumentController = require('../controllers/documentController');
 const RoleController = require('../controllers/roleController');
@@ -5,7 +7,7 @@ const authorization = require('../middleware/authorization');
 
 const Routes = (app) => {
   app.post(
-    '/api/roles', RoleController.create,
+    '/api/roles', adminCheck, RoleController.create,
   );
 
   // users routes
@@ -16,41 +18,41 @@ const Routes = (app) => {
     '/api/users/login', UserController.login,
   );
   app.get(
-    '/api/users', UserController.getAll,
+    '/api/users', authorization.authorize, adminCheck, UserController.getAll,
   );
   app.get(
-    '/api/users/:id', UserController.getOneUser,
+    '/api/users/:id', authorization.authorize, adminCheck, UserController.getOneUser,
   );
   app.put(
-    '/api/users/:id', UserController.update,
+    '/api/users/:id', authorization.authorize, ownerCheck, UserController.update,
   );
   app.get(
-    '/api/users/:id/documents', UserController.getDocuments,
+    '/api/users/:id/documents', authorization.authorize, ownerCheck, UserController.getDocuments,
   );
 
   app.delete(
-    '/api/users/:id', UserController.delete,
+    '/api/users/:id', authorization.authorize, isOwnerOrAdmin, UserController.delete,
   );
 
   // Documentss routes
 
   app.post(
-    '/api/documents', DocumentController.create,
+    '/api/documents', authorization.authorize, DocumentController.create,
   );
   app.get(
-    '/api/documents', DocumentController.getAll,
+    '/api/documents', authorization.authorize, DocumentController.getAll,
   );
   app.get(
     '/api/documents/public', DocumentController.getAllPublic,
   );
   app.get(
-    '/api/documents/:id', DocumentController.getOneDocument,
+    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.getOneDocument,
   );
   app.put(
-    '/api/documents/:id', DocumentController.update,
+    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.update,
   );
   app.delete(
-    '/api/documents/:id', DocumentController.delete,
+    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.delete,
   );
 };
 
