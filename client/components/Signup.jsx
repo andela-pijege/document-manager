@@ -36,7 +36,8 @@ class Signup extends Component {
         <form className="col s8" onSubmit={this.onSubmit}>
           <h3>Sign up</h3>
           <div className="row">
-            <div className="input-field col s6">centered
+            <div className="input-field col s6">
+              <i className="material-icons prefix">account_circle</i>
               <input id="firstName" type="text" className="validate" name="firstName" value={this.state.firstName} onChange={this.onChange} />
               <label htmlFor="firstName">First Name</label>
             </div>
