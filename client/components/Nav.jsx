@@ -16,6 +16,8 @@ class Nav extends Component {
     this.handleSignupClick = this.handleSignupClick.bind(this);
     this.logout = this.logout.bind(this);
     this.getAllUsers = this.getAllUsers.bind(this);
+    this.getAllPublicDdocuments = this.getAllPublicDdocuments.bind(this);
+    this.dashboard = this.dashboard.bind(this);
   }
 
   handleSigninClick() {
@@ -28,6 +30,14 @@ class Nav extends Component {
 
   getAllUsers() {
     browserHistory.push('/allUsers');
+  }
+
+  getAllPublicDdocuments() {
+    browserHistory.push('/publicDocuments');
+  }
+
+  dashboard() {
+    browserHistory.push('/dashboard');
   }
 
   /**
@@ -51,7 +61,8 @@ class Nav extends Component {
               {this.props.isAuthenticated ?
                 <div>
                   <li onClick={this.logout}><a>Logout</a></li>
-                  <li><a>Dashboard</a></li>
+                  <li onClick={() => { this.getAllPublicDdocuments(); }}><a>Public Document</a></li>
+                  <li onClick={() => { this.dashboard(); }}><a>Dashboard</a></li>
                     {(this.props.user.roleID === 1) ?
                       <div>
                         <li onClick={() => { this.getAllUsers(); }}><a>View All Users</a></li>
