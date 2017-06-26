@@ -1,6 +1,4 @@
 import axios from 'axios';
-
-
 /**
  * setAuthorizationToken - set token to request headers
  * @param  {string} token Authorization token
