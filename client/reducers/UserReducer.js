@@ -8,6 +8,10 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         allUsers: action.users,
       });
+    case actionTypes.SEARCH_USER:
+      return Object.assign({}, state, {
+        searchedUsers: action.users,
+      });
     default:
       return state;
   }
