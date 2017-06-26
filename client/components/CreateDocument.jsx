@@ -39,7 +39,8 @@ class CreateDocument extends Component {
 
   render() {
     return (
-      <div className="row">
+      <div className="container">
+        <div className="row">
         <form className="col s12" onSubmit={this.onSubmit}>
           <div className="row">
             <div className="input-field col s6">
@@ -66,6 +67,7 @@ class CreateDocument extends Component {
             </button>
           </div>
         </form>
+        </div>
       </div>
     );
   }
