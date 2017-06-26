@@ -9,8 +9,10 @@ class AllUsers extends Component {
     super(props);
     this.state = {
       allUsers: this.props.allUsers || [],
+      isSearching: false,
     };
     this.deleteUser = this.deleteUser.bind(this);
+    this.searchUser = this.searchUser.bind(this);
   }
 
   componentWillMount() {
@@ -29,12 +31,27 @@ class AllUsers extends Component {
     console.log('i want to delete this user', userID);
   }
 
+  searchUser(event) {
+    const searchQuery = event.target.value;
+    this.setState({ isSearching: searchQuery.length > 0 });
+    this.props.UserAction.searchAllUsers(searchQuery);
+  }
+
   render() {
-    console.log('all users render component', this.state.allUsers);
+    const { isSearching } = this.state;
+    const view = (isSearching ? this.props.searchedUsers : this.state.allUsers) || [];
+    console.log('this is view', view);
     return (
-      <div>
+      <div className="container">
         <h4>this is all users</h4>
         <div>
+          <form>
+            <div className="input-field">
+              <input type="search" id="search" name="search" placeholder="search for user" onChange={this.searchUser} />
+              <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+              <i className="material-icons">close</i>
+            </div>
+          </form>
           <table className="striped centered">
             <thead>
               <tr>
@@ -46,7 +63,7 @@ class AllUsers extends Component {
             </thead>
 
             <tbody>
-              {this.state.allUsers.map(user =>
+              {(view || []).map(user =>
               <tr>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
@@ -63,8 +80,10 @@ class AllUsers extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('map state to props method', state.UserReducer.searchedUsers);
   return {
     allUsers: state.UserReducer.allUsers,
+    searchedUsers: state.UserReducer.searchedUsers,
   };
 }
 
