@@ -1,16 +1,14 @@
+import omit from 'lodash/omit';
+
 const Users = require('../models').users;
 const Documents = require('../models').documents;
 const jwt = require('jsonwebtoken');
-import omit from 'lodash/omit';
 
-const skey = 'mysecretkey';
 
-const displayUserDetails = (user) => {
-  return {
-    firstName: user.firstName,
-    lastName: user.lastName,
-  };
-};
+const displayUserDetails = (user) => ({
+  firstName: user.firstName,
+  lastName: user.lastName,
+});
 
 const userController = {
   login(req, res) {
@@ -51,11 +49,20 @@ const userController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  getAll1(req, res) {
+    // console.log('getting all users', req.query.limit, req.query.offset);
+    // const limit = parseInt(req.query.limit, 10) || 4;
+    // const offset = parseInt(req.query.offset, 10) || 0;
+    Users
+      .findAndCountAll()
+      .then(users => res.status(200).send(users))
+      .catch(error => res.status(400).send(error));
+  },
   getAll(req, res) {
     Users
-    .findAll()
-    .then((users) => res.status(200).send(users))
-    .catch(error => res.status(400).send(error));
+      .findAll()
+      .then(users => res.status(200).send(users))
+      .catch(error => res.status(400).send(error));
   },
   getOneUser(req, res) {
     Users
@@ -63,11 +70,26 @@ const userController = {
       .then((user) => {
         if (user) {
           return res.status(200).send(user);
-        } else {
-          return res.status(404).send({
-            message: 'User does not exist',
-          });
         }
+        return res.status(404).send({
+          message: 'User does not exist',
+        });
+      })
+      .catch(error => res.status(400).send(error));
+  },
+  searchUser(req, res) {
+    const { name } = req.query;
+    Users
+      .findAll({
+        where: {
+          $or: [
+            { firstName: { $iLike: `%${name}%` } },
+            { lastName: { $iLike: `%${name}%` } },
+          ],
+        },
+      })
+      .then((users) => {
+        res.status(200).send({ users, message: 'user found' });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -79,7 +101,8 @@ const userController = {
           user
             .update(req.body)
             .then(() => res.status(200).send({
-              message: 'user updated successfully' }));
+              message: 'user updated successfully',
+            }));
         } else {
           return res.status(404).send({
             message: 'User not Found',
@@ -118,7 +141,7 @@ const userController = {
       })
       .catch(error =>
         res.status(400).json({ msg: error.message }),
-      );
+    );
   },
 };
 module.exports = userController;
