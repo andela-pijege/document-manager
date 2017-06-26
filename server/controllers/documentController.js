@@ -35,8 +35,9 @@ const documentController = {
       .then((document) => {
         if (document) {
           return res.status(200).send(document);
+        } else {
+          return res.status(404).send({ message: 'document not found' });
         }
-        return res.status(404).send({ message: 'document not found' });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -63,23 +64,33 @@ const documentController = {
       .catch(error => res.status(400).send(error));
   },
   update(req, res) {
+    const docId = req.decoded.id;
     Documents
       .findById(req.params.id)
       .then((document) => {
-        if (document) {
+        if (document.userID !== docId) {
+          return res.status(401).send({ message: 'UNAUTHORISED USER' });
+        }
+        if (document.userID === docId) {
           document
             .update(req.body)
             .then(() => res.status(200).send({ message: 'Document updated successfully' }));
+        } else {
+          return res.status(404).send({ message: 'Document not found' });
         }
-        return res.status(404).send({ message: 'Document not found' });
       })
       .catch(error => res.status(500).send(error));
   },
   delete(req, res) {
+    const docId = req.decoded.id;
     Documents
       .findById(req.params.id)
       .then((document) => {
-        if (document) {
+        console.log('this is docid and userID', docId, document.userID);
+        if (document.userID !== docId) {
+          return res.status(401).send({ message: 'UNAUTHORISED USER' });
+        }
+        if (document.userID === docId) {
           document
             .destroy()
             .then(() => res.status(200).send({ message: 'Document successfully deleted' }));
