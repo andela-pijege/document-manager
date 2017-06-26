@@ -67,7 +67,7 @@ module.exports = function(sequelize, DataTypes) {
         });
         users.hasMany(models.documents, {
           foreignKey: 'userID',
-          onDelete: 'CASCADE'
+          onDelete: 'CASCADE',
         })
       }
     },
