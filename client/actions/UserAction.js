@@ -17,10 +17,20 @@ export const getUsers = users =>
   ({ type: actionTypes.GET_ALL_USER_SUCCESS, users });
 
 export const getAllusers = () => {
-  console.log('fetching all users from db');
   return dispatch => axios.get('/api/users')
     .then((response) => {
-      console.log('response from the server for all users ', response.data);
       dispatch(getUsers(response.data));
+    }).catch((error) => console.log(error));
+};
+
+export const searchUsers = users =>
+  ({ type: actionTypes.SEARCH_USER, users });
+
+export const searchAllUsers = (user) => {
+  console.log('searching for user in action', user);
+  return dispatch => axios.get(`/api/search/users/?name=${user}`)
+    .then((response) => {
+      console.log('response from the server searching users', response.data);
+      dispatch(searchUsers(response.data.users));
     }).catch((error) => console.log(error));
 };
