@@ -70,3 +70,29 @@ export const deleteOneUser = (userID) => {
       dispatch(deleteUser(response));
     }).catch((error) => console.log(error));
 };
+
+export const searchPublic = documents =>
+  ({ type: actionTypes.SEARCH_PUBLIC_DOCUMENTS, documents });
+
+export const searchPublicDocuments = (document) => {
+  console.log('searching for public documents', document);
+  return dispatch => axios.get(`/api/search/documents/?title=${document}`)
+    .then((response) => {
+      console.log('this is response from server', response.data.documents);
+      dispatch(searchPublic(response.data.documents));
+    })
+    .catch((error) => console.log(error));
+};
+
+export const searchMyDocuments = documents =>
+  ({ type: actionTypes.SEARCH_MY_DOCUMENTS, documents });
+
+export const searchOwnDocuments = (document) => {
+  console.log('searching for my documents', document);
+  return dispatch => axios.get(`/api/search/myDocuments/?title=${document}`)
+    .then((response) => {
+      console.log('this is response from server', response.data.documents);
+      dispatch(searchMyDocuments(response.data.documents));
+    })
+    .catch((error) => console.log(error));
+};
