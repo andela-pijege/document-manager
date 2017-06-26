@@ -34,6 +34,10 @@ const Routes = (app) => {
     '/api/users/:id', authorization.authorize, isOwnerOrAdmin, UserController.delete,
   );
 
+  app.get(
+    '/api/search/users/?', authorization.authorize, UserController.searchUser,
+  );
+
   // Documentss routes
 
   app.post(
@@ -46,13 +50,19 @@ const Routes = (app) => {
     '/api/documents/public', DocumentController.getAllPublic,
   );
   app.get(
-    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.getOneDocument,
+    '/api/documents/:id', authorization.authorize, DocumentController.getOneDocument,
   );
   app.put(
     '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.update,
   );
   app.delete(
     '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.delete,
+  );
+  app.get(
+    '/api/search/documents/?', authorization.authorize, DocumentController.searchPublicDocuments,
+  );
+  app.get(
+    '/api/search/myDocuments/?', authorization.authorize, DocumentController.searchMyDocuments,
   );
 };
 
