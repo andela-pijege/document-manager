@@ -1,22 +1,45 @@
-import React from 'react';
+/* global $ */
+import React, { Component } from 'react';
 
-const Home = () => (
-  <div>
-    <p>This is Documento home page by ghost!!!!!!</p>
-    <a className="waves-effect waves-teal btn-flat">Sign up</a>
-    <a className="waves-effect waves-teal btn-flat">Sign in</a>
-    <div className="fixed-action-btn horizontal click-to-toggle">
-      <a className="btn-floating btn-large red">
-        <i className="material-icons">menu</i>
-      </a>
-      <ul>
-        <li><a className="btn-floating red"><i className="material-icons">insert_chart</i></a></li>
-        <li><a className="btn-floating yellow darken-1"><i className="material-icons">format_quote</i></a></li>
-        <li><a className="btn-floating green"><i className="material-icons">publish</i></a></li>
-        <li><a className="btn-floating blue"><i className="material-icons">attach_file</i></a></li>
-      </ul>
-    </div>
-  </div>
-);
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-module.exports = Home;
+  componentDidMount() {
+     $('.slider').slider();
+  }
+
+
+  render() {
+    return (
+      <div className="slider fullscreen">
+        <ul className="slides">
+          <li>
+            <img src="https://lorempixel.com/580/250/nature/2" />
+            <div className="caption left-align">
+              <h3>Left Aligned Caption</h3>
+              <h5 className="light grey-text text-lighten-3">Here's our small slogan.</h5>
+            </div>
+          </li>
+          <li>
+            <img src="https://lorempixel.com/580/250/nature/3" />
+            <div className="caption right-align">
+              <h3>Right Aligned Caption</h3>
+              <h5 className="light grey-text text-lighten-3">Here's our small slogan.</h5>
+            </div>
+          </li>
+          <li>
+            <img src="https://lorempixel.com/580/250/nature/4" />
+            <div className="caption center-align">
+              <h3>This is our big Tagline!</h3>
+              <h5 className="light grey-text text-lighten-3">Here's our small slogan.</h5>
+            </div>
+          </li>
+        </ul>
+      </div>
+    );
+  }
+}
+export default Home;

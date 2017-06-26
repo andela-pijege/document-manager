@@ -4,6 +4,7 @@ const webpack = require('webpack');
 
 module.exports = {
   entry: path.resolve(__dirname, './client/index.jsx'),
+  devtool: 'eval',
   output: {
     path: path.resolve(__dirname, './client/dist'),
     filename: 'bundle.js',
