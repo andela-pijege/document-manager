@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 import * as DocumentAction from '../actions/DocumentAction';
 
 class EditDocument extends Component {
@@ -20,7 +21,6 @@ class EditDocument extends Component {
 
   componentDidMount() {
     CKEDITOR.replace('content');
-    console.log('edit document', this.state);
   }
 
   onChange(event) {
@@ -33,40 +33,46 @@ class EditDocument extends Component {
     event.preventDefault();
     const content = CKEDITOR.instances.content.getData();
     this.state.content = content;
-    console.log(this.state);
     this.props.DocumentAction.updateUserDocument(this.state)
-      .then(() => { browserHistory.push('dashboard'); })
-      .catch((error) => { message: error });
+      .then(() => {
+        toastr.success('Document Saved');
+        browserHistory.push('dashboard');
+      })
+      .catch((error) => {
+        toastr.error('Document not saved');
+      });
   }
 
   render() {
     return (
-      <div className="row">
-        <form className="col s12" onSubmit={this.onSubmit}>
-          <div className="row">
-            <div className="input-field col s6">
-              <input id="title" type="text" name="title" value={this.state.title} onChange={this.onChange} className="validate" />
-              <label htmlFor="title">Title</label>
+      <div className="container">
+        <div className="row">
+          <form className="col s12" onSubmit={this.onSubmit}>
+            <div className="row">
+              <div className="input-field col s6">
+                <input id="title" type="text" name="title" value={this.state.title} onChange={this.onChange} className="validate" />
+                <label htmlFor="title">Title</label>
+              </div>
+              <div className="input-field col s6">
+                <select onChange={this.onChange} style={{ display: 'block' }} name="access" value={this.state.access} >
+                  <option value="private" name="private">private</option>
+                  <option value="public" name="public">public</option>
+                </select>
+              </div>
             </div>
-            <div className="input-field col s6">
-              <select onChange={this.onChange} style={{ display: 'block' }} name="access" value={this.state.access} >
-                <option value="private" name="private">private</option>
-                <option value="public" name="public">public</option>
-              </select>
+            <div className="row">
+              <div className="input-field col s12">
+                <textarea id="content" className="materialize-textarea" name="content" value={this.state.content} ></textarea>
+                <label htmlFor="content">Content</label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s12">
-              <textarea id="content" className="materialize-textarea" name="content" value={this.state.content} ></textarea>
-              <label htmlFor="content">Content</label>
+            <div>
+              <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i className="material-icons right">send</i>
+              </button>
             </div>
-          </div>
-          <div>
-            <button className="btn waves-effect waves-light" type="submit" name="action">Submit
-              <i className="material-icons right">send</i>
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     );
   }
