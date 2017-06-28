@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 import * as actionTypes from './ActionTypes';
 import setAuthorizationToken from '../utils/authorization';
 
@@ -17,7 +18,9 @@ export const login = (userInfo) => {
       setAuthorizationToken(response.data.token);
       dispatch(loginSuccess(response.data));
       browserHistory.push('/dashboard');
+      toastr.success('Login Successful');
     }).catch((error) => {
+      toastr.error('Incorrect Login details');
       dispatch(loginFailure(error));
     });
 };

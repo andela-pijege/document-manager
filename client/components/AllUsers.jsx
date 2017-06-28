@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as UserAction from '../actions/UserAction';
@@ -29,6 +30,29 @@ class AllUsers extends Component {
 
   deleteUser(userID) {
     console.log('i want to delete this user', userID);
+    swal({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this document!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel plx!',
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+      (isConfirm) => {
+        if (isConfirm) {
+          this.props.UserAction.deleteUserAccount(userID)
+            .then(() =>{
+              swal('Deleted!', 'User deleted successful.', 'success');
+            }).catch(() => {
+              swal('Error!', 'User deleted successful.', 'error');
+            })
+        } else {
+          swal('Cancelled', 'User not Deleted :)', 'error');
+        }
+      });
   }
 
   searchUser(event) {
@@ -40,10 +64,9 @@ class AllUsers extends Component {
   render() {
     const { isSearching } = this.state;
     const view = (isSearching ? this.props.searchedUsers : this.state.allUsers) || [];
-    console.log('this is view', view);
     return (
       <div className="container">
-        <h4>this is all users</h4>
+        <h4> All Users</h4>
         <div>
           <form>
             <div className="input-field">
@@ -80,7 +103,6 @@ class AllUsers extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('map state to props method', state.UserReducer.searchedUsers);
   return {
     allUsers: state.UserReducer.allUsers,
     searchedUsers: state.UserReducer.searchedUsers,

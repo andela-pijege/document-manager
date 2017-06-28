@@ -24,7 +24,6 @@ class Login extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    console.log(this.state);
     this.props.LoginAction.login(this.state);
   }
 
@@ -49,7 +48,7 @@ class Login extends Component {
             </div>
           </div>
           <div>
-            <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+            <button className="btn waves-effect waves-light" type="submit" name="action">Sign in
               <i className="material-icons right">send</i>
             </button>
           </div>

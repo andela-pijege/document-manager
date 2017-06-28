@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import * as SignUpAction from '../actions/SignUpAction';
 
-class Signup extends Component {
+class EditUser extends Component {
 
   constructor(props) {
     super(props);
@@ -84,4 +84,4 @@ function mapDispatchToProps(dispatch) {
   return { SignUpAction: bindActionCreators(SignUpAction, dispatch) };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

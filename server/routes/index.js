@@ -53,10 +53,10 @@ const Routes = (app) => {
     '/api/documents/:id', authorization.authorize, DocumentController.getOneDocument,
   );
   app.put(
-    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.update,
+    '/api/documents/:id', authorization.authorize, DocumentController.update,
   );
   app.delete(
-    '/api/documents/:id', authorization.authorize, ownerCheck, DocumentController.delete,
+    '/api/documents/:id', authorization.authorize, DocumentController.delete,
   );
   app.get(
     '/api/search/documents/?', authorization.authorize, DocumentController.searchPublicDocuments,
