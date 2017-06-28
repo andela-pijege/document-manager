@@ -12,6 +12,8 @@ const userReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         searchedUsers: action.users,
       });
+    case actionTypes.DELETE_USER:
+      return state;
     default:
       return state;
   }
