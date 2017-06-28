@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
+import toastr from 'toastr';
 import * as DocumentAction from '../actions/DocumentAction';
 
 class CreateDocument extends Component {
@@ -31,10 +32,14 @@ class CreateDocument extends Component {
     event.preventDefault();
     const content = CKEDITOR.instances.content.getData();
     this.state.content = content;
-    console.log(this.state);
     this.props.DocumentAction.createUserDocument(this.state)
-      .then(() => { browserHistory.push('dashboard'); })
-      .catch((error) => { message: error });
+      .then(() => {
+        toastr.success('Document Saved');
+        browserHistory.push('dashboard');
+      })
+      .catch((error) => {
+        toastr.error('Document not saved');
+      });
   }
 
   render() {
