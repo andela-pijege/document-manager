@@ -27,10 +27,19 @@ export const searchUsers = users =>
   ({ type: actionTypes.SEARCH_USER, users });
 
 export const searchAllUsers = (user) => {
-  console.log('searching for user in action', user);
   return dispatch => axios.get(`/api/search/users/?name=${user}`)
     .then((response) => {
-      console.log('response from the server searching users', response.data);
       dispatch(searchUsers(response.data.users));
+    }).catch((error) => console.log(error));
+};
+
+export const deleteUser = response =>
+  ({ type: actionTypes.DELETE_USER, response });
+
+export const deleteUserAccount = (userID) => {
+  return dispatch => axios.delete(`/api/users/${userID}`)
+    .then((response) => {
+      console.log('this is response after deleting from server', response);
+      dispatch(deleteUser(response));
     }).catch((error) => console.log(error));
 };
