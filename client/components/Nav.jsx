@@ -1,3 +1,4 @@
+/* global $ */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -48,10 +49,9 @@ class Nav extends Component {
   logout(event) {
     event.preventDefault();
     this.props.actions.logout();
-     browserHistory.push('/');
+    browserHistory.push('/');
   }
   render() {
-    console.log('in the nav bar this is the user id', this.props.user.roleID);
     return (
       <div className="navbar-fixed">
         <nav className="blue-grey darken-4">
@@ -63,11 +63,10 @@ class Nav extends Component {
                   <li onClick={this.logout}><a>Logout</a></li>
                   <li onClick={() => { this.getAllPublicDdocuments(); }}><a>Public Document</a></li>
                   <li onClick={() => { this.dashboard(); }}><a>Dashboard</a></li>
-                    {(this.props.user.roleID === 1) ?
-                      <div>
-                        <li onClick={() => { this.getAllUsers(); }}><a>View All Users</a></li>
-                        <li><a>Admin Button 1</a></li>
-                      </div> : <div />}
+                  {(this.props.user.roleID === 1) ?
+                    <div>
+                      <li onClick={() => { this.getAllUsers(); }}><a>View All Users</a></li>
+                    </div> : <div />}
                 </div> :
                 <div>
                   <li onClick={() => { this.handleSignupClick(); }}><a>SignUp</a></li>
@@ -83,7 +82,6 @@ class Nav extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('this is state', state.LoginReducer.user);
   return {
     user: state.LoginReducer.user,
     isAuthenticated: state.LoginReducer.loginUser,
@@ -91,9 +89,11 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(
-    Object.assign(DocumentAction, LoginAction),
-    dispatch) };
+  return {
+    actions: bindActionCreators(
+      Object.assign(DocumentAction, LoginAction),
+      dispatch),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Nav);
