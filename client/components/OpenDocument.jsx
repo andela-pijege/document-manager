@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import swal from 'sweetalert';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
@@ -19,15 +20,33 @@ class OpenDocument extends Component {
   }
 
   deleteDocument(documentID) {
-    this.props.DocumentAction.deleteUserDocument(documentID)
-      .then(() => {
-        browserHistory.push('/dashboard');
+    swal({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this document!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel plx!',
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+      (isConfirm) => {
+        if (isConfirm) {
+          this.props.DocumentAction.deleteUserDocument(documentID)
+            .then(() => {
+              browserHistory.push('/dashboard');
+              swal('Deleted!', 'Document deleted successful.', 'success');
+            });
+        } else {
+          swal('Cancelled', 'Document not Deleted :)', 'error');
+        }
       });
   }
 
   render() {
     return (
-      <div>
+      <div className="container">
         <div className="row">
           <div className="col s12 m6">
             <div className="card blue-grey darken-1">
@@ -36,8 +55,13 @@ class OpenDocument extends Component {
                 <p>{this.state.myDocument.content}</p>
               </div>
               <div className="card-action">
-                <a onClick={() => { this.editDocument(); }}>edit</a>
-                <a onClick={() => { this.deleteDocument(this.state.myDocument.id); }}>delete</a>
+                {(this.props.user.userID === this.state.myDocument.userID) ?
+                  <div>
+                    <a onClick={() => { this.editDocument(); }}>edit</a>
+                    <a onClick={() => { this.deleteDocument(this.state.myDocument.id); }}>delete</a>
+                  </div>
+                  : <div />
+                }
               </div>
             </div>
           </div>
@@ -49,7 +73,7 @@ class OpenDocument extends Component {
 
 function mapStateToProps(state) {
   return {
-    // user: state.LoginReducer.user,
+    user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,
     document: state.DocumentReducer.document,
   };
