@@ -13,8 +13,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
 
-const port = parseInt(process.env.PORT, 10) || 9000;
-app.set('port', port);
+const port = process.env.PORT || 9000;
+// app.set('port', port);
 
 app.set('my secret key', config.secret);
 
