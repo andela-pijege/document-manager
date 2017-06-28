@@ -20,6 +20,9 @@
   "homepage": "https://github.com/andela-pijege/document-manager#readme",
   "dependencies": {
     "axios": "^0.16.2",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-register": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
@@ -55,9 +58,6 @@
     "webpack": "^2.6.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.24.1",
-    "babel-register": "^6.24.1",
     "chai": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
