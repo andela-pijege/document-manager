@@ -53,38 +53,55 @@ class Dashboard extends Component {
     const { isSearching } = this.state;
     const view = (isSearching ? this.props.searchedPersonalDocuments : this.state.documents) || []
     return (
-      <div className="container">
-        <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={() => { this.createDocument(); }}>note_add</i></a>
-        <div>
-          {(this.state.documents.length !== 0) ?
-            <div>
-              <h4>My documents</h4>
-              <form>
-                <div className="input-field">
-                  <input type="search" id="search" name="search" placeholder="search for document" onChange={this.searchDocuments} />
-                  <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                  <i className="material-icons">close</i>
-                </div>
-              </form>
-              <div className="row">
-              {
-                (view || []).map(document =>
-                  <div>
-                    <div className="col s4 m4 doc-wrapper">
-                      <div className="card small blue-grey darken-1">
-                        <div className="card-content white-text">
-                          <span className="card-title">{document.title}</span>
-                          <p>{document.content}</p>
-                        </div>
-                        <div className="card-action">
-                          <a onClick={() => { this.openDocument(document.id); }}>view</a>
+      <div className="row">
+        <div className="col s3">
+          <div className="card">
+            <div className="card-image">
+              <img src="../images/mugshot.jpg" />
+              <span className="card-title">name</span>
+            </div>
+            <div className="card-content">
+              <p>manage and share your documents</p>
+            </div>
+            <div className="card-action">
+              {(this.props.user.roleID === 1) ? <div></div>: <a href="#">delete account</a> }
+              <a href="#">edit account</a>
+            </div>
+          </div>
+        </div>
+        <div className="col s9">
+          <a className="btn-floating btn-large waves-effect waves-light red"><i className="material-icons" onClick={() => { this.createDocument(); }}>note_add</i></a>
+          <div>
+            {(this.state.documents.length !== 0) ?
+              <div>
+                <h4>My documents</h4>
+                <form>
+                  <div className="input-field">
+                    <input type="search" id="search" name="search" placeholder="search for document" onChange={this.searchDocuments} />
+                    <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                    <i className="material-icons">close</i>
+                  </div>
+                </form>
+                <div className="row">
+                {
+                  (view || []).map(document =>
+                    <div>
+                      <div className="col s4 m4 doc-wrapper">
+                        <div className="card small blue-grey darken-1">
+                          <div className="card-content white-text">
+                            <span className="card-title">{document.title}</span>
+                            <p>{document.content}</p>
+                          </div>
+                          <div className="card-action">
+                            <a onClick={() => { this.openDocument(document.id); }}>view</a>
+                          </div>
                         </div>
                       </div>
                     </div>
+                  )}
                   </div>
-                )}
-                </div>
-            </div> : <h4>You have no Personal documents!!go ahead and create one!!!</h4>}
+              </div> : <h4>You have no Personal documents!!go ahead and create one!!!</h4>}
+          </div>
         </div>
       </div>
     );
