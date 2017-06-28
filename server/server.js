@@ -33,7 +33,10 @@ app.get('*', (req, res) => {
 
 if (process.env.NODE_ENV !== 'test') {
   db.sequelize.sync().done(() => {
-    app.listen(port, () => {
+    app.listen(port, (err) => {
+      if (err) {
+        console.log(port, err);
+      }
       console.log(`Started up at port port ${port}`);
     });
   });
