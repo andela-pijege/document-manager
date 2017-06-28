@@ -64,7 +64,7 @@ class Signup extends Component {
             </div>
           </div>
           <div>
-            <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+            <button className="btn waves-effect waves-light" type="submit" name="action">Sign up
               <i className="material-icons right">send</i>
             </button>
           </div>
@@ -73,10 +73,6 @@ class Signup extends Component {
     );
   }
 }
-
-// SignUp.propTypes = {
-//   SignUpAction: React.PropTypes.func.isRequired,
-// };
 
 function mapStateToProps(state, ownProps) {
   return {
