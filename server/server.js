@@ -5,7 +5,7 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 const db = require('./models/index');
 const serverRoutes = require('./routes/index');
-const config = require('./config/config.json');
+const config = require('./config/config.js');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 // Set up the express app
@@ -16,7 +16,7 @@ const app = express();
 const port = process.env.PORT || 9000;
 // app.set('port', port);
 
-app.set('my secret key', config.secret);
+app.set('my secret key', process.env.secret);
 
 // Log requests to the console.
 app.use(logger('dev'));
@@ -31,11 +31,13 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+console.log(`Started up at port port ${port}`);
+
 if (process.env.NODE_ENV !== 'test') {
   db.sequelize.sync().done(() => {
     app.listen(port, (err) => {
       if (err) {
-        console.log(port, err);
+        console.log(port);
       }
       console.log(`Started up at port port ${port}`);
     });

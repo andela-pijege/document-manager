@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js --compilers js:babel-register",
-    "start": "webpack -w & nodemon ./server/server.js --exec babel-node"
+    "start": "webpack & babel-node ./server/server.js",
+    "start-dev": "webpack -w & nodemon ./server/server.js --exec babel-node"
   },
   "repository": {
     "type": "git",
