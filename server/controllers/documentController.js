@@ -86,7 +86,6 @@ const documentController = {
     Documents
       .findById(req.params.id)
       .then((document) => {
-        console.log('this is docid and userID', docId, document.userID);
         if (document.userID !== docId) {
           return res.status(401).send({ message: 'UNAUTHORISED USER' });
         }
