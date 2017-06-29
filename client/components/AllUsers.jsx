@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert';
 import { connect } from 'react-redux';
+import reactPaginate from 'react-paginate';
 import { bindActionCreators } from 'redux';
 import * as UserAction from '../actions/UserAction';
 import * as DocumentAction from '../actions/DocumentAction';
@@ -29,10 +30,9 @@ class AllUsers extends Component {
   }
 
   deleteUser(userID) {
-    console.log('i want to delete this user', userID);
     swal({
       title: 'Are you sure?',
-      text: 'You will not be able to recover this document!',
+      text: 'This User would be deleted forever!',
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#DD6B55',
@@ -47,7 +47,7 @@ class AllUsers extends Component {
             .then(() =>{
               swal('Deleted!', 'User deleted successful.', 'success');
             }).catch(() => {
-              swal('Error!', 'User deleted successful.', 'error');
+              swal('Error!', 'User NOT deleted.', 'error');
             })
         } else {
           swal('Cancelled', 'User not Deleted :)', 'error');
@@ -60,6 +60,14 @@ class AllUsers extends Component {
     this.setState({ isSearching: searchQuery.length > 0 });
     this.props.UserAction.searchAllUsers(searchQuery);
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   if (nextProps.allUsers) {
+  //     this.setState({
+  //       allUsers: nextProps.allUsers.users,
+  //     });
+  //   }
+  // }
 
   render() {
     const { isSearching } = this.state;
