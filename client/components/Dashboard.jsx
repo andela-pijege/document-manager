@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import swal from 'sweetalert';
 import { browserHistory } from 'react-router';
 import * as DocumentAction from '../actions/DocumentAction';
+import * as UserAction from '../actions/UserAction';
 
 class Dashboard extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      userID: this.props.user.userID || this.props.newUser.userID,
+      userID: this.props.user.id,
       documents: this.props.documents || [],
       roleID: this.props.user.roleID || 0,
       isSearching: false,
@@ -18,11 +20,13 @@ class Dashboard extends Component {
     this.createDocument = this.createDocument.bind(this);
     this.openDocument = this.openDocument.bind(this);
     this.searchDocuments = this.searchDocuments.bind(this);
+    this.deleteAccount = this.deleteAccount.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   }
 
   componentWillMount() {
     const userID = this.state.userID;
-    this.props.DocumentAction.getUserDocuments(userID);
+    this.props.actions.getUserDocuments(userID);
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.documents) {
@@ -37,7 +41,7 @@ class Dashboard extends Component {
   }
 
   openDocument(documentID) {
-    this.props.DocumentAction.getOneDocument(documentID)
+    this.props.actions.getOneDocument(documentID)
       .then(() => {
         browserHistory.push('/openDocument');
       });
@@ -45,27 +49,58 @@ class Dashboard extends Component {
 
   searchDocuments(event) {
     const searchQuery = event.target.value;
-    this.setState({ isSearching: searchQuery.length > 0 })
-    this.props.DocumentAction.searchOwnDocuments(searchQuery);
+    this.setState({ isSearching: searchQuery.length > 0 });
+    this.props.actions.searchOwnDocuments(searchQuery);
+  }
+
+  updateUser() {
+    browserHistory.push('/editUser');
+  }
+
+  deleteAccount(userID) {
+    swal({
+      title: 'Are you sure?',
+      text: 'Your account would be lost forever!',
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#DD6B55',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, cancel plx!',
+      closeOnConfirm: false,
+      closeOnCancel: false,
+    },
+      (isConfirm) => {
+        if (isConfirm) {
+          this.props.actions.deleteUserAccount(userID)
+            .then(() => {
+              swal('Deleted!', 'User deleted successfully.', 'success');
+              browserHistory.push('/');
+            }).catch(() => {
+              swal('Error!', 'User NOT deleted.', 'error');
+            });
+        } else {
+          swal('Cancelled', 'User not Deleted :)', 'error');
+        }
+      });
   }
 
   render() {
     const { isSearching } = this.state;
-    const view = (isSearching ? this.props.searchedPersonalDocuments : this.state.documents) || []
+    const view = (isSearching ? this.props.searchedPersonalDocuments : this.state.documents) || [];
     return (
       <div className="row">
         <div className="col s3">
           <div className="card">
             <div className="card-image">
               <img src="../images/mugshot.jpg" />
-              <span className="card-title">name</span>
+              <span className="card-title">{this.props.user.firstName}</span>
             </div>
             <div className="card-content">
-              <p>manage and share your documents</p>
+              <p>{this.props.user.email}</p>
             </div>
             <div className="card-action">
-              {(this.props.user.roleID === 1) ? <div></div>: <a href="#">delete account</a> }
-              <a href="#">edit account</a>
+              {(this.props.user.roleID === 1) ? <div></div>: <a onClick={() => { this.deleteAccount(this.state.userID); }}>delete account</a> }
+              <a onClick={() => { this.updateUser(); }}>edit account</a>
             </div>
           </div>
         </div>
@@ -74,14 +109,16 @@ class Dashboard extends Component {
           <div>
             {(this.state.documents.length !== 0) ?
               <div>
-                <h4>My documents</h4>
-                <form>
-                  <div className="input-field">
-                    <input type="search" id="search" name="search" placeholder="search for document" onChange={this.searchDocuments} />
-                    <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
-                    <i className="material-icons">close</i>
-                  </div>
-                </form>
+                <div className="row">
+                  <h4 className="col s6">My documents</h4>
+                  <form className="col s6">
+                    <div className="input-field">
+                      <input type="search" id="search" name="search" placeholder="search for document" onChange={this.searchDocuments} />
+                      <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
+                      <i className="material-icons">close</i>
+                    </div>
+                  </form>
+                </div>
                 <div className="row">
                 {
                   (view || []).map(document =>
@@ -118,7 +155,6 @@ Dashboard.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    newUser: state.SignupReducer.newUser,
     user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,
     publicDocuments: state.DocumentReducer.publicDocuments,
@@ -127,7 +163,12 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return { DocumentAction: bindActionCreators(DocumentAction, dispatch) };
+  return {
+    actions: bindActionCreators(
+      Object.assign({},
+      UserAction,
+      DocumentAction), dispatch),
+  };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
