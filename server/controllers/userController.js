@@ -5,7 +5,7 @@ const Documents = require('../models').documents;
 const jwt = require('jsonwebtoken');
 
 
-const displayUserDetails = (user) => ({
+const displayUserDetails = user => ({
   firstName: user.firstName,
   lastName: user.lastName,
 });
@@ -20,13 +20,16 @@ const userController = {
             return res.status(404).send({ message: 'Wrong email' });
           }
           if (user.validate(req.body.password)) {
-            const userID = user.id;
-            const roleID = user.roleID;
-            const filteredData = omit(user, [
+            const filteredData = omit(user.dataValues, [
               'password',
+              'createdAt',
+              'updatedAt',
             ]);
-            const token = jwt.sign(filteredData, process.env.SECRET_KEY);
-            res.status(200).send({ message: 'Login successful', token, userID, roleID });
+            const token = jwt.sign({
+              filteredData,
+              expiresIn: '2h',
+            }, process.env.SECRET_KEY);
+            res.status(200).send({ message: 'Login successful', token, user: filteredData });
           } else {
             return res.status(404).send({ message: 'its some wrong password shit' });
           }
@@ -41,21 +44,41 @@ const userController = {
       .then((user) => {
         const userAttributes = displayUserDetails(user);
         const userID = user.id;
+        const filteredData = omit(user.dataValues, [
+          'password',
+          'createdAt',
+          'updatedAt',
+        ]);
         const token = jwt.sign({
-          data: user.id,
+          filteredData,
           expiresIn: '2h',
         }, process.env.SECRET_KEY);
-        res.status(201).send({ message: 'user created succesfully', userAttributes, token, userID });
+        res.status(201).send({ message: 'user created succesfully', token, user: filteredData });
       })
       .catch(error => res.status(400).send(error));
   },
   getAll1(req, res) {
-    // console.log('getting all users', req.query.limit, req.query.offset);
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = req.query.offset ? req.query.offset : 0;
     // const limit = parseInt(req.query.limit, 10) || 4;
     // const offset = parseInt(req.query.offset, 10) || 0;
     Users
-      .findAndCountAll()
-      .then(users => res.status(200).send(users))
+      .findAndCountAll({
+        limit,
+        offset,
+      })
+      .then((users) => {
+        const metaData = {
+          totalCount: users.count,
+          pages: Math.ceil(users.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: users.rows.length,
+        };
+        res.status(200).send({
+          users: users.rows,
+          metaData,
+        });
+      })
       .catch(error => res.status(400).send(error));
   },
   getAll(req, res) {
