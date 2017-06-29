@@ -37,14 +37,13 @@ class PublicDocument extends Component {
 
   searchDocuments(event) {
     const searchQuery = event.target.value;
-    console.log('this s the search query', searchQuery);
-    this.setState({ isSearching: searchQuery.length > 0 })
+    this.setState({ isSearching: searchQuery.length > 0 });
     this.props.DocumentAction.searchPublicDocuments(searchQuery);
   }
 
   render() {
     const { isSearching } = this.state;
-    const view = (isSearching ? this.props.searchedPublicDocuments : this.state.publicDocuments) || []
+    const view = (isSearching ? this.props.searchedPublicDocuments : this.state.publicDocuments) || [];
     return (
       <div className="container">
         <div>
