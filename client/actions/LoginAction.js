@@ -16,7 +16,7 @@ export const login = (userInfo) => {
     .then((response) => {
       localStorage.setItem('jwtToken', response.data.token);
       setAuthorizationToken(response.data.token);
-      dispatch(loginSuccess(response.data));
+      dispatch(loginSuccess(response.data.user));
       browserHistory.push('/dashboard');
       toastr.success('Login Successful');
     }).catch((error) => {
@@ -24,6 +24,7 @@ export const login = (userInfo) => {
       dispatch(loginFailure(error));
     });
 };
+
 /**
  * logout - logout Action
  * @return {Function}  dispatch an action

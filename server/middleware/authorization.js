@@ -8,7 +8,7 @@ module.exports = {
       if (err) {
         return res.status(401).json({ message: 'INVALID TOKEN' });
       }
-      req.decoded = decoded;
+      req.decoded = decoded.filteredData;
       next();
     });
   },

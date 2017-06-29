@@ -18,7 +18,7 @@ const Routes = (app) => {
     '/api/users/login', UserController.login,
   );
   app.get(
-    '/api/users', authorization.authorize, adminCheck, UserController.getAll,
+    '/api/users/', authorization.authorize, adminCheck, UserController.getAll,
   );
   app.get(
     '/api/users/:id', authorization.authorize, adminCheck, UserController.getOneUser,

@@ -5,10 +5,8 @@ export const updateUser = response =>
   ({ type: actionTypes.UPDATE_USER_SUCCESS, response });
 
 export const updateUserInfo = (userData) => {
-  console.log('user info to be updated', userData);
-  return dispatch => axios.put()
+  return dispatch => axios.put(`/api/users/${userData.id}`, userData)
     .then((response) => {
-      console.log('response from the server after updating', response);
       dispatch(updateUser(response));
     }).catch((error) => console.log(error));
 };

@@ -12,7 +12,7 @@ class CreateDocument extends Component {
       title: '',
       content: '',
       access: '',
-      userID: this.props.user.userID || this.props.newUser.userID,
+      userID: this.props.user.id,
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -67,7 +67,7 @@ class CreateDocument extends Component {
             </div>
           </div>
           <div>
-            <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+            <button className="btn waves-effect waves-light" type="submit" name="action">Save
               <i className="material-icons right">send</i>
             </button>
           </div>

@@ -67,7 +67,7 @@ class EditDocument extends Component {
               </div>
             </div>
             <div>
-              <button className="btn waves-effect waves-light" type="submit" name="action">Submit
+              <button className="btn waves-effect waves-light" type="submit" name="action">Save
                 <i className="material-icons right">send</i>
               </button>
             </div>
@@ -79,7 +79,6 @@ class EditDocument extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('state in the edit document component', state.DocumentReducer.document);
   return {
     user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,

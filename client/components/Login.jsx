@@ -31,17 +31,17 @@ class Login extends Component {
   render() {
     return (
       <div className="row">
-        <form className="col s12" onSubmit={this.onSubmit}>
-          <h3>Sign in</h3>
+        <form className="col s6 offset-s3" onSubmit={this.onSubmit}>
+          <h3 className="center">Sign in</h3>
           <div className="row">
-            <div className="input-field col s6">
+            <div className="input-field">
               <i className="material-icons prefix">email</i>
               <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
               <label htmlFor="email">Email</label>
             </div>
           </div>
           <div className="row">
-            <div className="input-field col s6">
+            <div className="input-field">
               <i className="material-icons prefix">lock</i>
               <input id="password" type="password" className="validate"name="password" value={this.state.password} onChange={this.onChange} />
               <label htmlFor="password">Password</label>

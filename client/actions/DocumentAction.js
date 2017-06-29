@@ -1,8 +1,24 @@
 import axios from 'axios';
 import * as actionTypes from './ActionTypes';
 
+/**
+ *
+ * @desc get user documents action creator.
+ * @param {array} documents
+ * @returns {object} actiontype, and payload
+ */
+
 export const getDocuments = documents =>
   ({ type: actionTypes.GET_USER_DOCUMENT, documents });
+
+/**
+ *
+ * @desc calls the get user document endpoint.
+ *  Retrieves documents for a specific user.
+ * @param {object} userId
+ * @param {string} page. Represents pagination index.
+ * @returns {array} returns an array of a specific users document.
+ */
 
 export const getUserDocuments = (userID) => {
   return dispatch => axios.get(`/api/users/${userID}/documents`)
@@ -75,7 +91,6 @@ export const searchPublic = documents =>
   ({ type: actionTypes.SEARCH_PUBLIC_DOCUMENTS, documents });
 
 export const searchPublicDocuments = (document) => {
-  console.log('searching for public documents', document);
   return dispatch => axios.get(`/api/search/documents/?title=${document}`)
     .then((response) => {
       console.log('this is response from server', response.data.documents);
@@ -88,10 +103,8 @@ export const searchMyDocuments = documents =>
   ({ type: actionTypes.SEARCH_MY_DOCUMENTS, documents });
 
 export const searchOwnDocuments = (document) => {
-  console.log('searching for my documents', document);
   return dispatch => axios.get(`/api/search/myDocuments/?title=${document}`)
     .then((response) => {
-      console.log('this is response from server', response.data.documents);
       dispatch(searchMyDocuments(response.data.documents));
     })
     .catch((error) => console.log(error));

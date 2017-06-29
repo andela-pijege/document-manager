@@ -1,17 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import toastr from 'toastr';
 import { browserHistory } from 'react-router';
-import * as SignUpAction from '../actions/SignUpAction';
+import * as UserAction from '../actions/UserAction';
 
 class EditUser extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      firstName: '',
-      lastName: '',
-      email: '',
+      id: this .props.user.id,
+      firstName: this.props.user.firstName,
+      lastName: this.props.user.lastName,
+      email: this.props.user.email,
       password: '',
       roleID: 2,
     };
@@ -25,8 +27,12 @@ class EditUser extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.SignUpAction.createUser(this.state)
-      .then(() => { browserHistory.push('/dashboard'); })
+    console.log('this is the ne state', this.state);
+    this.props.UserAction.updateUserInfo(this.state)
+      .then(() => {
+        browserHistory.push('/dashboard');
+        toastr.success('profile update Successful');
+      })
       .catch((error) => { message: error });
   }
 
@@ -34,7 +40,7 @@ class EditUser extends Component {
     return (
       <div className="container">
         <form className="col s8" onSubmit={this.onSubmit}>
-          <h3>Sign up</h3>
+          <h3>Edit Profile</h3>
           <div className="row">
             <div className="input-field col s6">
               <i className="material-icons prefix">account_circle</i>
@@ -76,12 +82,12 @@ class EditUser extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    newUser: state.SignupReducer.newUser,
+    user: state.LoginReducer.user,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return { SignUpAction: bindActionCreators(SignUpAction, dispatch) };
+  return { UserAction: bindActionCreators(UserAction, dispatch) };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditUser);

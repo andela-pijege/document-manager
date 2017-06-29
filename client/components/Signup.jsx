@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
 import * as SignUpAction from '../actions/SignUpAction';
 
 class Signup extends Component {
@@ -25,50 +24,50 @@ class Signup extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.SignUpAction.createUser(this.state)
-      .then(() => { browserHistory.push('/dashboard'); })
-      .catch((error) => { message: error });
+    this.props.SignUpAction.createUser(this.state);
   }
 
   render() {
     return (
       <div className="container">
-        <form className="col s8" onSubmit={this.onSubmit}>
-          <h3>Sign up</h3>
-          <div className="row">
-            <div className="input-field col s6">
-              <i className="material-icons prefix">account_circle</i>
-              <input id="firstName" type="text" className="validate" name="firstName" value={this.state.firstName} onChange={this.onChange} />
-              <label htmlFor="firstName">First Name</label>
+        <div className="row">
+          <form className="col s6 offset-s3" onSubmit={this.onSubmit}>
+            <h3 className="center">Sign up</h3>
+            <div className="row">
+              <div className="input-field">
+                <i className="material-icons prefix">account_circle</i>
+                <input id="firstName" type="text" className="validate" name="firstName" value={this.state.firstName} onChange={this.onChange} />
+                <label htmlFor="firstName">First Name</label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s6">
-              <i className="material-icons prefix">account_circle</i>
-              <input id="lastName" type="text" className="validate" name="lastName" value={this.state.lastName} onChange={this.onChange} />
-              <label htmlFor="lastName">Last Name</label>
+            <div className="row">
+              <div className="input-field">
+                <i className="material-icons prefix">account_circle</i>
+                <input id="lastName" type="text" className="validate" name="lastName" value={this.state.lastName} onChange={this.onChange} />
+                <label htmlFor="lastName">Last Name</label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s6">
-              <i className="material-icons prefix">email</i>
-              <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
-              <label htmlFor="email">Email</label>
+            <div className="row">
+              <div className="input-field">
+                <i className="material-icons prefix">email</i>
+                <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
+                <label htmlFor="email">Email</label>
+              </div>
             </div>
-          </div>
-          <div className="row">
-            <div className="input-field col s6">
-              <i className="material-icons prefix">lock</i>
-              <input id="password" type="password" className="validate" name="password" value={this.state.password} onChange={this.onChange} />
-              <label htmlFor="password">Password</label>
+            <div className="row">
+              <div className="input-field">
+                <i className="material-icons prefix">lock</i>
+                <input id="password" type="password" className="validate" name="password" value={this.state.password} onChange={this.onChange} />
+                <label htmlFor="password">Password</label>
+              </div>
             </div>
-          </div>
-          <div>
-            <button className="btn waves-effect waves-light" type="submit" name="action">Sign up
-              <i className="material-icons right">send</i>
-            </button>
-          </div>
-        </form>
+            <div>
+              <button className="btn waves-effect waves-light" type="submit" name="action">Sign up
+                <i className="material-icons right">send</i>
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     );
   }
