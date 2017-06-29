@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { browserHistory } from 'react-router';
 import * as actionTypes from './ActionTypes';
 import setAuthorizationToken from '../utils/authorization';
 
@@ -15,7 +16,8 @@ export const createUser = (userInfo) => {
     .then((response) => {
       localStorage.setItem('jwtToken', response.data.token);
       setAuthorizationToken(response.data.token);
-      dispatch(createUserSuccess(response.data));
+      dispatch(createUserSuccess(response.data.user));
+      browserHistory.push('/dashboard');
     }).catch((error) => {
       dispatch(createUserFailure(error));
     });
