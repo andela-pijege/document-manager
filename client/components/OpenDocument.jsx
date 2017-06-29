@@ -48,14 +48,14 @@ class OpenDocument extends Component {
     return (
       <div className="container">
         <div className="row">
-          <div className="col s12 m6">
-            <div className="card blue-grey darken-1">
+          <div className="col s6 offset-s3">
+            <div className="card blue-grey darken-1 large">
               <div className="card-content white-text">
                 <span className="card-title">{this.state.myDocument.title}</span>
                 <p>{this.state.myDocument.content}</p>
               </div>
               <div className="card-action">
-                {(this.props.user.userID === this.state.myDocument.userID) ?
+                {(this.props.user.id === this.state.myDocument.userID) ?
                   <div>
                     <a onClick={() => { this.editDocument(); }}>edit</a>
                     <a onClick={() => { this.deleteDocument(this.state.myDocument.id); }}>delete</a>
