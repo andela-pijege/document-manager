@@ -29,6 +29,18 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  getDocuments(req, res) {
+    Documents
+      .findAll({
+        where: { userID: req.params.id },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents });
+      })
+      .catch(error =>
+        res.status(400).json({ msg: error.message }),
+    );
+  },
   getOneDocument(req, res) {
     Documents
       .findById(req.params.id)
