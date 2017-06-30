@@ -8,8 +8,30 @@ const serverRoutes = require('./routes/index');
 const config = require('./config/config.js');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const swaggerJSDoc = require('swagger-jsdoc');
 // Set up the express app
 
+// swagger definition
+const swaggerDefinition = {
+  info: {
+    title: 'Node Swagger API',
+    version: '1.0.0',
+    description: 'Demonstrating how to describe a RESTful API with Swagger',
+  },
+  host: 'localhost:3000',
+  basePath: '/',
+};
+
+// options for the swagger docs
+const options = {
+  // import swaggerDefinitions
+  swaggerDefinition,
+  // path to the API docs
+  apis: ['./routes/*.js'],
+};
+
+// initialize swagger-jsdoc
+const swaggerSpec = swaggerJSDoc(options);
 dotenv.config();
 const app = express();
 
@@ -26,10 +48,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 serverRoutes(app);
+app.get('/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
+// serve swagger
+
 
 console.log(`Started up at port port ${port}`);
 

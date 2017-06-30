@@ -31,7 +31,7 @@ const userController = {
             }, process.env.SECRET_KEY);
             res.status(200).send({ message: 'Login successful', token, user: filteredData });
           } else {
-            return res.status(404).send({ message: 'its some wrong password shit' });
+            return res.status(404).send({ message: 'wrong password' });
           }
         });
     }
@@ -153,18 +153,6 @@ const userController = {
         }
       })
       .catch(error => res.status(500).send(error));
-  },
-  getDocuments(req, res) {
-    Documents
-      .findAll({
-        where: { userID: req.params.id },
-      })
-      .then((documents) => {
-        res.status(200).send({ documents });
-      })
-      .catch(error =>
-        res.status(400).json({ msg: error.message }),
-    );
   },
 };
 module.exports = userController;
