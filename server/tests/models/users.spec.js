@@ -1,3 +1,4 @@
+/* eslint-disable */
 describe('Users model', () => {
   beforeEach((done) => {
     db.sequelize.sync({force: true}).done(() => {

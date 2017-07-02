@@ -1,3 +1,4 @@
+/* eslint-disable */
 describe('Document model', () => {
   beforeEach((done) => {
     db.sequelize.sync({force: true}).done(() => {
