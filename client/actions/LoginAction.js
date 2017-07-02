@@ -32,7 +32,6 @@ export const login = (userInfo) => {
 export function logout() {
   return (dispatch) => {
     localStorage.removeItem('jwtToken');
-    // setAuthorizationToken(false);
     dispatch(loginSuccess({}));
   };
 }
