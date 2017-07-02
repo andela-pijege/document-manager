@@ -58,7 +58,7 @@ class PublicDocument extends Component {
           <div className="row">
           {
             (view || []).map(document =>
-              <div>
+              <div key={document.id + 1}>
                 <div className="col s4 m4 doc-wrapper">
                   <div className="card small blue-grey darken-1">
                     <div className="card-content white-text">
