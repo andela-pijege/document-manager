@@ -95,7 +95,7 @@ class AllUsers extends Component {
 
             <tbody>
               {(view || []).map(user =>
-              <tr>
+              <tr key={user.id}>
                 <td>{user.firstName}</td>
                 <td>{user.lastName}</td>
                 <td>{user.email}</td>
