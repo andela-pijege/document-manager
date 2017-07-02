@@ -122,7 +122,7 @@ class Dashboard extends Component {
                 <div className="row">
                 {
                   (view || []).map(document =>
-                    <div>
+                    <div key={document.id + 1}>
                       <div className="col s4 m4 doc-wrapper">
                         <div className="card small blue-grey darken-1">
                           <div className="card-content white-text">
@@ -146,11 +146,15 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  DocumentAction: propTypes.shape({
+  actions: propTypes.shape({
     getAllPublicDocuments: propTypes.func,
-    getOneDocument: propTypes.func,
-    getUserDocuments: propTypes.func,
+    getOneDocument: propTypes.func.isRequired,
+    getUserDocuments: propTypes.func.isRequired,
+    searchOwnDocuments: propTypes.func.isRequired,
+    deleteUserAccount: propTypes.func.isRequired,
   }),
+  searchedPersonalDocuments: propTypes.array,
+  documents: propTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {
