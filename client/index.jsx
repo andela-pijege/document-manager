@@ -18,7 +18,7 @@ const token = localStorage.jwtToken;
 if (token) {
   setAuthorizationToken(token);
   const details = jwtDecode(token);
-  store.dispatch(loginSuccess(details));
+  store.dispatch(loginSuccess(details.filteredData));
 }
 ReactDOM.render(
   <Provider store={store}>
