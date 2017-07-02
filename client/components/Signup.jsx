@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as SignUpAction from '../actions/SignUpAction';
@@ -72,6 +73,11 @@ class Signup extends Component {
     );
   }
 }
+Signup.propTypes = {
+  SignUpAction: propTypes.shape({
+    createUser: propTypes.func,
+  }),
+};
 
 function mapStateToProps(state, ownProps) {
   return {
