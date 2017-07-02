@@ -59,8 +59,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  LoginAction: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
+  LoginAction: PropTypes.shape({
+    login: PropTypes.func.isRequired }),
 };
 
 function mapStateToProps(state) {
