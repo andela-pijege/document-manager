@@ -11,6 +11,13 @@ const displayUserDetails = user => ({
 });
 
 const userController = {
+
+  /**
+   * @desc Login User
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   login(req, res) {
     if (req.body.email && req.body.password) {
       Users
@@ -36,8 +43,21 @@ const userController = {
         });
     }
   },
+  /**
+   * @desc Logout User
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   logout(req, res) {
+    return res.status(200).send({ message: 'You have been successfully logged out' });
   },
+  /**
+   * @desc Create a new user
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   create(req, res) {
     Users
       .create(req.body)
@@ -57,7 +77,13 @@ const userController = {
       })
       .catch(error => res.status(400).send(error));
   },
-  getAll1(req, res) {
+  /**
+   * @desc Get all Users
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
+  getAll(req, res) {
     const limit = req.query.limit ? req.query.limit : 10;
     const offset = req.query.offset ? req.query.offset : 0;
     // const limit = parseInt(req.query.limit, 10) || 4;
@@ -66,6 +92,7 @@ const userController = {
       .findAndCountAll({
         limit,
         offset,
+        // where: { userID: 2 },
       })
       .then((users) => {
         const metaData = {
@@ -81,12 +108,18 @@ const userController = {
       })
       .catch(error => res.status(400).send(error));
   },
-  getAll(req, res) {
+  getAll1(req, res) {
     Users
       .findAll()
       .then(users => res.status(200).send(users))
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Get one user
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   getOneUser(req, res) {
     Users
       .findById(req.params.id)
@@ -100,6 +133,12 @@ const userController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Search for a user
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   searchUser(req, res) {
     const { name } = req.query;
     Users
@@ -116,6 +155,12 @@ const userController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Updates User
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   update(req, res) {
     Users
       .findById(req.params.id)
@@ -124,6 +169,7 @@ const userController = {
           user
             .update(req.body)
             .then(() => res.status(200).send({
+              user,
               message: 'user updated successfully',
             }));
         } else {
@@ -132,8 +178,14 @@ const userController = {
           });
         }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Deletes User
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   delete(req, res) {
     Users
       .findById(req.params.id)
@@ -152,7 +204,7 @@ const userController = {
           });
         }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(400).send(error));
   },
 };
 module.exports = userController;
