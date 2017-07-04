@@ -52,7 +52,7 @@ class OpenDocument extends Component {
             <div className="card blue-grey darken-1 large">
               <div className="card-content white-text">
                 <span className="card-title">{this.state.myDocument.title}</span>
-                <p>{this.state.myDocument.content}</p>
+                <p dangerouslySetInnerHTML={{ __html: this.state.myDocument.content }} />
               </div>
               <div className="card-action">
                 {(this.props.user.id === this.state.myDocument.userID) ?
