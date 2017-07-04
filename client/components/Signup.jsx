@@ -37,28 +37,28 @@ class Signup extends Component {
             <div className="row">
               <div className="input-field">
                 <i className="material-icons prefix">account_circle</i>
-                <input id="firstName" type="text" className="validate" name="firstName" value={this.state.firstName} onChange={this.onChange} />
+                <input id="firstName" type="text" className="validate" name="firstName" required="required" value={this.state.firstName} onChange={this.onChange} />
                 <label htmlFor="firstName">First Name</label>
               </div>
             </div>
             <div className="row">
               <div className="input-field">
                 <i className="material-icons prefix">account_circle</i>
-                <input id="lastName" type="text" className="validate" name="lastName" value={this.state.lastName} onChange={this.onChange} />
+                <input id="lastName" type="text" className="validate" name="lastName" required="required" value={this.state.lastName} onChange={this.onChange} />
                 <label htmlFor="lastName">Last Name</label>
               </div>
             </div>
             <div className="row">
               <div className="input-field">
                 <i className="material-icons prefix">email</i>
-                <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
+                <input id="email" type="email" className="validate" required="required" name="email" value={this.state.email} onChange={this.onChange} />
                 <label htmlFor="email">Email</label>
               </div>
             </div>
             <div className="row">
               <div className="input-field">
                 <i className="material-icons prefix">lock</i>
-                <input id="password" type="password" className="validate" name="password" value={this.state.password} onChange={this.onChange} />
+                <input id="password" type="password" className="validate" required="required" name="password" value={this.state.password} onChange={this.onChange} />
                 <label htmlFor="password">Password</label>
               </div>
             </div>
