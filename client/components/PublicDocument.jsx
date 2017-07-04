@@ -63,7 +63,7 @@ class PublicDocument extends Component {
                   <div className="card small blue-grey darken-1">
                     <div className="card-content white-text">
                       <span className="card-title">{document.title}</span>
-                      <p>{document.content}</p>
+                      <p dangerouslySetInnerHTML={{ __html: document.content }} />
                     </div>
                     <div className="card-action">
                       <a onClick={() => { this.openDocument(document.id); }}>view</a>
