@@ -120,6 +120,8 @@ const Routes = (app) => {
     '/api/users/login', UserController.login,
   );
 
+  app.get('/api/users/logout', authorization.authorize, UserController.logout);
+
   /**
    * @swagger
    * /api/users/:
@@ -253,7 +255,10 @@ const Routes = (app) => {
     '/api/documents', authorization.authorize, DocumentController.create,
   );
   app.get(
-    '/api/documents', authorization.authorize, DocumentController.getAll,
+    '/api/documents/roles', authorization.authorize, DocumentController.getAllRoles,
+  );
+  app.get(
+    '/api/documents', authorization.authorize, adminCheck, DocumentController.getAll,
   );
 
   /**
@@ -291,10 +296,10 @@ const Routes = (app) => {
    *           $ref: '#/definitions/Documents'
    */
   app.get(
-    '/api/documents/public', DocumentController.getAllPublic,
+    '/api/documents/public', authorization.authorize, DocumentController.getAllPublic,
   );
 
-    /**
+  /**
    * @swagger
    * /api/documents/{id}:
    *   get:
