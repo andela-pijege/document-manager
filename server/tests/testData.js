@@ -42,77 +42,34 @@ export const adminData = {
     lastname: 'admin',
     email: 'admin@admin.com',
     password: 'password',
-    roleId: 1,
+    userID: 1,
   },
-
-//   adminUser2: {
-//     firstname: 'Mai',
-//     lastname: 'Iles',
-//     username: 'maiiles',
-//     email: 'mai@iles.com',
-//     password: 'password',
-//     roleId: 1
-//   },
-
-//   regularUser1: {
-//     firstname: 'Hope',
-//     lastname: 'Tommy',
-//     username: 'hopetommy',
-//     email: 'hope@tommy.com',
-//     password: 'password',
-//     roleId: 2
-//   },
-
-//   regularUser2: {
-//     firstname: faker.name,
-//     lastname: faker.name,
-//     username: faker.username,
-//     email: faker.email,
-//     password: 'password',
-//     roleId: 2
-//   },
-
-//   fakeUser: {
-//     firstname: 'faker',
-//     lastname: 'faker',
-//     username: 'faker',
-//     email: 'fake@email.com',
-//     password: 'password',
-//     roleId: 2
-//   }
 };
 
-// export const document = {
-//   document1: {
-//     title: 'seed document test',
-//     content: faker.lorem.paragraph(),
-//     viewAccess: 'Private',
-//     ownerId: 1
-//   },
+export const document = {
+  privateDocument: {
+    title: 'test document',
+    content: 'this is a private document',
+    access: 'Private',
+    userID: 1,
+  },
 
-//   document2: {
-//     title: 'public seed document test',
-//     content: faker.lorem.paragraph(),
-//     viewAccess: 'Public',
-//     ownerId: 1
-//   },
+  emptyDocument: {
+    title: '',
+    content: '',
+    access: '',
+    userID: 1,
+  },
 
-//   newDocument1: {
-//     title: 'New Doc 1',
-//     content: faker.lorem.paragraph(2),
-//     viewAccess: 'Private',
-//     ownerId: 1
-//   },
-//   newDocument2: {
-//     title: 'New Doc 2',
-//     content: faker.lorem.paragraph(2),
-//     viewAccess: 'Private',
-//     ownerId: 1
-//   },
-//   emptyDocument: {
-//     title: '',
-//     content: faker.lorem.paragraph(2),
-//     viewAccess: 'Private',
-//     ownerId: 1
-//   }
-// };
+  publicDocument: {
+    title: 'test document',
+    content: 'this is a public document',
+    access: 'public',
+    userID: 1,
+  },
+  editDocument: {
+    title: 'update test document',
+    content: 'this is an updated document',
+    access: 'private',
+  },
+};
