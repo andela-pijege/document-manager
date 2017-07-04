@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import supertest from 'supertest';
 import server from '../../server';
 import { userData } from '../testData';
@@ -6,6 +6,7 @@ import { userData } from '../testData';
 const app = supertest.agent(server);
 
 describe('User controller', () => {
+  let token;
   beforeEach((done) => {
     db.sequelize.sync({ force: true }).done(() => {
       db.roles.create({ title: 'admin' })
@@ -18,12 +19,12 @@ describe('User controller', () => {
               .post('/api/users/login')
               .send({
                 email: 'admin@admin.com',
-                paswword: 'password',
+                password: 'password',
               })
               .end((error, response) => {
-                console.log(';::::::::::::::::::::::::::', response);
+                token = response.body.token;
+                done();
               });
-              done();
             });
         });
     });
@@ -36,12 +37,17 @@ describe('User controller', () => {
   });
 
   describe('Create User', () => {
-    it.only('should create a regular user and return a status of 201 when successful', (done) => {
+    it('should create a regular user and return a status of 201 when successful', (done) => {
       app
         .post('/api/users')
         .send(userData.newUser)
         .end((error, response) => {
           expect(response.status).to.equal(201);
+          expect(response.body.user).to.have.property('id');
+          expect(response.body.user).to.have.property('firstName');
+          expect(response.body.user).to.have.property('lastName');
+          expect(response.body.user).to.have.property('email');
+          expect(response.body.user).to.have.property('roleID');
           done();
         });
     });
@@ -90,8 +96,11 @@ describe('User controller', () => {
           expect(response.status).to.equal(200);
           expect(response.body.message).to.equal('Login successful');
           expect(response.body.token).to.exist;
-          expect(response.body.user.firstName).to.equal('ghost');
-          expect(response.body.user.lastName).to.equal('ghost');
+          expect(response.body.user).to.have.property('id');
+          expect(response.body.user).to.have.property('firstName');
+          expect(response.body.user).to.have.property('lastName');
+          expect(response.body.user).to.have.property('email');
+          expect(response.body.user).to.have.property('roleID');
           done();
         });
     });
@@ -110,13 +119,46 @@ describe('User controller', () => {
         });
     });
   });
-  describe('Delete a user', () => {
-    it('delete a user', (done) => {
+  describe('Get all users', () => {
+    it('gets all users', (done) => {
       app
-        .post()
-        .send()
+        .get('/api/users/')
+        .set('authorization', token)
         .end((error, response) => {
-          expect('true').to.equal('true');
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('object');
+          done();
+        });
+    });
+  });
+  describe('Get user with a given id', () => {
+    it('should get a user with a given id', (done) => {
+      app
+        .get('/api/users/2')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.have.property('lastName');
+          expect(response.body).to.have.property('firstName');
+          expect(response.body).to.have.property('email');
+          expect(response.body).to.have.property('password');
+          expect(response.body).to.have.property('roleID');
+          expect(response.body).to.have.property('id').eql(2);
+          done();
+        });
+    });
+  });
+  describe('Delete user', () => {
+    it('Admin should DELETE a user given the id', (done) => {
+      app
+        .delete('/api/users/2')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an('object');
+          expect(response.body.message).to.be.equal('User successfully Deleted');
+          expect(response.error).to.equal(false);
+          done();
         });
     });
   });
