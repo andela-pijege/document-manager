@@ -57,6 +57,10 @@ class CreateDocument extends Component {
                 <option value="" disabled selected>Document Access Level</option>
                 <option value="public" name="public">public</option>
                 <option value="private" name="private">private</option>
+                <optgroup label="Role">
+                  <option value="regular" name="regular">regular</option>
+                  {this.props.user.roleID === 1 ? <option value="admin" name="admin">admin</option> : <div></div>}
+                </optgroup>
               </select>
             </div>
           </div>
@@ -80,7 +84,6 @@ class CreateDocument extends Component {
 
 function mapStateToProps(state) {
   return {
-    newUser: state.SignupReducer.newUser,
     user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,
     document: state.DocumentReducer.document,
