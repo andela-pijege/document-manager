@@ -15,7 +15,9 @@ const userReducer = (state = initialState, action) => {
     case actionTypes.DELETE_USER:
       return state;
     case actionTypes.UPDATE_USER_SUCCESS:
-      return state;
+      return Object.assign({}, state, {
+        user: action.user,
+      });
     default:
       return state;
   }
