@@ -35,7 +35,7 @@ class EditDocument extends Component {
     this.state.content = content;
     this.props.DocumentAction.updateUserDocument(this.state)
       .then(() => {
-        toastr.success('Document Saved');
+        toastr.success('Document updated successfully');
         browserHistory.push('dashboard');
       })
       .catch((error) => {
@@ -51,7 +51,7 @@ class EditDocument extends Component {
             <div className="row">
               <div className="input-field col s6">
                 <input id="title" type="text" name="title" value={this.state.title} onChange={this.onChange} className="validate" />
-                <label htmlFor="title">Title</label>
+                <label htmlFor="title" className="active">Title</label>
               </div>
               <div className="input-field col s6">
                 <select onChange={this.onChange} style={{ display: 'block' }} name="access" value={this.state.access} >
@@ -63,7 +63,6 @@ class EditDocument extends Component {
             <div className="row">
               <div className="input-field col s12">
                 <textarea id="content" className="materialize-textarea" name="content" value={this.state.content} ></textarea>
-                <label htmlFor="content">Content</label>
               </div>
             </div>
             <div>
