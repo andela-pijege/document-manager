@@ -19,6 +19,7 @@ class Nav extends Component {
     this.getAllUsers = this.getAllUsers.bind(this);
     this.getAllPublicDdocuments = this.getAllPublicDdocuments.bind(this);
     this.dashboard = this.dashboard.bind(this);
+    this.getAllRoleDdocuments = this.getAllRoleDdocuments.bind(this);
   }
 
   handleSigninClick() {
@@ -41,6 +42,10 @@ class Nav extends Component {
     browserHistory.push('/dashboard');
   }
 
+  getAllRoleDdocuments() {
+    browserHistory.push('/rolesDocument');
+  }
+
   /**
    * logout - logout a user out
    * @param  {type} event the event handler
@@ -57,11 +62,12 @@ class Nav extends Component {
         <nav className="blue-grey darken-4">
           <div className="nav-wrapper">
             <a className="brand-logo">Documento</a>
-            <ul id="nav-mobile" className="right hide-on-med-and-down">
+            <ul id="nav-mobile" className="right hide-on-small-only">
               {this.props.isAuthenticated ?
                 <div>
                   <li onClick={this.logout}><a>Logout</a></li>
                   <li onClick={() => { this.getAllPublicDdocuments(); }}><a>Public Document</a></li>
+                  <li onClick={() => { this.getAllRoleDdocuments(); }}><a>Role Document</a></li>
                   <li onClick={() => { this.dashboard(); }}><a>Dashboard</a></li>
                   {(this.props.user.roleID === 1) ?
                     <div>
