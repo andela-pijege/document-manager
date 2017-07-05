@@ -38,12 +38,12 @@ class RolesDocument extends Component {
   searchDocuments(event) {
     const searchQuery = event.target.value;
     this.setState({ isSearching: searchQuery.length > 0 });
-    // this.props.DocumentAction.searchPublicDocuments(searchQuery);
+    this.props.DocumentAction.searchRoleDocuments(searchQuery);
   }
 
   render() {
     const { isSearching } = this.state;
-    const view = (isSearching ? this.props.searchedPublicDocuments : this.state.rolesDocument) || [];
+    const view = (isSearching ? this.props.searchedRoleDocuments : this.state.rolesDocument) || [];
     return (
       <div className="container">
         <div>
@@ -90,7 +90,7 @@ class RolesDocument extends Component {
 function mapStateToProps(state) {
   return {
     rolesDocument: state.DocumentReducer.rolesDocument,
-    searchedPublicDocuments: state.DocumentReducer.searchedPublicDocuments,
+    searchedRoleDocuments: state.DocumentReducer.searchedRoleDocuments,
   };
 }
 
