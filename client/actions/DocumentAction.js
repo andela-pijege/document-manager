@@ -150,16 +150,6 @@ export const getAllPublicDocuments = () => {
     });
 };
 
-// export const deleteUser = response =>
-//   ({ type: actionTypes.DELETE_USER_SUCCESS, response });
-
-// export const deleteOneUser = (userID) => {
-//   return dispatch => axios.delete(`/api/documents/${userID}`)
-//     .then((response) => {
-//       dispatch(deleteUser(response));
-//     }).catch((error) => console.log(error));
-// };
-
 /**
  * Search Public Documents
  * @desc search public Documents
@@ -172,7 +162,7 @@ export const searchPublic = documents =>
 /**
  * Search Public Document
  * @desc search for a document in Public documents
- * @param {object} document - document details
+ * @param {string} document - document details
  * @returns {object} action
  */
 export const searchPublicDocuments = (document) => {
@@ -197,7 +187,7 @@ export const searchMyDocuments = documents =>
 /**
  * Search personal Document
  * @desc search for a document in my documents
- * @param {object} document - document details
+ * @param {string} document - document details
  * @returns {object} action
  */
 export const searchOwnDocuments = (document) => {
@@ -210,14 +200,50 @@ export const searchOwnDocuments = (document) => {
     });
 };
 
+/**
+ * Get role Documents
+ * @desc Gets all role Documents
+ * @param {array} documents - response from the server
+ * @returns {object} action
+ */
 export const getRoleDocuments = documents =>
   ({ type: actionTypes.GET_ALL_ROLE_DOCUMENTS, documents });
 
+/**
+ * role documents
+ * @desc gets all role documents
+ * @returns {object} action
+ */
 export const getAllRolesDocuments = () => {
   return dispatch => axios.get('/api/documents/roles')
     .then((response) => {
       dispatch(getRoleDocuments(response.data.documents));
     }).catch((error) => {
+      toastr.error(error);
+    });
+};
+
+/**
+ * Search role Documents
+ * @desc search personal Documents
+ * @param {array} documents - response from the server
+ * @returns {object} action
+ */
+export const searchRoleDocs = documents =>
+  ({ type: actionTypes.SEARCH_ROLE_DOCUMENTS, documents });
+
+/**
+ * Search role Document
+ * @desc search for a document in role documents
+ * @param {string} document - document details
+ * @returns {object} action
+ */
+export const searchRoleDocuments = (document) => {
+  return dispatch => axios.get(`/api/search/roleDocuments/?title=${document}`)
+    .then((response) => {
+      dispatch(searchRoleDocs(response.data.documents));
+    })
+    .catch((error) => {
       toastr.error(error);
     });
 };
