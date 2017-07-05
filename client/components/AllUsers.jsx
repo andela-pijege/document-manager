@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import swal from 'sweetalert';
 import { connect } from 'react-redux';
-import reactPaginate from 'react-paginate';
+import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
 import * as UserAction from '../actions/UserAction';
+import Pagination from '../components/Pagination';
 import * as DocumentAction from '../actions/DocumentAction';
 
 class AllUsers extends Component {
@@ -12,21 +13,16 @@ class AllUsers extends Component {
     this.state = {
       allUsers: this.props.allUsers || [],
       isSearching: false,
+      limit: 10,
+      metaData: {},
     };
     this.deleteUser = this.deleteUser.bind(this);
     this.searchUser = this.searchUser.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   componentWillMount() {
     this.props.UserAction.getAllusers();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.allUsers) {
-      this.setState({
-        allUsers: nextProps.allUsers,
-      });
-    }
   }
 
   deleteUser(userID) {
@@ -44,11 +40,12 @@ class AllUsers extends Component {
       (isConfirm) => {
         if (isConfirm) {
           this.props.UserAction.deleteUserAccount(userID)
-            .then(() =>{
+            .then(() => {
               swal('Deleted!', 'User deleted successful.', 'success');
+              browserHistory.push('allUsers');
             }).catch(() => {
               swal('Error!', 'User NOT deleted.', 'error');
-            })
+            });
         } else {
           swal('Cancelled', 'User not Deleted :)', 'error');
         }
@@ -61,13 +58,19 @@ class AllUsers extends Component {
     this.props.UserAction.searchAllUsers(searchQuery);
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.allUsers) {
-  //     this.setState({
-  //       allUsers: nextProps.allUsers.users,
-  //     });
-  //   }
-  // }
+  handlePageChange(event) {
+    console.log('event', event);
+    this.props.UserAction.getAllusers(this.state.limit, event.target, event.target.value * this.state.limit);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.allUsers) {
+      this.setState({
+        allUsers: nextProps.allUsers.users,
+        metaData: nextProps.allUsers.metaData,
+      });
+    }
+  }
 
   render() {
     const { isSearching } = this.state;
@@ -78,7 +81,13 @@ class AllUsers extends Component {
         <div>
           <form>
             <div className="input-field">
-              <input type="search" id="search" name="search" placeholder="search for user" onChange={this.searchUser} />
+              <input
+                type="search"
+                id="search"
+                name="search"
+                placeholder="search for user"
+                onChange={this.searchUser}
+              />
               <label className="label-icon" htmlFor="search"><i className="material-icons">search</i></label>
               <i className="material-icons">close</i>
             </div>
@@ -95,15 +104,24 @@ class AllUsers extends Component {
 
             <tbody>
               {(view || []).map(user =>
-              <tr key={user.id}>
-                <td>{user.firstName}</td>
-                <td>{user.lastName}</td>
-                <td>{user.email}</td>
-                <td><a onClick={() => { this.deleteUser(user.id); }}><i className="close material-icons">close</i></a></td>
-              </tr>
+                (<tr key={user.id}>
+                  <td>{user.firstName}</td>
+                  <td>{user.lastName}</td>
+                  <td>{user.email}</td>
+                  {user.userID === 1 ? <td></td> :
+                  <td><a onClick={() => { this.deleteUser(user.id); }}>
+                    <i className="fa fa-trash" aria-hidden="true"></i></a>
+                  </td>
+                  }
+                </tr>),
               )}
             </tbody>
           </table>
+          <Pagination
+            pageCount={this.state.metaData.pages}
+            handleChange={this.handlePageChange}
+            currentPage={this.state.metaData.page}
+          />
         </div>
       </div>
     );
@@ -111,6 +129,7 @@ class AllUsers extends Component {
 }
 
 function mapStateToProps(state) {
+  console.log('state', state);
   return {
     allUsers: state.UserReducer.allUsers,
     searchedUsers: state.UserReducer.searchedUsers,
