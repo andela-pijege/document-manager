@@ -99,8 +99,8 @@ class Dashboard extends Component {
               <p>{this.props.user.email}</p>
             </div>
             <div className="card-action">
-              {(this.props.user.roleID === 1) ? <div></div> : <a onClick={() => { this.deleteAccount(this.state.userID); }}>delete account</a> }
-              <a onClick={() => { this.updateUser(); }}>edit account</a>
+              {(this.props.user.roleID === 1) ? <div></div> : <a onClick={() => { this.deleteAccount(this.state.userID); }}><i className="fa fa-trash" aria-hidden="true"></i>delete account</a> }
+              <a onClick={() => { this.updateUser(); }}><i className="fa fa-pencil-square-o" aria-hidden="true"></i>edit account</a>
             </div>
           </div>
         </div>
@@ -159,7 +159,6 @@ Dashboard.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log('in dashboards map state to props', state.LoginReducer.user);
   return {
     user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,
