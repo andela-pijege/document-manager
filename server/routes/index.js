@@ -407,6 +407,10 @@ const Routes = (app) => {
   app.get(
     '/api/search/myDocuments/?', authorization.authorize, DocumentController.searchMyDocuments,
   );
+
+  app.get(
+    '/api/search/roleDocuments/?', authorization.authorize, DocumentController.searchRoleDocuments,
+  );
 };
 
 module.exports = Routes;
