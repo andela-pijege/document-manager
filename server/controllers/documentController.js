@@ -140,6 +140,26 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+
+  /**
+   * @desc Search my personal documets
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
+  searchRoleDocuments(req, res) {
+    const { title } = req.query;
+    let roleType;
+    (req.decoded.roleID === 1) ? roleType = 'admin' : roleType = 'regular';
+    Documents
+      .findAll({
+        where: { title: { $iLike: `%${title}%` }, access: roleType },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents, message: 'user found' });
+      })
+      .catch(error => res.status(400).send(error));
+  },
   /**
    * @desc Updates document
    * @param {object} req - The request sent to the route
