@@ -5,7 +5,19 @@ import { browserHistory } from 'react-router';
 import toastr from 'toastr';
 import * as DocumentAction from '../actions/DocumentAction';
 
+/**
+ *
+ *
+ * @desc represents Create Document Page.
+ * @class CreateDocument
+ * @extends {Component}
+ */
 class CreateDocument extends Component {
+  /**
+   * Creates an instance of CreateDocument.
+   * @param {object} props
+   * @memberof CreateDocument
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -22,12 +34,26 @@ class CreateDocument extends Component {
     CKEDITOR.replace('content');
   }
 
+  /**
+   * @desc handles change of events
+   * for the form fields
+   * @param {any} event
+   * @memberof CreateDocument
+   * @returns {void}
+   */
   onChange(event) {
     this.setState({
       [event.target.name]: event.target.value });
   }
 
-
+  /**
+   *
+   * @desc handles the submit action on the form.
+   *  Calls the createDocument action.
+   * @param {object} event
+   * @memberof CreateDocument
+   * @returns {void}
+   */
   onSubmit(event) {
     event.preventDefault();
     const content = CKEDITOR.instances.content.getData();
@@ -72,7 +98,7 @@ class CreateDocument extends Component {
           </div>
           <div>
             <button className="btn waves-effect waves-light" type="submit" name="action">Save
-              <i className="material-icons right">send</i>
+              <i className="fa fa-floppy-o" aria-hidden="true"></i>
             </button>
           </div>
         </form>
