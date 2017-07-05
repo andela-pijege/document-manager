@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js --compilers js:babel-register",
+    "test-client": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require client/tests/.setup.js client/tests/**/*.js --compilers js:babel-register",
+    "test-server": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js --compilers js:babel-register --timeout 6000",
     "start": "webpack & babel-node ./server/server.js",
     "start-dev": "webpack -w & nodemon ./server/server.js --exec babel-node"
   },
@@ -35,6 +36,8 @@
     "express": "^4.15.3",
     "fs": "0.0.1-security",
     "jquery": "^3.2.1",
+    "jsdom": "^11.0.0",
+    "jsdom-global": "^3.0.2",
     "jsonwebtoken": "^7.4.1",
     "jwt-decode": "^2.2.0",
     "lodash": "^4.17.4",
@@ -45,6 +48,7 @@
     "pg-hstore": "^2.3.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
     "react-paginate": "^4.4.3",
     "react-redux": "^5.0.5",
@@ -62,15 +66,17 @@
   },
   "devDependencies": {
     "chai": "^4.0.0",
+    "chai-enzyme": "^0.6.1",
+    "enzyme": "^2.8.2",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
     "jsdoc": "^3.4.3",
-    "jsdom": "^11.0.0",
     "mocha": "^3.4.2",
     "nyc": "^10.3.2",
+    "sinon": "^2.3.6",
     "supertest": "^3.0.0"
   }
 }
