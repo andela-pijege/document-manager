@@ -92,7 +92,6 @@ const userController = {
       .findAndCountAll({
         limit,
         offset,
-        // where: { userID: 2 },
       })
       .then((users) => {
         const metaData = {
@@ -191,7 +190,10 @@ const userController = {
       .findById(req.params.id)
       .then((user) => {
         if (user) {
-          user
+          if (user.dataValues.roleID === 1) {
+            return res.status(400).send({ message: 'YOU DONT WANNA DO THAT!!' });
+          }
+          return user
             .destroy()
             .then(() => {
               res.status(200).send({
