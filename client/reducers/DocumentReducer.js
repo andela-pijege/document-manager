@@ -28,6 +28,10 @@ const documentReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         rolesDocument: action.documents,
       });
+    case actionTypes.SEARCH_ROLE_DOCUMENTS:
+      return Object.assign({}, state, {
+        searchedRoleDocuments: action.documents,
+      });
     case actionTypes.UPDATE_DOCUMENT_SUCCESS:
       return state;
     case actionTypes.CREATE_DOCUMENT_SUCCESS:
