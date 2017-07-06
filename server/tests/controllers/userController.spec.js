@@ -10,22 +10,27 @@ describe('User controller', () => {
   beforeEach((done) => {
     db.sequelize.sync({ force: true }).done(() => {
       db.roles.create({ title: 'admin' })
-      db.roles.create({ title: 'regular' })
         .then(() => {
-          db.users.create({ firstName: 'admin', lastName: 'admin', email: 'admin@admin.com', password: 'password', roleID: 1 })
-          db.users.create({ firstName: 'ghost', lastName: 'ghost', email: 'ghost@ghost.com', password: 'password', roleID: 2 })
+          db.roles.create({ title: 'regular' })
             .then(() => {
-              app
-              .post('/api/users/login')
-              .send({
-                email: 'admin@admin.com',
-                password: 'password',
-              })
-              .end((error, response) => {
-                token = response.body.token;
-                done();
-              });
-            });
+              db.users.create({ firstName: 'admin', lastName: 'admin', email: 'admin@admin.com', password: 'password', roleID: 1 })
+                .then(() => {
+                  db.users.create({ firstName: 'ghost', lastName: 'ghost', email: 'ghost@ghost.com', password: 'password', roleID: 2 })
+                    .then(() => {
+                      app
+                      .post('/api/users/login')
+                      .send({
+                        email: 'admin@admin.com',
+                        password: 'password',
+                      })
+                      .end((error, response) => {
+                        token = response.body.token;
+                        done();
+                      });
+                    });
+                });
+           
+           });
         });
     });
   });

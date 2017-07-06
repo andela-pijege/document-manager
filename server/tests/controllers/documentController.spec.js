@@ -10,23 +10,29 @@ describe('Document Controller', () => {
   beforeEach((done) => {
     db.sequelize.sync({ force: true }).done(() => {
       db.roles.create({ title: 'admin' })
-      db.roles.create({ title: 'regular' })
         .then(() => {
-          db.users.create({ firstName: 'admin', lastName: 'admin', email: 'admin@admin.com', password: 'password', roleID: 1 })
-          db.users.create({ firstName: 'ghost', lastName: 'ghost', email: 'ghost@ghost.com', password: 'password', roleID: 2 })
+          db.roles.create({ title: 'regular' })
             .then(() => {
-              db.documents.create({ title: 'admindocument', content: 'this is admins public document', access: 'public', userID: 1 })
-              db.documents.create({ title: 'userdocument', content: 'this is user public document', access: 'public', userID: 2 })
+              db.users.create({ firstName: 'admin', lastName: 'admin', email: 'admin@admin.com', password: 'password', roleID: 1 })
                 .then(() => {
-                  app
-                    .post('/api/users/login')
-                    .send({
-                      email: 'admin@admin.com',
-                      password: 'password',
-                    })
-                    .end((error, response) => {
-                      token = response.body.token;
-                      done();
+                  db.users.create({ firstName: 'ghost', lastName: 'ghost', email: 'ghost@ghost.com', password: 'password', roleID: 2 })
+                    .then(() => {
+                      db.documents.create({ title: 'admindocument', content: 'this is admins public document', access: 'public', userID: 1 })
+                        .then(() => {
+                          db.documents.create({ title: 'userdocument', content: 'this is user public document', access: 'public', userID: 2 })
+                            .then(() => {
+                              app
+                                .post('/api/users/login')
+                                .send({
+                                  email: 'admin@admin.com',
+                                  password: 'password',
+                                })
+                                .end((error, response) => {
+                                  token = response.body.token;
+                                  done();
+                                });
+                            });
+                        });
                     });
                 });
             });
