@@ -254,6 +254,22 @@ const Routes = (app) => {
   app.post(
     '/api/documents', authorization.authorize, DocumentController.create,
   );
+
+  /**
+   * @swagger
+   * /api/documents/roles:
+   *   get:
+   *     tags:
+   *       - Documents
+   *     description: Returns all role Documents
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: An array of documents
+   *         schema:
+   *           $ref: '#/definitions/Documents'
+   */
   app.get(
     '/api/documents/roles', authorization.authorize, DocumentController.getAllRoles,
   );
