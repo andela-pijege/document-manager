@@ -86,8 +86,6 @@ const userController = {
   getAll(req, res) {
     const limit = req.query.limit ? req.query.limit : 10;
     const offset = req.query.offset ? req.query.offset : 0;
-    // const limit = parseInt(req.query.limit, 10) || 4;
-    // const offset = parseInt(req.query.offset, 10) || 0;
     Users
       .findAndCountAll({
         limit,
