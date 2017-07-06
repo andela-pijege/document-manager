@@ -9,6 +9,7 @@ function pageNumber(pageCount, handleChange, currentPage) {
   for (let page = 1; page <= pageCount; page += 1) {
     pageNum.push(
       <li
+        key={page}
         className={(page === currentPage) ? "active page" : "waves-effect"}
         onClick={() => handleChange(page)} >
           <a href="#!">
@@ -35,6 +36,5 @@ const Pagination = ({ pageCount, currentPage, handleChange }) =>
   </ul>
             
 ;
-
 
 export default Pagination;

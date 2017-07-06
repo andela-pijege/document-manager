@@ -11,7 +11,7 @@ class AllUsers extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      allUsers: this.props.allUsers || [],
+      allUsers: this.props.allUsers.users || [],
       isSearching: false,
       limit: 10,
       metaData: {},
@@ -59,7 +59,6 @@ class AllUsers extends Component {
   }
 
   handlePageChange(page) {
-    console.log('event', event);
     this.props.UserAction.getAllusers(this.state.limit, (page - 1) * this.state.limit);
   }
 
@@ -129,9 +128,8 @@ class AllUsers extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log('state', state);
   return {
-    allUsers: state.UserReducer.allUsers,
+    allUsers: state.UserReducer.allUsers || {},
     searchedUsers: state.UserReducer.searchedUsers,
   };
 }
