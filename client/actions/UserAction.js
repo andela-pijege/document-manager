@@ -41,8 +41,8 @@ export const getUsers = users =>
  * @desc gets all users
  * @returns {object} action
  */
-export const getAllusers = () => {
-  return dispatch => axios.get('/api/users')
+export const getAllusers = (limit, offset) => {
+  return dispatch => axios.get(`/api/users?limit=${limit || 10}&offset=${offset || 0}`)
     .then((response) => {
       dispatch(getUsers(response.data));
     }).catch((error) => {

@@ -58,9 +58,9 @@ class AllUsers extends Component {
     this.props.UserAction.searchAllUsers(searchQuery);
   }
 
-  handlePageChange(event) {
+  handlePageChange(page) {
     console.log('event', event);
-    this.props.UserAction.getAllusers(this.state.limit, event.target, event.target.value * this.state.limit);
+    this.props.UserAction.getAllusers(this.state.limit, (page - 1) * this.state.limit);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -108,7 +108,7 @@ class AllUsers extends Component {
                   <td>{user.firstName}</td>
                   <td>{user.lastName}</td>
                   <td>{user.email}</td>
-                  {user.userID === 1 ? <td></td> :
+                  {user.roleID === 1 ? <td></td> :
                   <td><a onClick={() => { this.deleteUser(user.id); }}>
                     <i className="fa fa-trash" aria-hidden="true"></i></a>
                   </td>
