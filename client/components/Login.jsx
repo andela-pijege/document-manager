@@ -36,14 +36,14 @@ class Login extends Component {
           <div className="row">
             <div className="input-field">
               <i className="material-icons prefix">email</i>
-              <input id="email" type="email" className="validate" name="email" value={this.state.email} onChange={this.onChange} />
+              <input id="email" type="email" className="validate" required="required" name="email" value={this.state.email} onChange={this.onChange} />
               <label htmlFor="email">Email</label>
             </div>
           </div>
           <div className="row">
             <div className="input-field">
               <i className="material-icons prefix">lock</i>
-              <input id="password" type="password" className="validate"name="password" value={this.state.password} onChange={this.onChange} />
+              <input id="password" type="password" className="validate" required="required" name="password" value={this.state.password} onChange={this.onChange} />
               <label htmlFor="password">Password</label>
             </div>
           </div>
@@ -59,8 +59,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  LoginAction: PropTypes.func.isRequired,
-  login: PropTypes.func.isRequired,
+  LoginAction: PropTypes.shape({
+    login: PropTypes.func.isRequired }),
 };
 
 function mapStateToProps(state) {

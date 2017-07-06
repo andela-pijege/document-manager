@@ -33,8 +33,8 @@ class Home extends Component {
           <li>
             <img src="../images/bg3.jpg" />
             <div className="caption center-align">
-              <h3>Save it..</h3>
-              <h5 className="light grey-text text-lighten-3">your private documents are safe..</h5>
+              <h3 className="blue-grey-text">Save it..</h3>
+              <h5 className="light black-text text-lighten-3">your private documents are safe..</h5>
             </div>
           </li>
         </ul>

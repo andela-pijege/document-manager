@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/andela-pijege/document-manager.svg?branch=master)](https://travis-ci.org/andela-pijege/document-manager)
+[![Coverage Status](https://coveralls.io/repos/github/andela-pijege/document-manager/badge.svg?branch=develop)](https://coveralls.io/github/andela-pijege/document-manager?branch=develop)
 [![Code Climate](https://codeclimate.com/github/andela-pijege/document-manager/badges/gpa.svg)](https://codeclimate.com/github/andela-pijege/document-manager)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)]()
 # document-manager

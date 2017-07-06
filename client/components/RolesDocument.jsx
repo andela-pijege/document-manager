@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import { browserHistory } from 'react-router';
 import * as DocumentAction from '../actions/DocumentAction';
 
-class PublicDocument extends Component {
+class RolesDocument extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      publicDocuments: this.props.publicDocuments || [],
+      rolesDocument: this.props.rolesDocument || [],
       isSearching: false,
     };
     this.openDocument = this.openDocument.bind(this);
@@ -18,12 +18,12 @@ class PublicDocument extends Component {
   }
 
   componentWillMount() {
-    this.props.DocumentAction.getAllPublicDocuments();
+    this.props.DocumentAction.getAllRolesDocuments();
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.publicDocuments) {
+    if (nextProps.rolesDocument) {
       this.setState({
-        publicDocuments: nextProps.publicDocuments,
+        rolesDocument: nextProps.rolesDocument,
       });
     }
   }
@@ -38,16 +38,16 @@ class PublicDocument extends Component {
   searchDocuments(event) {
     const searchQuery = event.target.value;
     this.setState({ isSearching: searchQuery.length > 0 });
-    this.props.DocumentAction.searchPublicDocuments(searchQuery);
+    this.props.DocumentAction.searchRoleDocuments(searchQuery);
   }
 
   render() {
     const { isSearching } = this.state;
-    const view = (isSearching ? this.props.searchedPublicDocuments : this.state.publicDocuments) || [];
+    const view = (isSearching ? this.props.searchedRoleDocuments : this.state.rolesDocument) || [];
     return (
       <div className="container">
         <div>
-          <h4>General public documents</h4>
+          <h4>Roles documents</h4>
           <form>
             <div className="input-field">
               <input type="search" id="search" name="search" placeholder="search for document" onChange={this.searchDocuments} />
@@ -89,8 +89,8 @@ class PublicDocument extends Component {
 
 function mapStateToProps(state) {
   return {
-    publicDocuments: state.DocumentReducer.publicDocuments,
-    searchedPublicDocuments: state.DocumentReducer.searchedPublicDocuments,
+    rolesDocument: state.DocumentReducer.rolesDocument,
+    searchedRoleDocuments: state.DocumentReducer.searchedRoleDocuments,
   };
 }
 
@@ -98,4 +98,4 @@ function mapDispatchToProps(dispatch) {
   return { DocumentAction: bindActionCreators(DocumentAction, dispatch) };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicDocument);
+export default connect(mapStateToProps, mapDispatchToProps)(RolesDocument);

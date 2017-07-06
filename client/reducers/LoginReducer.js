@@ -11,6 +11,10 @@ const loginReducer = (state = initialState, action) => {
         loginUser: !isEmpty(action.user),
         user: action.user,
       };
+    case actionTypes.UPDATE_USER_SUCCESS:
+      return Object.assign({}, state, {
+        user: action.user,
+      });
     default:
       return state;
   }

@@ -99,8 +99,8 @@ class Dashboard extends Component {
               <p>{this.props.user.email}</p>
             </div>
             <div className="card-action">
-              {(this.props.user.roleID === 1) ? <div></div>: <a onClick={() => { this.deleteAccount(this.state.userID); }}>delete account</a> }
-              <a onClick={() => { this.updateUser(); }}>edit account</a>
+              {(this.props.user.roleID === 1) ? <div></div> : <a onClick={() => { this.deleteAccount(this.state.userID); }}><i className="fa fa-trash" aria-hidden="true"></i>delete account</a> }
+              <a onClick={() => { this.updateUser(); }}><i className="fa fa-pencil-square-o" aria-hidden="true"></i>edit account</a>
             </div>
           </div>
         </div>
@@ -122,15 +122,16 @@ class Dashboard extends Component {
                 <div className="row">
                 {
                   (view || []).map(document =>
-                    <div>
+                    <div key={document.id + 1}>
                       <div className="col s4 m4 doc-wrapper">
                         <div className="card small blue-grey darken-1">
                           <div className="card-content white-text">
                             <span className="card-title">{document.title}</span>
-                            <p>{document.content}</p>
+                            <p dangerouslySetInnerHTML={{ __html: document.content }} />
                           </div>
                           <div className="card-action">
                             <a onClick={() => { this.openDocument(document.id); }}>view</a>
+                            <a>{document.access}</a>
                           </div>
                         </div>
                       </div>
@@ -146,11 +147,15 @@ class Dashboard extends Component {
 }
 
 Dashboard.propTypes = {
-  DocumentAction: propTypes.shape({
+  actions: propTypes.shape({
     getAllPublicDocuments: propTypes.func,
-    getOneDocument: propTypes.func,
-    getUserDocuments: propTypes.func,
+    getOneDocument: propTypes.func.isRequired,
+    getUserDocuments: propTypes.func.isRequired,
+    searchOwnDocuments: propTypes.func.isRequired,
+    deleteUserAccount: propTypes.func.isRequired,
   }),
+  searchedPersonalDocuments: propTypes.array,
+  documents: propTypes.array.isRequired,
 };
 
 function mapStateToProps(state) {

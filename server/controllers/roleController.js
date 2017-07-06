@@ -1,6 +1,12 @@
 const Roles = require('../models').roles;
 
 const roleController = {
+  /**
+   * @desc Create a new role
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   create(req, res) {
     return Roles
       .create({

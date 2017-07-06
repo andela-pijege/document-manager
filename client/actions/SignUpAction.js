@@ -10,7 +10,13 @@ export const createUserSuccess = user =>
 export const createUserFailure = () =>
   ({ type: actionTypes.CREATE_USER_FAILURE });
 
-
+/**
+ *
+ * @desc handles signup request. Stores token to local Storage.
+ *  Redirects user to dashboard on success.
+ * @param {object} userInfo inputs from form fields.
+ * @returns {object} returns success message, user, and token.
+ */
 export const createUser = (userInfo) => {
   return dispatch => axios.post('/api/users', userInfo)
     .then((response) => {

@@ -1,7 +1,16 @@
 const Documents = require('../models').documents;
 
 const documentController = {
+  /**
+   * @desc Create a new document
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   create(req, res) {
+    if (req.decoded.id !== parseInt(req.body.userID, 10)) {
+      return res.status(401).send({ message: 'UNAUTHORISED USER' });
+    }
     Documents
       .create(req.body)
       .then((document) => {
@@ -9,6 +18,12 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Get all public documents
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   getAllPublic(req, res) {
     Documents
       .findAll({
@@ -21,6 +36,32 @@ const documentController = {
         res.status(400).json({ msg: error.message }),
       );
   },
+  /**
+   * @desc Get all roles document
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
+  getAllRoles(req, res) {
+    let searchValue;
+    (req.decoded.roleID === 1) ? searchValue = 'admin' : searchValue = 'regular';
+    Documents
+      .findAll({
+        where: { access: searchValue },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents });
+      })
+      .catch(error =>
+        res.status(400).json({ msg: error.message }),
+      );
+  },
+  /**
+   * @desc Get all documents
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   getAll(req, res) {
     Documents
       .findAll()
@@ -29,6 +70,12 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Get all personal documents
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   getDocuments(req, res) {
     Documents
       .findAll({
@@ -41,6 +88,12 @@ const documentController = {
         res.status(400).json({ msg: error.message }),
     );
   },
+  /**
+   * @desc Get one document
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   getOneDocument(req, res) {
     Documents
       .findById(req.params.id)
@@ -53,6 +106,12 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc search for public document(s)
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   searchPublicDocuments(req, res) {
     const { title } = req.query;
     Documents
@@ -64,6 +123,12 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Search my personal documets
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   searchMyDocuments(req, res) {
     const { title } = req.query;
     Documents
@@ -75,6 +140,32 @@ const documentController = {
       })
       .catch(error => res.status(400).send(error));
   },
+
+  /**
+   * @desc Search my personal documets
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
+  searchRoleDocuments(req, res) {
+    const { title } = req.query;
+    let roleType;
+    (req.decoded.roleID === 1) ? roleType = 'admin' : roleType = 'regular';
+    Documents
+      .findAll({
+        where: { title: { $iLike: `%${title}%` }, access: roleType },
+      })
+      .then((documents) => {
+        res.status(200).send({ documents, message: 'user found' });
+      })
+      .catch(error => res.status(400).send(error));
+  },
+  /**
+   * @desc Updates document
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   update(req, res) {
     const docId = req.decoded.id;
     Documents
@@ -91,8 +182,14 @@ const documentController = {
           return res.status(404).send({ message: 'Document not found' });
         }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(400).send(error));
   },
+  /**
+   * @desc Deletes document
+   * @param {object} req - The request sent to the route
+   * @param {object} res - The response sent back
+   * @return {object} json response
+   */
   delete(req, res) {
     const docId = req.decoded.id;
     Documents
@@ -109,7 +206,7 @@ const documentController = {
           res.status(404).send({ message: 'Document not found' });
         }
       })
-      .catch(error => res.status(500).send(error));
+      .catch(error => res.status(400).send(error));
   },
 };
 

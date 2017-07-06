@@ -11,6 +11,7 @@ import EditDocument from './components/EditDocument';
 import AllUsers from './components/AllUsers';
 import PublicDocument from './components/PublicDocument';
 import EditUser from './components/EditUser';
+import RolesDocument from './components/RolesDocument';
 import Authenticate from './utils/Authenticate';
 
 export default (
@@ -25,6 +26,7 @@ export default (
     <Route path="/allUsers" components={Authenticate(AllUsers)} />
     <Route path="/editUser" components={Authenticate(EditUser)} />
     <Route path="/publicDocuments" components={Authenticate(PublicDocument)} />
+    <Route path="/rolesDocument" components={Authenticate(RolesDocument)} />
   </Route>
 );
 

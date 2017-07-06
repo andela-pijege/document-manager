@@ -1,5 +1,7 @@
+/* eslint-disable */
+
 describe('Roles model', () => {
-  beforeEach((done) => {
+	beforeEach((done) => {
 		db.sequelize.sync({ force: true }).done(() => {
 			db.roles.create({ title: 'admin' }).then(() => {
 				done();

@@ -97,15 +97,21 @@ const Routes = (app) => {
    *     tags:
    *       - Users
    *     description: sign a user into the application
+   *     consumes:
+   *       - x-www-form-urlencoded
    *     produces:
    *       - application/json
    *     parameters:
-   *       - name: user
-   *         description: User object
-   *         in: body
+   *       - name: email
+   *         description: user email address
+   *         in: formData
    *         required: true
    *         schema:
    *           $ref: '#/definitions/Users'
+   *       - name: password
+   *         description: user password
+   *         in: formData
+   *         required: true
    *     responses:
    *       200:
    *         description: Login successful
@@ -113,6 +119,8 @@ const Routes = (app) => {
   app.post(
     '/api/users/login', UserController.login,
   );
+
+  app.get('/api/users/logout', authorization.authorize, UserController.logout);
 
   /**
    * @swagger
@@ -161,7 +169,8 @@ const Routes = (app) => {
    * @swagger
    * /api/users/{id}:
    *   put:
-   *     tags: Users
+   *     tags:
+   *       - Users
    *     description: Updates a single user
    *     produces: application/json
    *     parameters:
@@ -246,7 +255,10 @@ const Routes = (app) => {
     '/api/documents', authorization.authorize, DocumentController.create,
   );
   app.get(
-    '/api/documents', authorization.authorize, DocumentController.getAll,
+    '/api/documents/roles', authorization.authorize, DocumentController.getAllRoles,
+  );
+  app.get(
+    '/api/documents', authorization.authorize, adminCheck, DocumentController.getAll,
   );
 
   /**
@@ -254,7 +266,7 @@ const Routes = (app) => {
    * /api/users/{id}/documents:
    *   get:
    *     tags:
-   *       - Users Documents
+   *       - Documents
    *     description: Returns all of the users Documents
    *     produces:
    *       - application/json
@@ -284,10 +296,10 @@ const Routes = (app) => {
    *           $ref: '#/definitions/Documents'
    */
   app.get(
-    '/api/documents/public', DocumentController.getAllPublic,
+    '/api/documents/public', authorization.authorize, DocumentController.getAllPublic,
   );
 
-    /**
+  /**
    * @swagger
    * /api/documents/{id}:
    *   get:
@@ -316,7 +328,8 @@ const Routes = (app) => {
    * @swagger
    * /api/documents/{id}:
    *   put:
-   *     tags: Documents
+   *     tags:
+   *       - Documents
    *     description: Updates a single document
    *     produces: application/json
    *     parameters:
@@ -363,7 +376,7 @@ const Routes = (app) => {
    *   get:
    *     tags:
    *       - Documents
-   *     description: search through public documents and Returns all documents based on the search input
+   *     description: search and returns all public documents based on the search input
    *     produces:
    *       - application/json
    *     responses:
@@ -380,9 +393,9 @@ const Routes = (app) => {
    * @swagger
    * /api/search/myDocuments/?:
    *   get:
-   *     tags:
+    *     tags:
    *       - Documents
-   *     description: search through my documents and Returns all documents based on the search input
+   *     description: search and returns all documents based on the search input
    *     produces:
    *       - application/json
    *     responses:
@@ -393,6 +406,10 @@ const Routes = (app) => {
    */
   app.get(
     '/api/search/myDocuments/?', authorization.authorize, DocumentController.searchMyDocuments,
+  );
+
+  app.get(
+    '/api/search/roleDocuments/?', authorization.authorize, DocumentController.searchRoleDocuments,
   );
 };
 
