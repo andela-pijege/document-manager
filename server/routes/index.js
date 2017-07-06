@@ -98,7 +98,7 @@ const Routes = (app) => {
    *       - Users
    *     description: sign a user into the application
    *     consumes:
-   *       - x-www-form-urlencoded
+   *       - application/x-www-form-urlencoded
    *     produces:
    *       - application/json
    *     parameters:
@@ -106,8 +106,6 @@ const Routes = (app) => {
    *         description: user email address
    *         in: formData
    *         required: true
-   *         schema:
-   *           $ref: '#/definitions/Users'
    *       - name: password
    *         description: user password
    *         in: formData
@@ -115,6 +113,8 @@ const Routes = (app) => {
    *     responses:
    *       200:
    *         description: Login successful
+   *         schema:
+   *           $ref: '#/definitions/Users'
    */
   app.post(
     '/api/users/login', UserController.login,
