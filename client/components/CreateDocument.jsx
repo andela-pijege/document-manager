@@ -80,7 +80,7 @@ class CreateDocument extends Component {
             </div>
             <div className="input-field col s6">
               <select onChange={this.onChange} style={{ display: 'block' }} name="access">
-                <option value="" disabled selected>Document Access Level</option>
+                <option disabled selected>Document Access Level</option>
                 <option value="public" name="public">public</option>
                 <option value="private" name="private">private</option>
                 <optgroup label="Role">

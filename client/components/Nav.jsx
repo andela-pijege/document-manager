@@ -8,7 +8,7 @@ export const Nav = ({ logout, user, isAuthenticated }) => (
   <div className="navbar-fixed">
     <nav className="blue-grey darken-4">
       <div className="nav-wrapper">
-        <a className="brand-logo">Documento</a>
+        <a className="brand-logo left">Documento</a>
         <ul id="nav-mobile" className="right hide-on-small-only">
           {isAuthenticated ?
             <div>
