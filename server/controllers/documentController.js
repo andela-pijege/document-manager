@@ -14,7 +14,7 @@ const documentController = {
     Documents
       .create(req.body)
       .then((document) => {
-        res.status(200).send({ message: 'Document created successfully' });
+        res.status(201).send({ message: 'Document created successfully' });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -25,16 +25,29 @@ const documentController = {
    * @return {object} json response
    */
   getAllPublic(req, res) {
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = req.query.offset ? req.query.offset : 0;
     Documents
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         where: { access: 'public' },
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
       .catch(error =>
         res.status(400).json({ msg: error.message }),
-      );
+    );
   },
   /**
    * @desc Get all roles document
@@ -42,19 +55,55 @@ const documentController = {
    * @param {object} res - The response sent back
    * @return {object} json response
    */
-  getAllRoles(req, res) {
-    let searchValue;
-    (req.decoded.roleID === 1) ? searchValue = 'admin' : searchValue = 'regular';
-    Documents
-      .findAll({
-        where: { access: searchValue },
+  getRolesDocuments(req, res) {
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = req.query.offset ? req.query.offset : 0;
+    if (req.decoded.roleID === 1) {
+      return Documents.findAndCountAll({
+        limit,
+        offset,
+        where: {
+          $or: [
+            { access: 'admin' },
+            { access: 'regular' }
+          ]
+        }
+      })
+        .then((documents) => {
+          const metaData = {
+            totalCount: documents.count,
+            pages: Math.ceil(documents.count / limit),
+            currentPage: Math.floor(offset / limit) + 1,
+            pageSize: documents.rows.length,
+          };
+          res.status(200).send({
+            documents: documents.rows,
+            metaData,
+          });
+        })
+        .catch(error => res.status(500).send({ error }));
+    }
+    return Documents
+      .findAndCountAll({
+        limit,
+        offset,
+        where: { access: 'regular' }
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
       .catch(error =>
         res.status(400).json({ msg: error.message }),
-      );
+    );
   },
   /**
    * @desc Get all documents
@@ -76,13 +125,51 @@ const documentController = {
    * @param {object} res - The response sent back
    * @return {object} json response
    */
+  // getDocuments(req, res) {
+  //   const limit = req.query.limit ? req.query.limit : 10;
+  //   const offset = req.query.offset ? req.query.offset : 0;
+  //   Documents
+  //     .findAndCountAll({
+  //       limit,
+  //       offset,
+  //       where: { userID: req.params.id },
+  //     })
+  //     .then((documents) => {
+  //       const metaData = {
+  //         totalCount: documents.count,
+  //         pages: Math.ceil(documents.count / limit),
+  //         currentPage: Math.floor(offset / limit) + 1,
+  //         pageSize: documents.rows.length,
+  //       };
+  //       res.status(200).send({
+  //         rows: documents.rows,
+  //         metaData,
+  //       });
+  //     })
+  //     .catch(error =>
+  //       res.status(400).json({ msg: error.message }),
+  //   );
+  // },
   getDocuments(req, res) {
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = req.query.offset ? req.query.offset : 0;
     Documents
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         where: { userID: req.params.id },
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
       .catch(error =>
         res.status(400).json({ msg: error.message }),
@@ -119,7 +206,7 @@ const documentController = {
         where: { title: { $iLike: `%${title}%` }, access: 'public' },
       })
       .then((documents) => {
-        res.status(200).send({ documents, message: 'user found' });
+        res.status(200).send({ documents });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -136,7 +223,7 @@ const documentController = {
         where: { title: { $iLike: `%${title}%` }, userID: req.decoded.id },
       })
       .then((documents) => {
-        res.status(200).send({ documents, message: 'user found' });
+        res.status(200).send({ documents });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -156,7 +243,7 @@ const documentController = {
         where: { title: { $iLike: `%${title}%` }, access: roleType },
       })
       .then((documents) => {
-        res.status(200).send({ documents, message: 'user found' });
+        res.status(200).send({ documents });
       })
       .catch(error => res.status(400).send(error));
   },

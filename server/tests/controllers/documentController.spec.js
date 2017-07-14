@@ -48,7 +48,7 @@ describe('Document Controller', () => {
   describe('Get all public  Documents', () => {
     it('it should GET all documents', (done) => {
       app
-        .get('/api/documents/public')
+        .get('/api/documents')
         .set('authorization', token)
         .end((error, response) => {
           expect(response.status).to.equal(200);
@@ -65,7 +65,7 @@ describe('Document Controller', () => {
         .set('authorization', token)
         .send(document.publicDocument)
         .end((error, response) => {
-          expect(response.status).to.equal(200);
+          expect(response.status).to.equal(201);
           expect(response.body).to.have.property('message');
           expect(response.body).to.have.property('message').eql('Document created successfully');
           done();

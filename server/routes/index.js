@@ -1,4 +1,4 @@
-import { adminCheck, ownerCheck, isOwnerOrAdmin } from '../middleware/usersAuthorization';
+import { adminCheck, ownerCheck, isOwnerOrAdmin, validateCreateUser } from '../middleware/usersAuthorization';
 
 const UserController = require('../controllers/userController');
 const DocumentController = require('../controllers/documentController');
@@ -88,7 +88,7 @@ const Routes = (app) => {
    *         description: user created succesfully
    */
   app.post(
-    '/api/users', UserController.create,
+    '/api/users', validateCreateUser, UserController.create,
   );
   /**
    * @swagger
@@ -271,10 +271,10 @@ const Routes = (app) => {
    *           $ref: '#/definitions/Documents'
    */
   app.get(
-    '/api/documents/roles', authorization.authorize, DocumentController.getAllRoles,
+    '/api/documents/roles', authorization.authorize, DocumentController.getRolesDocuments,
   );
   app.get(
-    '/api/documents', authorization.authorize, adminCheck, DocumentController.getAll,
+    '/api/documents/all', authorization.authorize, adminCheck, DocumentController.getAll,
   );
 
   /**
@@ -312,7 +312,7 @@ const Routes = (app) => {
    *           $ref: '#/definitions/Documents'
    */
   app.get(
-    '/api/documents/public', authorization.authorize, DocumentController.getAllPublic,
+    '/api/documents', authorization.authorize, DocumentController.getAllPublic,
   );
 
   /**
@@ -424,6 +424,21 @@ const Routes = (app) => {
     '/api/search/myDocuments/?', authorization.authorize, DocumentController.searchMyDocuments,
   );
 
+  /**
+   * @swagger
+   * /api/search/roleDocuments/?:
+   *   get:
+    *     tags:
+   *       - Documents
+   *     description: search and returns all documents based on the search input
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: An array of documents
+   *         schema:
+   *           $ref: '#/definitions/Documents'
+   */
   app.get(
     '/api/search/roleDocuments/?', authorization.authorize, DocumentController.searchRoleDocuments,
   );

@@ -14,7 +14,7 @@ export const updateUser = user =>
 /**
  * Update Profile
  * @desc Update an existing profile
- * @param {object} updatedProfile - updated profile details
+ * @param {object} userData - updated profile details
  * @param {object} currentProfile - current profile details
  * @returns {object} action
  */
@@ -38,6 +38,8 @@ export const getUsers = users =>
 
 /**
  * Get Users
+ * @param {number} limit
+ * @param {number} offset
  * @desc gets all users
  * @returns {object} action
  */
@@ -92,7 +94,6 @@ export const deleteUser = response =>
 export const deleteUserAccount = (userID) => {
   return dispatch => axios.delete(`/api/users/${userID}`)
     .then((response) => {
-      console.log('this is response after deleting from server', response);
       dispatch(deleteUser(response));
     }).catch((error) => {
       toastr.error(error);

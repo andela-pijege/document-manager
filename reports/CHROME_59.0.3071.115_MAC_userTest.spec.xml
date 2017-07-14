@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites errors="0"
+            failures="0"
+            tests="7">
+
+  <testsuite name="userTest.spec"
+    errors="0" failures="0" hostname="" id="" package="userTest.spec" skipped="0"
+    tests="7" time="45.13" timestamp="Fri, 14 Jul 2017 11:57:48 GMT">
+  
+    <testcase name="User cannot sign in without credentials" classname="userTest.spec" time="20.41" assertions="3">
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User cannot sign in with wrong email" classname="userTest.spec" time="2.798" assertions="3">
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User cannot sign in with wrong password" classname="userTest.spec" time="4.037" assertions="3">
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User can sign in with correct login details" classname="userTest.spec" time="3.325" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User sign out of application" classname="userTest.spec" time="4.262" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Admin can sign in with correct login details" classname="userTest.spec" time="2.615" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Admin should be able to view all users" classname="userTest.spec" time="7.683" assertions="9">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+
+  
+
+  
+  </testsuite>
+</testsuites>

@@ -23,7 +23,9 @@ export const createUser = (userInfo) => {
       localStorage.setItem('jwtToken', response.data.token);
       setAuthorizationToken(response.data.token);
       dispatch(createUserSuccess(response.data.user));
-      browserHistory.push('/dashboard');
+      if (localStorage.getItem('jwtToken')) {
+        browserHistory.push('/dashboard');
+      }
     }).catch((error) => {
       dispatch(createUserFailure(error));
     });

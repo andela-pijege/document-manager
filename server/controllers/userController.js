@@ -5,11 +5,6 @@ const Documents = require('../models').documents;
 const jwt = require('jsonwebtoken');
 
 
-const displayUserDetails = user => ({
-  firstName: user.firstName,
-  lastName: user.lastName,
-});
-
 const userController = {
 
   /**
@@ -62,8 +57,6 @@ const userController = {
     Users
       .create(req.body)
       .then((user) => {
-        const userAttributes = displayUserDetails(user);
-        const userID = user.id;
         const filteredData = omit(user.dataValues, [
           'password',
           'createdAt',
@@ -73,7 +66,7 @@ const userController = {
           filteredData,
           expiresIn: '2h',
         }, process.env.SECRET_KEY);
-        res.status(201).send({ message: 'user created succesfully', token, user: filteredData });
+        res.status(201).send({ token, user: filteredData });
       })
       .catch(error => res.status(400).send(error));
   },
@@ -103,12 +96,6 @@ const userController = {
           metaData,
         });
       })
-      .catch(error => res.status(400).send(error));
-  },
-  getAll1(req, res) {
-    Users
-      .findAll()
-      .then(users => res.status(200).send(users))
       .catch(error => res.status(400).send(error));
   },
   /**
@@ -148,9 +135,9 @@ const userController = {
         },
       })
       .then((users) => {
-        res.status(200).send({ users, message: 'user found' });
+        res.status(200).send({ users });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({ error }));
   },
   /**
    * @desc Updates User
@@ -164,7 +151,13 @@ const userController = {
       .then((user) => {
         if (user) {
           user
-            .update(req.body)
+            .update({
+              firstName: req.body.firstName || user.firstName,
+              lastName: req.body.lastName || user.lastName,
+              email: req.body.email || user.email,
+              password: req.body.password || user.password,
+              roleID: req.body.roleId || user.roleID,
+            })
             .then(() => res.status(200).send({
               user,
               message: 'user updated successfully',

@@ -5,6 +5,14 @@ const { JSDOM } = jsdom;
 const dom = new JSDOM(`<!DOCTYPE html><html><body></body></html>`);
 global.document = dom.window.document;
 global.window = document.defaultView;
+global.localStorage = {
+  setItem: () => {
+    return null;
+  },
+  getItem: () => {
+    return null;
+  },
+}
 
 const exposedProperties = ['window', 'navigator', 'document'];
 

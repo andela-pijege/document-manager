@@ -43,10 +43,10 @@ describe('Users model', () => {
     it('it should update an existing user', (done) => {
       db.users.findById(1)
         .then((user) => {
-          user.update({firstName: 'precious' })
+          user.update({firstName: 'precious', lastName: 'ijege' })
             .then(() => {
               expect(user.firstName).to.equal('precious');
-              expect(user.lastName).to.equal('presh');
+              expect(user.lastName).to.equal('ijege');
               expect(user.email).to.equal('presh@presh.com');
               done();
             })

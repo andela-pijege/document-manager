@@ -15,6 +15,8 @@ const loginReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         user: action.user,
       });
+    case actionTypes.LOGIN_FAILURE:
+      return { loginUser: false };
     default:
       return state;
   }

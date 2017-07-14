@@ -28,8 +28,10 @@ export const login = (userInfo) => {
       localStorage.setItem('jwtToken', response.data.token);
       setAuthorizationToken(response.data.token);
       dispatch(loginSuccess(response.data.user));
-      browserHistory.push('/dashboard');
-      toastr.success('Login Successful');
+      if (localStorage.getItem('jwtToken')) {
+        browserHistory.push('/dashboard');
+        toastr.success('Login Successful');
+      }
     }).catch((error) => {
       toastr.error('Incorrect Login details');
       dispatch(loginFailure(error));
