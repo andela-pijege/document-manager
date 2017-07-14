@@ -4,7 +4,7 @@ module.exports = {
 		"react",
 		"jsx-a11y",
 		"import"
-git 	],
+ 	],
   "root": true,
 	"env": {
 		"node": true,
