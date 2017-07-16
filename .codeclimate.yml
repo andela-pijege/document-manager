@@ -5,7 +5,7 @@ engines:
       import/extensions:
         enabled: false
   duplication:
-    enabled: true
+    enabled: false
     config:
       languages:
       - javascript:
@@ -19,3 +19,4 @@ exclude_paths:
   - server/tests/
   - client/tests/
   - client/dist
+  - client/e2eTest

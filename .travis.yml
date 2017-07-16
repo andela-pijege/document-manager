@@ -4,8 +4,14 @@ node_js:
 before_script:
   - npm install
 
-script:
-  - npm run test
+services:
+  -postgresql
+
+postgres:
+ adapter: postgresql
+ database: myapp_test
+ username: postgres
 
 after_success:
+  - npm test
   - npm run coverage
