@@ -58,6 +58,19 @@ describe('Document Controller', () => {
     });
   });
 
+    describe('Get all roles  Documents', () => {
+    it('it should GET all roles documents', (done) => {
+      app
+        .get('/api/documents/roles')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(200);
+          expect(response.body).to.be.an.instanceof(Object);
+          done();
+        });
+    });
+  });
+
   describe('create a new document', () => {
     it('it should create a new document', (done) => {
       app
@@ -68,6 +81,46 @@ describe('Document Controller', () => {
           expect(response.status).to.equal(201);
           expect(response.body).to.have.property('message');
           expect(response.body).to.have.property('message').eql('Document created successfully');
+          done();
+        });
+    });
+  });
+
+
+  describe('/POST Documents', () => {
+    const doc = {
+      title: '',
+      access: '',
+      content: '',
+      userID: 1,
+    };
+
+    it('it should validate all input fields', (done) => {
+      app
+        .post('/api/documents')
+        .set('authorization', token)
+        .send(doc)
+        .end((err, res) => {
+          expect(res.status).to.equal(400);
+          expect(res.body).to.have.property('message');
+          done();
+        });
+    });
+  });
+
+
+  describe('/GET a doc using the id', () => {
+
+    it('it should return 404 for an invalid docId ', (done) => {
+      app
+        .get('/api/documents/4')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(404);
+          expect(response.error).to.exist;
+          expect(response.error.text).to.eql('{"message":"document not found"}');
+          expect(response.body).to.have.property('message');
+          expect(response.body).to.have.property('message').eql('document not found');
           done();
         });
     });
@@ -113,6 +166,30 @@ describe('Document Controller', () => {
         .end((error, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).to.have.property('message').eql('Document successfully deleted');
+          done();
+        });
+    });
+  });
+
+  describe('/GET search for a document', () => {
+    it('it should return a document matching the search query', (done) => {
+      app
+        .get('/api/search/documents/?title=The')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(200);
+          done();
+        });
+    });
+  });
+
+  describe('/GET search for a document', () => {
+    it('it should return a document matching the search query', (done) => {
+      app
+        .get('/api/search/publicDocuments/?title=The')
+        .set('authorization', token)
+        .end((error, response) => {
+          expect(response.status).to.equal(200);
           done();
         });
     });

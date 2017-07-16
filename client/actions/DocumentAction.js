@@ -212,6 +212,8 @@ export const getRoleDocuments = documents =>
 /**
  * role documents
  * @desc gets all role documents
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
 export const getAllRolesDocuments = (limit, offset) => {

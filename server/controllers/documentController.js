@@ -125,31 +125,6 @@ const documentController = {
    * @param {object} res - The response sent back
    * @return {object} json response
    */
-  // getDocuments(req, res) {
-  //   const limit = req.query.limit ? req.query.limit : 10;
-  //   const offset = req.query.offset ? req.query.offset : 0;
-  //   Documents
-  //     .findAndCountAll({
-  //       limit,
-  //       offset,
-  //       where: { userID: req.params.id },
-  //     })
-  //     .then((documents) => {
-  //       const metaData = {
-  //         totalCount: documents.count,
-  //         pages: Math.ceil(documents.count / limit),
-  //         currentPage: Math.floor(offset / limit) + 1,
-  //         pageSize: documents.rows.length,
-  //       };
-  //       res.status(200).send({
-  //         rows: documents.rows,
-  //         metaData,
-  //       });
-  //     })
-  //     .catch(error =>
-  //       res.status(400).json({ msg: error.message }),
-  //   );
-  // },
   getDocuments(req, res) {
     const limit = req.query.limit ? req.query.limit : 10;
     const offset = req.query.offset ? req.query.offset : 0;

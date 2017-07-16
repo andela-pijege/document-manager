@@ -1,4 +1,4 @@
-export const metaData = { pageCount: 3, currentPage: 10 };
+// export const metaData = { pageCount: 3, currentPage: 10 };
 
 export const user = {
   id: 1,
@@ -72,5 +72,28 @@ export const userData = {
   email: 'eyo@jude.com',
   roleID: 2,
 };
+export const metaData = {
+  currentPage: 1,
+  pageSize: 2,
+  pages: 1,
+  totalCount: 2
+};
+
+export const documents = [
+  {
+    id: 2,
+    title: 'title',
+    content: 'content',
+    access: 'public',
+    userID: '2',
+  },
+  {
+    id: 3,
+    title: 'title',
+    content: 'content',
+    access: 'public',
+    userID: '2',
+  }
+];
 
 export const token = '12hjkwhfig347835';

@@ -5,16 +5,22 @@
   "main": "server.js",
   "scripts": {
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
-    "test-client": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require client/tests/.setup.js client/tests/**/*.js --compilers js:babel-register",
+    "test-client": "NODE_ENV=test nyc --reporter=html --reporter=text --extension .jsx mocha --require client/tests/.setup.js client/tests/**/* --compilers js:babel-register",
     "test-server": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js --compilers js:babel-register --timeout 6000",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js client/tests/.setup.js client/tests/**/*.js --compilers js:babel-register --timeout 6000",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --extension .jsx  --require server/tests/helper.js server/tests/**/* client/tests/.setup.js client/tests/**/* --compilers js:babel-register --timeout 6000",
     "start": "webpack & babel-node ./server/server.js",
     "start-dev": "webpack -w & nodemon ./server/server.js --exec babel-node",
-    "test:nyc": "NODE_ENV=test ./node_modules/.bin/nyc --reporter=html --reporter=text --extension .jsx --extension .js mocha --timeout 6000 --compilers js:babel-register --require client/tests/.setup.js client/tests/**/*.js --require server/tests/helper.js server/tests/**/*.js"
+    "test:nyc": "NODE_ENV=test ./node_modules/.bin/nyc --reporter=html --reporter=text --extension .jsx --extension .js mocha --timeout 6000 --compilers js:babel-register --require client/tests/.setup.js client/tests/**/* --require server/tests/helper.js server/tests/**/*"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andela-pijege/document-manager.git"
+  },
+  "nyc": {
+    "include": [
+      "client",
+      "server"
+    ]
   },
   "keywords": [],
   "author": "",

@@ -10,7 +10,7 @@ import * as SignUpAction from '../actions/SignUpAction';
  * @class Signup
  * @extends {Component}
  */
-class Signup extends Component {
+export class Signup extends Component {
   /**
    * Creates an instance of Signup.
    * @param {object} props
@@ -156,7 +156,7 @@ class Signup extends Component {
               </div>
             </div>
             <div>
-              <button className="btn waves-effect waves-light" type="submit" name="action">Sign up
+              <button className="btn waves-effect waves-light signup-btn" type="submit" name="action">Sign up
                 <i className="material-icons right">send</i>
               </button>
             </div>

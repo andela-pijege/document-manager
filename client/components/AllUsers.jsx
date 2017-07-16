@@ -12,7 +12,7 @@ import Pagination from '../components/Pagination';
  * @class AllUsers
  * @extends {Component}
  */
-class AllUsers extends Component {
+export class AllUsers extends Component {
   /**
    * Creates an instance of AllUsers.
    * @param {object} props
@@ -146,7 +146,7 @@ class AllUsers extends Component {
                 <th><i className="material-icons prefix">account_circle</i>First Name</th>
                 <th><i className="material-icons prefix">account_circle</i>Last Name</th>
                 <th><i className="material-icons prefix">email</i>Email</th>
-                <th>delete</th>
+                <th><i className="fa fa-trash" aria-hidden="true" />delete</th>
               </tr>
             </thead>
 

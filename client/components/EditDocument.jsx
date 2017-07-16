@@ -11,7 +11,7 @@ import * as DocumentAction from '../actions/DocumentAction';
  * @class EditDocument
  * @extends {Component}
  */
-class EditDocument extends Component {
+export class EditDocument extends Component {
   /**
    * Creates an instance of CreateDocument.
    * @param {object} props

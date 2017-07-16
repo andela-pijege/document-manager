@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
 import { Button, Modal } from 'react-materialize';
 import * as DocumentAction from '../actions/DocumentAction';
 import Pagination from '../components/Pagination';
@@ -14,7 +13,7 @@ import Search from './Search';
  * @class RolesDocument
  * @extends {Component}
  */
-class RolesDocument extends Component {
+export class RolesDocument extends Component {
   /**
    * Creates an instance of RolesDocument.
    * @param {object} props
@@ -28,7 +27,6 @@ class RolesDocument extends Component {
       isSearching: false,
       limit: 9,
     };
-    this.openDocument = this.openDocument.bind(this);
     this.searchDocuments = this.searchDocuments.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -64,18 +62,6 @@ class RolesDocument extends Component {
  */
   handlePageChange(page) {
     this.props.DocumentAction.getAllRolesDocuments(this.state.limit, (page - 1) * this.state.limit);
-  }
-  /**
-   * @desc retrieves a  roles documents
-   * @param {integer} documentID
-   * @returns {void} returns nothing
-   * @memberof RolesDocument
-   */
-  openDocument(documentID) {
-    this.props.DocumentAction.getOneDocument(documentID)
-      .then(() => {
-        browserHistory.push('/openDocument');
-      });
   }
 
   /**
@@ -125,10 +111,10 @@ class RolesDocument extends Component {
                           fixedFooter
                           actions={
                             <section>
-                              <Button waves='light' flat className="modal-action modal-close">close</Button>
+                              <Button waves='light' flat className="modal-action modal-close close-doc">close</Button>
                             </section>
                           }
-                          trigger={<a>view</a>}
+                          trigger={<a className="view-doc">view</a>}
                         >
                           <p dangerouslySetInnerHTML={{ __html: document.content }} />
                         </Modal>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
@@ -35,6 +36,7 @@ export const Nav = ({ logout, user, isAuthenticated }) => (
     </nav>
   </div>
 );
+
 
 /**
  * @desc maps state to properties

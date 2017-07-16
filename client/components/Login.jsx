@@ -9,7 +9,7 @@ import * as LoginAction from '../actions/LoginAction';
  * @class Login
  * @extends {Component}
  */
-class Login extends Component {
+export class Login extends Component {
   /**
    * Creates an instance of Login.
    * @param {object} props
@@ -34,7 +34,6 @@ class Login extends Component {
    * @returns {void}
    */
   onChange(event) {
-    event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
   }
 

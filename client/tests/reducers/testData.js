@@ -27,3 +27,26 @@ export const allUsers = {
     'pageSize': 2
   }
 };
+
+export const publicDocuments = {
+  users: [
+    { id: 1, title: 'hope', content: 'hope', access: 'public', userID: 2 },
+    { id: 2, title: 'tom', content: 'tom', access: 'public', userID: 4 },
+    { id: 3, title: 'jed', content: 'jed', access: 'public', userID: 6 },
+    { id: 4, title: 'kai', content: 'kai', access: 'public', userID: 9 }
+  ],
+  metaData: {
+    'totalCount': 4,
+    'pages': 2,
+    'currentPage': 1,
+    'pageSize': 2
+  }
+};
+
+export const document = {
+  id: 1,
+  title: 'test',
+  content: 'testing',
+  access: 'public',
+  userID: 2,
+};

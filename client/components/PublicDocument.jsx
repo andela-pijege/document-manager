@@ -28,7 +28,6 @@ export class PublicDocument extends Component {
       isSearching: false,
       limit: 9,
     };
-    this.openDocument = this.openDocument.bind(this);
     this.searchDocuments = this.searchDocuments.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
@@ -64,18 +63,6 @@ export class PublicDocument extends Component {
  */
   handlePageChange(page) {
     this.props.DocumentAction.getAllPublicDocuments(this.state.limit, (page - 1) * this.state.limit);
-  }
-  /**
-   * @desc retrieves a  public documents
-   * @param {integer} documentID
-   * @returns {void} returns nothing
-   * @memberof PublicDocument
-   */
-  openDocument(documentID) {
-    this.props.DocumentAction.getOneDocument(documentID)
-      .then(() => {
-        browserHistory.push('/openDocument');
-      });
   }
 
   /**
@@ -125,10 +112,10 @@ export class PublicDocument extends Component {
                           fixedFooter
                           actions={
                             <section>
-                              <Button waves='light' flat className="modal-action modal-close">close</Button>
+                              <Button waves='light' flat className="modal-action modal-close close-doc">close</Button>
                             </section>
                           }
-                          trigger={<a>view</a>}
+                          trigger={<a className="view-doc">view</a>}
                         >
                           <p dangerouslySetInnerHTML={{ __html: document.content }} />
                         </Modal>

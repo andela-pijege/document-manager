@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 import moxios from 'moxios';
 import * as actionType from '../../actions/ActionTypes';
 import * as DocumentAction from '../../actions/DocumentAction';
-import { document, document2 } from './testData';
+import { document, document2, documents, metaData } from './testData';
 
 const middlewares = [thunk];
 const mockStore = configureMockStore(middlewares);
@@ -81,25 +81,92 @@ describe('Document actions', () => {
     });
   });
 
-  // describe('search public Documents action', () => {
-  //   it('should return documents after a successful search', (done) => {
-  //     moxios.stubRequest('/api/search/documents/?title=doc', {
-  //       status: 200,
-  //       documents: [],
-  //     });
-  //     const expectedActions = [
-  //       {
-  //         type: actionType.SEARCH_PUBLIC_DOCUMENTS,
-  //         documents: [],
-  //       }
-  //     ];
-  //     const store = mockStore({});
-  //     store.dispatch(DocumentAction.searchPublicDocuments('doc'))
-  //     .then(() => {
-  //       console.log('from store', store.getActions());
-  //       expect(store.getActions()).to.eql(expectedActions);
-  //       done();
-  //     });
-  //   });
-  // });
+  describe('get all public documents action', () => {
+    it('should return public documents', (done) => {
+      moxios.stubRequest('/api/documents?limit=9&offset=0', {
+        status: 200,
+        response: {
+          documents,
+          metaData,
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionType.GET_ALL_PUBLIC_DOCUMENTS,
+          documents: { documents, metaData },
+        }
+      ];
+      const store = mockStore({});
+      store.dispatch(DocumentAction.getAllPublicDocuments(0))
+        .then(() => {
+          expect(store.getActions()).to.eql(expectedActions);
+          done();
+        });
+    });
+  });
+
+  describe('get all roles documents action', () => {
+    it('should return role documents', (done) => {
+      moxios.stubRequest('/api/documents/roles?limit=9&offset=0', {
+        status: 200,
+        response: {
+          documents,
+          metaData,
+        }
+      });
+      const expectedActions = [
+        {
+          type: actionType.GET_ALL_ROLE_DOCUMENTS,
+          documents: { documents, metaData },
+        }
+      ];
+      const store = mockStore({});
+      store.dispatch(DocumentAction.getAllRolesDocuments(0))
+        .then(() => {
+          expect(store.getActions()).to.eql(expectedActions);
+          done();
+        });
+    });
+  });
+
+  describe('search public Documents action', () => {
+    it('should return documents after a successful search', (done) => {
+      moxios.stubRequest('/api/search/documents/?title=doc', {
+        status: 200,
+        documents: [],
+      });
+      const expectedActions = [
+        {
+          type: actionType.SEARCH_PUBLIC_DOCUMENTS,
+          documents: [],
+        }
+      ];
+      const store = mockStore({});
+      store.dispatch(DocumentAction.searchPublicDocuments('doc'))
+      .then(() => {
+        expect(store.getActions()).to.eql(expectedActions);
+      });
+      done();
+    });
+  });
+  describe('search roles Documents action', () => {
+    it('should return documents after a successful search', (done) => {
+      moxios.stubRequest('/api/search/roleDocuments/?title=doc', {
+        status: 200,
+        documents: [],
+      });
+      const expectedActions = [
+        {
+          type: actionType.SEARCH_ROLE_DOCUMENTS,
+          documents: [],
+        }
+      ];
+      const store = mockStore({});
+      store.dispatch(DocumentAction.searchRoleDocuments('doc'))
+      .then(() => {
+        expect(store.getActions()).to.eql(expectedActions);
+      });
+      done();
+    });
+  });
 });

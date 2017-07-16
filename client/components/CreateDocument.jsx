@@ -11,7 +11,7 @@ import * as DocumentAction from '../actions/DocumentAction';
  * @class CreateDocument
  * @extends {Component}
  */
-class CreateDocument extends Component {
+export class CreateDocument extends Component {
   /**
    * Creates an instance of CreateDocument.
    * @param {object} props
@@ -97,7 +97,7 @@ class CreateDocument extends Component {
                 <label htmlFor="title">Title</label>
               </div>
               <div className="input-field col s6">
-                <select onChange={this.onChange} style={{ display: 'block' }} name="access">
+                <select id="access" onChange={this.onChange} style={{ display: 'block' }} name="access">
                   <option value="private" name="private">private</option>
                   <option value="public" name="public">public</option>
                   <optgroup label="Role">
@@ -120,7 +120,7 @@ class CreateDocument extends Component {
               </div>
             </div>
             <div>
-              <button className="btn waves-effect waves-light" type="submit" name="action">Save
+              <button id="submit" className="btn waves-effect waves-light save-btn" type="submit" name="action">Save
               <i className="fa fa-floppy-o" aria-hidden="true" />
               </button>
             </div>

@@ -249,11 +249,11 @@ export class Dashboard extends Component {
                                 fixedFooter
                                 actions={
                                   <section>
-                                    <Button waves='light' flat className="modal-action modal-close">close</Button>
+                                    <Button waves='light' flat className="modal-action modal-close close-doc">close</Button>
                                     <Button waves='light' onClick={() => { this.openDocument(document.id); }}><i className="fa fa-pencil-square-o" aria-hidden="true" />edit</Button>
                                   </section>
                                 }
-                                trigger={<a>view</a>}
+                                trigger={<a className="view-doc">view</a>}
                               >
                                 <p dangerouslySetInnerHTML={{ __html: document.content }} />
                               </Modal>

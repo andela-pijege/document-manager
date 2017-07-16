@@ -10,7 +10,4 @@ describe('Test Search component', () => {
   it('component should exist', () => {
     expect(wrapper).to.be.present();
   });
-//   it('component should have one direct child', () => {
-//     expect(wrapper.children()).to.have.length(1);
-//   });
 });

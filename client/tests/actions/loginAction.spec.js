@@ -18,7 +18,7 @@ describe('Login actions', () => {
     moxios.uninstall();
   });
   describe('login action', () => {
-    it('should log a user successfully', (done) => {
+    it('should login a user successfully', (done) => {
       moxios.stubRequest('/api/users/login', {
         status: 200,
         response: { message: 'Login successful', token, user }
@@ -33,6 +33,24 @@ describe('Login actions', () => {
         expect(store.getActions()).to.eql(expectedActions);
         done();
       });
+    });
+  });
+
+  describe('logout action', () => {
+    it('should logout a user successfully', (done) => {
+      moxios.stubRequest('/api/users/logout', {
+        status: 200,
+        response: { message: 'You have been successfully logged out' }
+      });
+      const expectedActions = [{
+        type: actionType.LOGOUT_SUCCESS,
+      }];
+      const store = mockStore({});
+      store.dispatch(LoginAction.logout())
+      .then(() => {
+        expect(store.getActions()).to.eql(expectedActions);
+      });
+      done();
     });
   });
 });

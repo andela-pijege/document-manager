@@ -79,10 +79,28 @@ module.exports = {
       .click('li[id="allUsers"]')
       .pause(2000)
       .assert.visible('h4.title')
-      // .assert.urlEquals('http://localhost:9000/allUsers')
-      // .waitForElementVisible('h3.user__number', 5000)
-      // .assert.visible('table.responsive-table')
-      .pause(5000)
-      .end();
+      .assert.urlEquals('http://localhost:9000/allUsers')
+      .assert.visible('a.logout-btn')
+      .click('.logout-btn')
+      .pause(1000)
+      .assert.urlEquals('http://localhost:9000/')
+      .pause(5000);
   },
+  'user should be able to signup ': (browser) => {
+    browser
+      .url('http://localhost:9000/signUp')
+      .waitForElementVisible('body', 5000)
+      .setValue('input[name=firstName]', 'endpoint')
+      .setValue('input[name=lastName]', 'endpoint')
+      .setValue('input[name=email]', 'endpoint@endpoint.com')
+      .setValue('input[name=password]', 'password')
+      .setValue('input[name=confirmPassword]', 'password')
+      .click('.signup-btn')
+      .waitForElementVisible('h4', 5000)
+      .assert.containsText('h4', 'You have no documents! Go ahead and create one!!')
+      .assert.urlEquals('http://localhost:9000/dashboard').assert.visible('a.logout-btn')
+      .click('.logout-btn')
+      .pause(3000)
+      .end();
+  }
 };
