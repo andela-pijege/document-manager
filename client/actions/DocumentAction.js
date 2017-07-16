@@ -8,7 +8,6 @@ import * as actionTypes from './ActionTypes';
  * @param {array} documents
  * @returns {object} actiontype, and payload
  */
-
 export const getDocuments = documents =>
   ({ type: actionTypes.GET_USER_DOCUMENT, documents });
 
@@ -16,15 +15,14 @@ export const getDocuments = documents =>
  *
  * @desc calls the get user document endpoint.
  *  Retrieves documents for a specific user.
- * @param {object} userId
+ * @param {object} userID
  * @param {string} page. Represents pagination index.
  * @returns {array} returns an array of a specific users document.
  */
-
-export const getUserDocuments = (userID) => {
-  return dispatch => axios.get(`/api/users/${userID}/documents`)
+export const getUserDocuments = (userID, limit, offset) => {
+  return dispatch => axios.get(`/api/users/${userID}/documents?limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(getDocuments(response.data.documents));
+      dispatch(getDocuments(response.data));
     }).catch((error) => {
       toastr.error(error);
     });
@@ -33,11 +31,11 @@ export const getUserDocuments = (userID) => {
 /**
  * Delete Existing Document
  * @desc Delete a Single Document
- * @param {object} response - response from server
+ * @param {object} docID - id of deleted document
  * @returns {object} action
  */
-export const deleteDocument = response =>
-  ({ type: actionTypes.DELETE_USER_DOCUMENT, response });
+export const deleteDocument = docID =>
+  ({ type: actionTypes.DELETE_USER_DOCUMENT, docID });
 
 /**
  * Delete Document
@@ -48,7 +46,7 @@ export const deleteDocument = response =>
 export const deleteUserDocument = (docID) => {
   return dispatch => axios.delete(`/api/documents/${docID}`)
     .then((response) => {
-      dispatch(deleteDocument(response));
+      dispatch(deleteDocument(docID));
     }).catch((error) => {
       toastr.error(error);
     });
@@ -139,12 +137,14 @@ export const getPublicDocuments = documents =>
 /**
  * Public documents
  * @desc gets all public documents
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
-export const getAllPublicDocuments = () => {
-  return dispatch => axios.get('/api/documents/public')
+export const getAllPublicDocuments = (limit, offset) => {
+  return dispatch => axios.get(`/api/documents?limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(getPublicDocuments(response.data.documents));
+      dispatch(getPublicDocuments(response.data));
     }).catch((error) => {
       toastr.error(error);
     });
@@ -212,12 +212,14 @@ export const getRoleDocuments = documents =>
 /**
  * role documents
  * @desc gets all role documents
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
-export const getAllRolesDocuments = () => {
-  return dispatch => axios.get('/api/documents/roles')
+export const getAllRolesDocuments = (limit, offset) => {
+  return dispatch => axios.get(`/api/documents/roles?limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(getRoleDocuments(response.data.documents));
+      dispatch(getRoleDocuments(response.data));
     }).catch((error) => {
       toastr.error(error);
     });

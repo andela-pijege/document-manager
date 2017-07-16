@@ -2,10 +2,23 @@ import React, { Component } from 'react';
 import swal from 'sweetalert';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import propTypes from 'prop-types';
 import { browserHistory } from 'react-router';
 import * as DocumentAction from '../actions/DocumentAction';
 
+/**
+ *
+ * @desc represents OpenDocument Page.
+ * @class OpenDocument
+ * @extends {Component}
+ */
 class OpenDocument extends Component {
+  /**
+   * @desc Display all the users documents
+   * @param {object} props
+   * @memberof OpenDocument
+   * @constructor
+   */
   constructor(props) {
     super(props);
     this.state = {
@@ -15,10 +28,21 @@ class OpenDocument extends Component {
     this.editDocument = this.editDocument.bind(this);
   }
 
+  /**
+   * @desc calls the edit document action
+   * @param {integer} documentID
+   * @returns {void} returns nothing
+   * @memberof OpenDocument
+   */
   editDocument() {
     browserHistory.push('/editDocument');
   }
-
+  /**
+   * @desc deletes a document
+   * @param {integer} documentID
+   * @returns {void} returns nothing
+   * @memberof OpenDocument
+   */
   deleteDocument(documentID) {
     swal({
       title: 'Are you sure?',
@@ -44,6 +68,11 @@ class OpenDocument extends Component {
       });
   }
 
+  /**
+   * @desc Displays a document
+   * @returns {object} a document
+   * @memberof OpenDocument
+   */
   render() {
     return (
       <div className="container">
@@ -71,6 +100,36 @@ class OpenDocument extends Component {
   }
 }
 
+/**
+ * Set the PropTypes for OpenDocument
+ */
+OpenDocument.propTypes = {
+  DocumentAction: propTypes.shape({
+    deleteUserDocument: propTypes.func,
+  }),
+  user: propTypes.shape({
+    id: propTypes.number,
+  }),
+  document: propTypes.arrayOf(propTypes.object),
+};
+/**
+ * Sets default values for OpenDocument Proptype
+ */
+OpenDocument.defaultProps = {
+  DocumentAction: {
+    deleteUserDocument: () => {},
+  },
+  user: {
+    id: 0,
+  },
+  document: [],
+};
+
+/**
+ * @desc maps state to properties
+ * @param {object} state - the current state of application
+ * @return {object} mapped properties
+ */
 function mapStateToProps(state) {
   return {
     user: state.LoginReducer.user,
@@ -79,6 +138,11 @@ function mapStateToProps(state) {
   };
 }
 
+/**
+ * @desc maps dispatch to DocumentAction
+ * @param {object} dispatch - the action to dispatch
+ * @return {object} DocumentAction
+ */
 function mapDispatchToProps(dispatch) {
   return { DocumentAction: bindActionCreators(DocumentAction, dispatch) };
 }

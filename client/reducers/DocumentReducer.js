@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/ActionTypes';
 
-const initialState = { documents: [] };
+const initialState = { documents: {} };
 
 const documentReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -36,8 +36,12 @@ const documentReducer = (state = initialState, action) => {
       return state;
     case actionTypes.CREATE_DOCUMENT_SUCCESS:
       return state;
-    case actionTypes.DELETE_USER_DOCUMENT:
-      return state;
+    case actionTypes.DELETE_USER_DOCUMENT: {
+      const { docID } = action;
+      const { documents, metaData } = state.documents;
+      const seivedDocList = documents.filter(doc => doc.id !== docID);
+      return Object.assign({}, ...state, { documents: { documents: seivedDocList, metaData } });
+    }
     case actionTypes.DELETE_USER_SUCCESS:
       return state;
     default:

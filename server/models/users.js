@@ -85,7 +85,9 @@ module.exports = function (sequelize, DataTypes) {
         user.encryptPassword();
       },
       beforeUpdate(user) {
-        user.encryptPassword();
+        if (user.password) {
+          user.encryptPassword();
+        }
       },
     },
   });

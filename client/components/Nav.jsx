@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
@@ -16,13 +17,13 @@ export const Nav = ({ logout, user, isAuthenticated }) => (
                 logout();
                 browserHistory.push('/');
               }}
-              ><a>Logout <i className="fa fa-sign-out" aria-hidden="true"></i></a></li>
-              <li onClick={() => browserHistory.push('/publicDocuments')}><a>Public Document</a></li>
-              <li onClick={() => browserHistory.push('/rolesDocument')}><a>Role Document</a></li>
-              <li onClick={() => browserHistory.push('/dashboard')}><a>Dashboard</a></li>
+              ><a className="logout-btn">Logout <i className="fa fa-sign-out" aria-hidden="true" /></a></li>
+              <li onClick={() => browserHistory.push('/publicDocuments')} id="publicDocument"><a>Public Document</a></li>
+              <li onClick={() => browserHistory.push('/rolesDocument')} id="roleDocument"><a>Role Document</a></li>
+              <li onClick={() => browserHistory.push('/dashboard')} id="dashboard"><a>Dashboard</a></li>
               {(user.roleID === 1) ?
                 <div>
-                  <li onClick={() => browserHistory.push('/allUsers')}><a>View All Users</a></li>
+                  <li onClick={() => browserHistory.push('/allUsers')} id="allUsers"><a>View All Users</a></li>
                 </div> : <div />}
             </div> :
             <div>
@@ -36,6 +37,13 @@ export const Nav = ({ logout, user, isAuthenticated }) => (
   </div>
 );
 
+
+/**
+ * @desc maps state to properties
+ * @param {object} state - the current state of application
+ * @return {object} mapped properties
+ * @memberof Nav
+ */
 export function mapStateToProps(state) {
   return {
     user: state.LoginReducer.user,

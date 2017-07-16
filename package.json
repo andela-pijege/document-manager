@@ -5,16 +5,22 @@
   "main": "server.js",
   "scripts": {
     "coverage": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls",
-    "test-client": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require client/tests/.setup.js client/tests/**/*.js --compilers js:babel-register",
+    "test-client": "NODE_ENV=test nyc --reporter=html --reporter=text --extension .jsx mocha --require client/tests/.setup.js client/tests/**/* --compilers js:babel-register",
     "test-server": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js --compilers js:babel-register --timeout 6000",
-    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --require server/tests/helper.js server/tests/**/*.js client/tests/.setup.js client/tests/**/*.js --compilers js:babel-register --timeout 6000",
+    "test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --extension .jsx  --require server/tests/helper.js server/tests/**/* client/tests/.setup.js client/tests/**/* --compilers js:babel-register --timeout 6000",
     "start": "webpack & babel-node ./server/server.js",
     "start-dev": "webpack -w & nodemon ./server/server.js --exec babel-node",
-    "test:nyc": "NODE_ENV=test ./node_modules/.bin/nyc --reporter=html --reporter=text --extension .jsx --extension .js mocha --timeout 6000 --compilers js:babel-register --require client/tests/.setup.js client/tests/**/*.js --require server/tests/helper.js server/tests/**/*.js"
+    "test:nyc": "NODE_ENV=test ./node_modules/.bin/nyc --reporter=html --reporter=text --extension .jsx --extension .js mocha --timeout 6000 --compilers js:babel-register --require client/tests/.setup.js client/tests/**/* --require server/tests/helper.js server/tests/**/*"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/andela-pijege/document-manager.git"
+  },
+  "nyc": {
+    "include": [
+      "client",
+      "server"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -54,6 +60,7 @@
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
     "react-dom": "^15.6.1",
+    "react-materialize": "^1.0.3",
     "react-paginate": "^4.4.3",
     "react-redux": "^5.0.5",
     "react-router": "^3.0.5",
@@ -69,6 +76,7 @@
     "webpack": "^2.6.1"
   },
   "devDependencies": {
+    "babel-preset-stage-0": "^6.24.1",
     "chai": "^4.0.0",
     "chai-enzyme": "^0.6.1",
     "enzyme": "^2.8.2",
@@ -77,9 +85,13 @@
     "eslint-plugin-import": "^2.3.0",
     "eslint-plugin-jsx-a11y": "^5.0.3",
     "eslint-plugin-react": "^7.0.1",
+    "expect": "^1.20.2",
     "jsdoc": "^3.4.3",
     "mocha": "^3.4.2",
+    "moxios": "^0.4.0",
+    "nightwatch": "^0.9.16",
     "nyc": "^10.3.2",
+    "redux-mock-store": "^1.2.3",
     "sinon": "^2.3.6",
     "supertest": "^3.0.0"
   }

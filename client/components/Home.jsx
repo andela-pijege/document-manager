@@ -1,17 +1,37 @@
 /* global $ */
 import React, { Component } from 'react';
 
+/**
+ * @desc represents Home Page.
+ * @class Home
+ * @extends {Component}
+ */
 class Home extends Component {
+  /**
+   * Creates an instance of Home.
+   * @param {object} props
+   * @memberof Home
+   * @constructor
+   */
   constructor(props) {
     super(props);
     this.state = {};
   }
-
+  /**
+   * @desc Invoked after component mounts
+   * @param {void} null
+   * @return {void} returns nothing
+   * @memberof Home
+   */
   componentDidMount() {
      $('.slider').slider();
   }
 
-
+  /**
+   * @desc renders Home component
+   * @returns {void} null
+   * @memberof Home
+   */
   render() {
     return (
       <div className="slider fullscreen">

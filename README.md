@@ -12,7 +12,6 @@ document-manager is a full stack document management system, complete with roles
 * [Installation and Setup](#installation-and-setup)
 * [Limitations](#limitations)
 * [How to Contribute](#how-to-contribute)
-* [FAQ](#faq)
 * [License](#license)
 
 ### Feaatures
@@ -22,20 +21,22 @@ Admin can perform all users actions and the following actions
   - Search for all Users
   - Delete any user
   - Search for documents (public documents)
+  - view all role documents
 
 Users can perform the following actions with the application
   - Create documents
   - Edit documents
   - Delete documents
   - View personal documents
-  - Search for documents (personal and public)
-  - View All Documents (All documents with public access)
+  - view regular role documents
+  - Search for documents (personal, public, and role)
+  - View All Documents (All documents with public access and regular role acess)
 
 #### Documents
 A document has the following properties
   - title
   - content
-  - access right : Private and Public
+  - access right : Private, Public and role
   - userID
 
 #### Roles
@@ -65,6 +66,7 @@ The api endpoints are protected from unauthorized access. JSON web token is used
 * Materializecss is used to style the frontend. For more information about materializecss see [this link](http://materializecss.com/) for details.
 * Webpack: Webpack is a module bundler. Its main purpose is to bundle JavaScript files for usage in a browser, yet it is also capable of transforming, bundling, or packaging modules.
 * Postgresql & Sequelize: Postgresql is an advanced open source Object-Relational Model (ORM) database.Sequelize is a promise-based ORM for Node.js v4 and up. It supports the dialects PostgreSQL, MySQL, SQLite and MSSQL and features solid transaction support, relations, read replication and more.
+* All code is written using the Airbnb javascript style guide, see [this link](https://github.com/airbnb/javascript) for details.
 
 ### Installation and Setup
 
@@ -80,7 +82,12 @@ $ npm install
 ```
 4.  Create Postgresql database and run migrations `npm run db:migrations`.
 
-5. Create a `.env` file in the root directory of the application. Use a different database for your testing and development.
+5. Create a `.env` file in the root directory of the application. Use a different database for your testing and development. Example of the content of a .env file looks like this
+
+```
+PRIVATE_KEY=myprivatekey
+TEST_DATABASE_URL=postgres://127.0.0.1:5432/document-manager-test
+```
 
 6. Start the application:
 
@@ -92,6 +99,13 @@ http://localhost:9000/
 
 ### Limitations
 
+The limitaton withthe current version of Document Manager includes:
+
+  * Upload Feature is not available. (you cannot upload files)
+  * Documents cannot be shared to users outside the application
+
+These limitations will be resolved in the next upgrade of this application.
+
 ### How To Contribute
 Contributing to this project would always be a welcoming idea. If you feel you have an addition to make this project better, follow the steps bellow:
 
@@ -99,8 +113,6 @@ Contributing to this project would always be a welcoming idea. If you feel you h
 - Create as many **branch** as you like depending on how many features you would love to add. One feature per branch.
 - Make neccessary changes and **commit**.
 - Finally, submit a **pull request**.
-
-### FAQ
 
 ### License
 
