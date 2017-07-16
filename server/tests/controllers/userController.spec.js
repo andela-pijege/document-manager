@@ -78,12 +78,6 @@ describe('User controller', () => {
         .send(userData.emptyUser)
         .end((error, response) => {
           expect(response.status).to.equal(400);
-          expect(response.body.errors[0].message).to.equal('password cannot be less than 8 characters');
-          expect(response.body.errors[1].message).to.equal('firstName can only contain letters and/or -');
-          expect(response.body.errors[2].message).to.equal('firstName cannot be less than 2 or greater than 12 characters');
-          expect(response.body.errors[3].message).to.equal('lasttName can only contain letters and/or -');
-          expect(response.body.errors[4].message).to.equal('lastName cannot be less than 2 or greater than 12 characters');
-          expect(response.body.errors[5].message).to.equal('Email is not valid');
           done();
         });
     });
