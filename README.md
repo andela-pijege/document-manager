@@ -45,6 +45,7 @@ The application contains 2 roles by default
   - regular
 
 #### API Documentation
+Follow [this link](http://documento-app.herokuapp.com/api-docs/) to view the full api documentation.
 
 #### Authentication
 The api endpoints are protected from unauthorized access. JSON web token is used to protect the application from anuthorised access. Some other middleware are used to futher protect endpoints
