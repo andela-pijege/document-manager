@@ -172,6 +172,7 @@ export class Dashboard extends Component {
           this.props.actions.deleteUserAccount(userID)
             .then(() => {
               swal('Deleted!', 'User deleted successfully.', 'success');
+              browserHistory.push('/');
             }).catch(() => {
               swal('Error!', 'User NOT deleted.', 'error');
             });

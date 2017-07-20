@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 /**
- * 
- * 
- * @param {any} pageCount 
- * @param {any} handleChange 
- * @param {any} currentPage 
+ * @param {any} pageCount
+ * @param {any} handleChange
+ * @param {any} currentPage
  * @returns {null} null
  */
 function pageNumber(pageCount, handleChange, currentPage) {
@@ -39,10 +37,10 @@ const Paginate = ({ pageCount, currentPage, handleChange }) =>
       </a>
     </li>
   </ul>);
-// Paginate.propTypes = {
-//   pageCount: PropTypes.number.isRequired,
-//   currentPage: PropTypes.number.isRequired,
-//   handleChange: PropTypes.func.isRequired,
-// };
+Paginate.propTypes = {
+  pageCount: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+  handleChange: PropTypes.func.isRequired,
+};
 
 export default Paginate;
