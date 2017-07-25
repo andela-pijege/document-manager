@@ -5,9 +5,9 @@
 
   <testsuite name="userTest.spec"
     errors="0" failures="0" hostname="" id="" package="userTest.spec" skipped="0"
-    tests="8" time="31.90" timestamp="Sun, 16 Jul 2017 18:11:08 GMT">
+    tests="8" time="28.60" timestamp="Fri, 21 Jul 2017 14:43:11 GMT">
   
-    <testcase name="User cannot sign in without credentials" classname="userTest.spec" time="6.122" assertions="3">
+    <testcase name="User cannot sign in without credentials" classname="userTest.spec" time="4.270" assertions="3">
 
     
 
@@ -16,7 +16,7 @@
     
     </testcase>
   
-    <testcase name="User cannot sign in with wrong email" classname="userTest.spec" time="2.217" assertions="3">
+    <testcase name="User cannot sign in with wrong email" classname="userTest.spec" time="2.538" assertions="3">
 
     
 
@@ -25,7 +25,7 @@
     
     </testcase>
   
-    <testcase name="User cannot sign in with wrong password" classname="userTest.spec" time="2.029" assertions="3">
+    <testcase name="User cannot sign in with wrong password" classname="userTest.spec" time="3.806" assertions="3">
 
     
 
@@ -34,18 +34,7 @@
     
     </testcase>
   
-    <testcase name="User can sign in with correct login details" classname="userTest.spec" time="2.470" assertions="4">
-
-    
-
-    
-
-    
-
-    
-    </testcase>
-  
-    <testcase name="User sign out of application" classname="userTest.spec" time="2.565" assertions="4">
+    <testcase name="User can sign in with correct login details" classname="userTest.spec" time="2.952" assertions="4">
 
     
 
@@ -56,7 +45,7 @@
     
     </testcase>
   
-    <testcase name="Admin can sign in with correct login details" classname="userTest.spec" time="2.435" assertions="4">
+    <testcase name="User sign out of application" classname="userTest.spec" time="3.129" assertions="4">
 
     
 
@@ -67,7 +56,18 @@
     
     </testcase>
   
-    <testcase name="Admin should be able to view all users" classname="userTest.spec" time="8.587" assertions="12">
+    <testcase name="Admin can sign in with correct login details" classname="userTest.spec" time="3.062" assertions="4">
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="Admin should be able to view all users" classname="userTest.spec" time="8.688" assertions="12">
 
     
 
@@ -94,17 +94,7 @@
     
     </testcase>
   
-    <testcase name="user should be able to signup " classname="userTest.spec" time="5.477" assertions="5">
-
-    
-
-    
-
-    
-
-    
-
-    
+    <testcase name="user should be able to signup " classname="userTest.spec" time="0.1550" assertions="0">
     </testcase>
   
 

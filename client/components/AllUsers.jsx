@@ -33,12 +33,12 @@ export class AllUsers extends Component {
   }
 
   /**
-   * @desc Invoked before component mounts
+   * @desc Invoked after component mounts
    * @param {void} null
    * @return {void} returns nothing
    * @memberof AllUsers
    */
-  componentWillMount() {
+  componentDidMount() {
     this.props.UserAction.getAllusers();
   }
 
@@ -165,11 +165,13 @@ export class AllUsers extends Component {
               )}
             </tbody>
           </table>
+          {isSearching ? <div /> :
           <Pagination
             pageCount={this.state.metaData.pages}
             handleChange={this.handlePageChange}
             currentPage={this.state.metaData.currentPage}
           />
+          }
         </div>
       </div>
     );

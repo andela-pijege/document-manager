@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { browserHistory } from 'react-router';
 import { Button, Modal } from 'react-materialize';
 import * as DocumentAction from '../actions/DocumentAction';
 import Pagination from '../components/Pagination';
@@ -10,91 +9,108 @@ import Search from './Search';
 
 /**
  *
- * @desc represents Public Document Page.
- * @class PublicDocument
+ * @desc represents Documents Page.
+ * @class Documents
  * @extends {Component}
  */
-export class PublicDocument extends Component {
+export class Documents extends Component {
   /**
    * Creates an instance of PublicDocument.
    * @param {object} props
-   * @memberof PublicDocument
+   * @memberof Documents
    * @constructor
    */
   constructor(props) {
     super(props);
     this.state = {
-      publicDocuments: this.props.publicDocuments,
+      documents: this.props.publicDocuments || this.props.rolesDocument,
       isSearching: false,
       limit: 9,
+      access: this.props.location.pathname,
     };
     this.searchDocuments = this.searchDocuments.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
   }
 
   /**
-   * @desc Invoked before component mounts
+   * @desc Invoked after component mounts
    * @param {void} null
    * @return {void} returns nothing
-   * @memberof PublicDocument
+   * @memberof Documents
    */
-  componentWillMount() {
-    this.props.DocumentAction.getAllPublicDocuments();
+  componentDidMount() {
+    if (this.state.access === '/publicDocuments') {
+      this.props.DocumentAction.getAllPublicDocuments();
+    } else if (this.state.access === '/rolesDocument') {
+      this.props.DocumentAction.getAllRolesDocuments();
+    }
   }
 
   /**
    * @desc Invoked immediately after new props is recieved
    * @param {object} nextProps - the next props the component receives
    * @return {void} returns nothing
-   * @memberof PublicDocument
+   * @memberof Documents
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.publicDocuments) {
-      this.setState({
-        publicDocuments: nextProps.publicDocuments,
-      });
+    if (nextProps.location.pathname === '/publicDocuments') {
+      this.setState({ documents: this.state.isSearching ? { ...this.state.documents, documents: nextProps.searchedPublicDocuments } : nextProps.publicDocuments });
+    } else if (nextProps.location.pathname === '/rolesDocument') {
+      this.setState({ documents: this.state.isSearching ? { ...this.state.documents, documents: nextProps.searchedRoleDocuments } : nextProps.rolesDocument });
     }
+    this.setState({ access: nextProps.location.pathname });
   }
   /**
  * @desc handles pagination
  * @param {integer} page
  * @return {void} returns nothing
- * @memberof AllUsers
+ * @memberof Documents
  */
   handlePageChange(page) {
-    this.props.DocumentAction.getAllPublicDocuments(this.state.limit, (page - 1) * this.state.limit);
+    if (this.props.location.pathname === '/publicDocuments') {
+      this.props.DocumentAction.getAllPublicDocuments(this.state.limit, (page - 1) * this.state.limit);
+    } else if (this.props.location.pathname === '/rolesDocument') {
+      this.props.DocumentAction.getAllRolesDocuments(this.state.limit, (page - 1) * this.state.limit);
+    }
   }
 
   /**
-   * @desc search for public documents
+   * @desc search for Documents
    * @param {object} event
    * @returns {void} returns nothing
-   * @memberof PublicDocument
+   * @memberof Documents
    */
   searchDocuments(event) {
     const searchQuery = event.target.value;
     this.setState({ isSearching: searchQuery.length > 0 });
-    this.props.DocumentAction.searchPublicDocuments(searchQuery);
+    if (this.props.location.pathname === '/publicDocuments') {
+      this.props.DocumentAction.searchPublicDocuments(searchQuery);
+    } else if (this.props.location.pathname === '/rolesDocument') {
+      this.props.DocumentAction.searchRoleDocuments(searchQuery);
+    }
   }
 
   /**
-   * @desc Displays all public documents
+   * @desc Displays all Documents
    * @returns {array} public documents
-   * @memberof PublicDocument
+   * @memberof Documents
    */
   render() {
     const { isSearching } = this.state;
-    let documents;
-    let metaData = {};
-    if (isSearching) {
-      documents = this.props.searchedPublicDocuments;
-    } else {
-      ({ documents = [], metaData = {} } = this.state.publicDocuments);
-    }
+    let documents = this.state.documents.documents;
+    let metaData = this.state.documents.metaData;
+
+    ({ documents = [], metaData = {} } = this.state.documents);
+
     return (
       <div className="container">
         <div>
-          <h4>General public documents</h4>
+          {this.state.access === '/rolesDocument' &&
+          <h4>Roles documents</h4>
+          }
+          {this.state.access === '/publicDocuments' &&
+          <h4>Public documents</h4>
+          }
           <Search onChange={this.searchDocuments} />
           <div className="row">
             {
@@ -125,11 +141,13 @@ export class PublicDocument extends Component {
                 </div>)
               )}
           </div>
-          <Pagination
-            pageCount={metaData.pages}
-            handleChange={this.handlePageChange}
-            currentPage={metaData.currentPage}
-          />
+          {isSearching ? <div /> :
+            <Pagination
+              pageCount={metaData.pages}
+              handleChange={this.handlePageChange}
+              currentPage={metaData.currentPage}
+            />
+          }
         </div>
       </div>
     );
@@ -137,34 +155,48 @@ export class PublicDocument extends Component {
 }
 
 /**
- * Set the PropTypes for PublicDocument
+ * Set the PropTypes for Documents
  */
-PublicDocument.propTypes = {
+Documents.propTypes = {
   DocumentAction: propTypes.shape({
     getAllPublicDocuments: propTypes.func,
+    searchRoleDocuments: propTypes.func,
     getOneDocument: propTypes.func,
     getUserDocuments: propTypes.func,
+    getAllRolesDocuments: propTypes.func,
     searchPublicDocuments: propTypes.func,
   }),
   publicDocuments: propTypes.shape({
     documents: propTypes.arrayOf(propTypes.object),
     metaData: propTypes.object,
   }),
+  rolesDocument: propTypes.shape({
+    documents: propTypes.arrayOf(propTypes.object),
+    metaData: propTypes.object,
+  }),
+  location: propTypes.shape({
+    pathname: propTypes.string,
+  }),
   searchedPublicDocuments: propTypes.arrayOf(propTypes.object),
+  searchedRoleDocuments: propTypes.arrayOf(propTypes.object),
 };
 
 /**
  * Sets default values for PublicDocument Prototype
  */
-PublicDocument.defaultProps = {
+Documents.defaultProps = {
   DocumentAction: {
     getAllPublicDocuments: () => { },
     getOneDocument: () => { },
+    searchRoleDocuments: () => { },
     getUserDocuments: () => { },
     searchPublicDocument: () => { },
   },
   publicDocuments: {},
+  rolesDocument: {},
   searchedPublicDocuments: [],
+  location: {},
+  searchedRoleDocuments: [],
 };
 
 /**
@@ -173,11 +205,14 @@ PublicDocument.defaultProps = {
  * @return {object} mapped properties
  */
 function mapStateToProps({ DocumentReducer: {
-  publicDocuments = {}, searchedPublicDocuments = [],
+  publicDocuments = {}, rolesDocument = {}, loaded = '', searchedPublicDocuments = [], searchedRoleDocuments = [],
 } }) {
   return {
     publicDocuments,
     searchedPublicDocuments,
+    searchedRoleDocuments,
+    rolesDocument,
+    loaded,
   };
 }
 
@@ -190,4 +225,4 @@ function mapDispatchToProps(dispatch) {
   return { DocumentAction: bindActionCreators(DocumentAction, dispatch) };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PublicDocument);
+export default connect(mapStateToProps, mapDispatchToProps)(Documents);

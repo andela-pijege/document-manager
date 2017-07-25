@@ -45,7 +45,7 @@ The application contains 2 roles by default
   - regular
 
 #### API Documentation
-Follow [this link](http://documento-app.herokuapp.com/api-docs/) to view the full api documentation.
+Follow [this link](http://documento-app.herokuapp.com/api-docs/) to view the full api documentation. 
 
 #### Authentication
 The api endpoints are protected from unauthorized access. JSON web token is used to protect the application from anuthorised access. Some other middleware are used to futher protect endpoints
@@ -114,6 +114,8 @@ Contributing to this project would always be a welcoming idea. If you feel you h
 - Create as many **branch** as you like depending on how many features you would love to add. One feature per branch.
 - Make neccessary changes and **commit**.
 - Finally, submit a **pull request**.
+
+**Note** when making contributions, please endevour to follow the [Airbnb](https://github.com/airbnb/javascript) javascript style guide. check out the [wiki](https://github.com/andela-pijege/document-manager/wiki) page for branch naming and pull request conventions
 
 ### License
 

@@ -43,4 +43,10 @@ Paginate.propTypes = {
   handleChange: PropTypes.func.isRequired,
 };
 
+Paginate.defaultProps = {
+  pageCount: 0,
+  currentPage: 0,
+  handleChange: () => {},
+};
+
 export default Paginate;
