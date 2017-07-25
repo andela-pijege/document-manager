@@ -268,11 +268,13 @@ export class Dashboard extends Component {
                 </div>
               </div> : <h4>You have no documents! Go ahead and create one!!</h4>}
           </div>
+          {isSearching ? <div /> :
           <Pagination
             pageCount={metaData.pages}
             handleChange={this.handlePageChange}
             currentPage={metaData.currentPage}
           />
+          }
         </div>
       </div>
     );

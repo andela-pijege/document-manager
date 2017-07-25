@@ -15,8 +15,9 @@ export const getDocuments = documents =>
  *
  * @desc calls the get user document endpoint.
  *  Retrieves documents for a specific user.
- * @param {object} userID
- * @param {string} page. Represents pagination index.
+ * @param {integer} userID
+ * @param {number} limit Represents pagination index.
+ * @param {number} offset Represents pagination index.
  * @returns {array} returns an array of a specific users document.
  */
 export const getUserDocuments = (userID, limit, offset) => {

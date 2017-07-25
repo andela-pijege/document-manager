@@ -29,6 +29,32 @@ const Routes = (app) => {
     /**
    * @swagger
    * definition:
+   *   metaData:
+   *     properties:
+   *       totalCount:
+   *         type: integer
+   *       pages:
+   *         type: integer
+   *       currentPage:
+   *         type: integer
+   *       pageSize:
+   *          type: integer
+   */
+    /**
+   * @swagger
+   * definition:
+   *   userPagination:
+   *     properties:
+   *       Users:
+   *         type: array
+   *         items:
+   *           $ref: '#/definitions/Users'
+   *       metaData:
+   *         $ref: '#/definitions/metaData'
+   */
+    /**
+   * @swagger
+   * definition:
    *   Documents:
    *     properties:
    *       title:
@@ -37,6 +63,18 @@ const Routes = (app) => {
    *         type: string
    *       access:
    *         type: string
+   */
+      /**
+   * @swagger
+   * definition:
+   *   documentPagination:
+   *     properties:
+   *       Documents:
+   *         type: array
+   *         items:
+   *           $ref: '#/definitions/Documents'
+   *       metaData:
+   *         $ref: '#/definitions/metaData'
    */
 
   // ROLES API ENDPOINT ROUTES
@@ -58,11 +96,72 @@ const Routes = (app) => {
    *         schema:
    *           $ref: '#/definitions/Roles'
    *     responses:
-   *       200:
+   *       201:
    *         description: role created succesfully
    */
   app.post(
-    '/api/roles', adminCheck, RoleController.create,
+    '/api/roles', authorization.authorize, adminCheck, RoleController.create,
+  );
+  /**
+   * @swagger
+   * /api/roles/{id}:
+   *   delete:
+   *     tags:
+   *       - Roles
+   *     description: Deletes a single role
+   *     produces:
+   *       - application/json
+   *     parameters:
+   *       - name: id
+   *         description: role's id
+   *         in: path
+   *         required: true
+   *         type: integer
+   *     responses:
+   *       200:
+   *         description: Role deleted successfully
+   */
+  app.delete(
+    '/api/roles/:id', authorization.authorize, adminCheck, RoleController.delete,
+  );
+  /**
+   * @swagger
+   * /api/roles/{id}:
+   *   put:
+   *     tags:
+   *       - Roles
+   *     description: Updates a single role
+   *     produces: application/json
+   *     parameters:
+   *       name: role
+   *       in: body
+   *       description: Fields for the role resource
+   *       schema:
+   *         $ref: '#/definitions/Roles'
+   *     responses:
+   *       200:
+   *         description: Role updated successfully
+   */
+  app.put(
+    '/api/roles/:id', authorization.authorize, adminCheck, RoleController.update,
+  );
+  /**
+   * @swagger
+   * /api/roles:
+   *   get:
+   *     tags:
+   *       - Roles
+   *     description: Returns all roles
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: An object containing array of roles
+   *         schema:
+   *           $ref: '#/definitions/Roles'
+   */
+  app.get(
+    '/api/roles', authorization.authorize, adminCheck, RoleController.getAll,
   );
 
   // USERS API ENDPOINT ROUTES
@@ -84,7 +183,7 @@ const Routes = (app) => {
    *         schema:
    *           $ref: '#/definitions/Users'
    *     responses:
-   *       200:
+   *       201:
    *         description: user created succesfully
    */
   app.post(
@@ -133,9 +232,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of users
+   *         description: An object containing array of users and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Users'
+   *           $ref: '#/definitions/userPagination'
    */
   app.get(
     '/api/users/', authorization.authorize, adminCheck, UserController.getAll,
@@ -248,7 +347,7 @@ const Routes = (app) => {
    *         schema:
    *           $ref: '#/definitions/Documents'
    *     responses:
-   *       200:
+   *       201:
    *         description: Successfully created
    */
   app.post(
@@ -266,15 +365,12 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/documentPagination'
    */
   app.get(
     '/api/documents/roles', authorization.authorize, DocumentController.getRolesDocuments,
-  );
-  app.get(
-    '/api/documents/all', authorization.authorize, adminCheck, DocumentController.getAll,
   );
 
   /**
@@ -288,9 +384,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/documentPagination'
    */
   app.get(
     '/api/users/:id/documents', authorization.authorize, ownerCheck, DocumentController.getDocuments,
@@ -307,9 +403,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/documentPagination'
    */
   app.get(
     '/api/documents', authorization.authorize, DocumentController.getAllPublic,

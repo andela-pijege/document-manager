@@ -53,6 +53,9 @@ describe('User controller', () => {
           expect(response.body.user).to.have.property('lastName');
           expect(response.body.user).to.have.property('email');
           expect(response.body.user).to.have.property('roleID');
+          expect(response.body.user.firstName).to.eql('fidel');
+          expect(response.body.user.lastName).to.eql('castro');
+          expect(response.body.user.roleID).to.eql(2);
           done();
         });
     });
@@ -78,6 +81,7 @@ describe('User controller', () => {
         .send(userData.emptyUser)
         .end((error, response) => {
           expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message');
           done();
         });
     });
@@ -114,6 +118,7 @@ describe('User controller', () => {
         })
         .end((error, response) => {
           expect(response.status).to.equal(404);
+          expect(response.body).to.have.property('message');
           done();
         });
     });
@@ -126,6 +131,10 @@ describe('User controller', () => {
         .end((error, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.an('object');
+          expect(response.body).to.have.property('users');
+          expect(response.body).to.have.property('metaData');
+          expect(response.body.users.length).to.eql(2);
+          expect(response.body.metaData.totalCount).to.eql(2);
           done();
         });
     });
@@ -143,6 +152,9 @@ describe('User controller', () => {
           expect(response.body).to.have.property('password');
           expect(response.body).to.have.property('roleID');
           expect(response.body).to.have.property('id').eql(2);
+          expect(response.body).to.have.property('firstName').eql('ghost');
+          expect(response.body).to.have.property('lastName').eql('ghost');
+          expect(response.body).to.have.property('email').eql('ghost@ghost.com');
           done();
         });
     });

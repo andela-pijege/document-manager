@@ -53,6 +53,12 @@ describe('Document Controller', () => {
         .end((error, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.an.instanceof(Object);
+          expect(response.body).to.have.property('documents');
+          expect(response.body).to.have.property('metaData');
+          expect(response.body.documents.length).to.eql(2);
+          expect(response.body.metaData.totalCount).to.eql(2);
+          expect(response.body.documents[0].access).to.eql('public');
+          expect(response.body.documents[1].access).to.eql('public');
           done();
         });
     });
@@ -66,6 +72,10 @@ describe('Document Controller', () => {
         .end((error, response) => {
           expect(response.status).to.equal(200);
           expect(response.body).to.be.an.instanceof(Object);
+          expect(response.body).to.have.property('documents');
+          expect(response.body).to.have.property('metaData');
+          expect(response.body.documents.length).to.eql(0);
+          expect(response.body.metaData.totalCount).to.eql(0);
           done();
         });
     });
@@ -100,9 +110,9 @@ describe('Document Controller', () => {
         .post('/api/documents')
         .set('authorization', token)
         .send(doc)
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
-          expect(res.body).to.have.property('message');
+        .end((error, response) => {
+          expect(response.status).to.equal(400);
+          expect(response.body).to.have.property('message');
           done();
         });
     });
@@ -139,6 +149,9 @@ describe('Document Controller', () => {
           expect(response.body).to.have.property('title');
           expect(response.body).to.have.property('access');
           expect(response.body).to.have.property('content');
+          expect(response.body.title).to.eql('userdocument');
+          expect(response.body.access).to.eql('public');
+          expect(response.body.id).to.eql(2);
           done();
         });
     });
@@ -172,12 +185,13 @@ describe('Document Controller', () => {
   });
 
   describe('/GET search for a document', () => {
-    it('it should return a document matching the search query', (done) => {
+    it('it should return documents matching the search query', (done) => {
       app
-        .get('/api/search/documents/?title=The')
+        .get('/api/search/documents/?title=This')
         .set('authorization', token)
         .end((error, response) => {
           expect(response.status).to.equal(200);
+          expect(response.body).to.have.property('documents');
           done();
         });
     });

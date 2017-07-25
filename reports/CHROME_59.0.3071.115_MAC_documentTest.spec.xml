@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites errors="0"
             failures="0"
-            tests="7">
+            tests="6">
 
   <testsuite name="documentTest.spec"
     errors="0" failures="0" hostname="" id="" package="documentTest.spec" skipped="0"
-    tests="7" time="46.58" timestamp="Sun, 16 Jul 2017 18:10:22 GMT">
+    tests="6" time="51.98" timestamp="Fri, 21 Jul 2017 14:42:19 GMT">
   
-    <testcase name="User can sign in with correct login details" classname="documentTest.spec" time="8.537" assertions="9">
+    <testcase name="User can sign in with correct login details" classname="documentTest.spec" time="20.34" assertions="9">
 
     
 
@@ -28,101 +28,9 @@
     
     </testcase>
   
-    <testcase name="User should be able to create documents" classname="documentTest.spec" time="7.838" assertions="12">
+    <testcase name="User should be able to create documents" classname="documentTest.spec" time="7.800" assertions="12">
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    </testcase>
-  
-    <testcase name="User should be able to see other public documents and view them" classname="documentTest.spec" time="5.658" assertions="10">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    </testcase>
-  
-    <testcase name="User should be able to see roles documents and view them" classname="documentTest.spec" time="5.494" assertions="10">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    </testcase>
-  
-    <testcase name="User should be able to view personal documents" classname="documentTest.spec" time="7.347" assertions="9">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    </testcase>
-  
-    <testcase name="User should be able to delete personal document" classname="documentTest.spec" time="8.682" assertions="11">
 
     
 
@@ -147,7 +55,104 @@
     
     </testcase>
   
-    <testcase name="User sign out of application" classname="documentTest.spec" time="3.028" assertions="4">
+    <testcase name="User should be able to see other public documents and view them" classname="documentTest.spec" time="5.819" assertions="15">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User should be able to see roles documents and view them" classname="documentTest.spec" time="5.956" assertions="15">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User should be able to view personal documents" classname="documentTest.spec" time="8.781" assertions="14">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    </testcase>
+  
+    <testcase name="User sign out of application" classname="documentTest.spec" time="3.276" assertions="4">
 
     
 

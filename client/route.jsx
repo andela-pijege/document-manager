@@ -7,12 +7,10 @@ import Login from './components/Login';
 import SignUp from './components/Signup';
 import Dashboard from './components/Dashboard';
 import CreateDocument from './components/CreateDocument';
-import OpenDocument from './components/OpenDocument';
 import EditDocument from './components/EditDocument';
 import AllUsers from './components/AllUsers';
-import PublicDocument from './components/PublicDocument';
 import EditUser from './components/EditUser';
-import RolesDocument from './components/RolesDocument';
+import Documents from './components/Documents';
 import Authenticate from './utils/Authenticate';
 
 export default (
@@ -22,12 +20,11 @@ export default (
     <Route path="/signUp" components={SignUp} />
     <Route path="/dashboard" components={Authenticate(Dashboard)} />
     <Route path="/createDocument" components={Authenticate(CreateDocument)} />
-    <Route path="/openDocument" components={Authenticate(OpenDocument)} />
     <Route path="/editDocument" components={Authenticate(EditDocument)} />
     <Route path="/allUsers" components={Authenticate(AllUsers)} />
     <Route path="/editUser" components={Authenticate(EditUser)} />
-    <Route path="/publicDocuments" components={Authenticate(PublicDocument)} />
-    <Route path="/rolesDocument" components={Authenticate(RolesDocument)} />
+    <Route path="/publicDocuments" components={Authenticate(Documents)} />
+    <Route path="/rolesDocument" components={Authenticate(Documents)} />
   </Route>
 );
 
