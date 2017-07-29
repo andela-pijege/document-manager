@@ -164,12 +164,14 @@ export const searchPublic = documents =>
  * Search Public Document
  * @desc search for a document in Public documents
  * @param {string} document - document details
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
-export const searchPublicDocuments = (document) => {
-  return dispatch => axios.get(`/api/search/documents/?title=${document}`)
+export const searchPublicDocuments = (document, limit, offset) => {
+  return dispatch => axios.get(`/api/search/documents/?title=${document}&limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(searchPublic(response.data.documents));
+      dispatch(searchPublic(response.data));
     })
     .catch((error) => {
       toastr.error(error);
@@ -189,12 +191,14 @@ export const searchMyDocuments = documents =>
  * Search personal Document
  * @desc search for a document in my documents
  * @param {string} document - document details
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
-export const searchOwnDocuments = (document) => {
-  return dispatch => axios.get(`/api/search/myDocuments/?title=${document}`)
+export const searchOwnDocuments = (document, limit, offset) => {
+  return dispatch => axios.get(`/api/search/myDocuments/?title=${document}&limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(searchMyDocuments(response.data.documents));
+      dispatch(searchMyDocuments(response.data));
     })
     .catch((error) => {
       toastr.error(error);
@@ -239,12 +243,14 @@ export const searchRoleDocs = documents =>
  * Search role Document
  * @desc search for a document in role documents
  * @param {string} document - document details
+ * @param {number} limit
+ * @param {number} offset
  * @returns {object} action
  */
-export const searchRoleDocuments = (document) => {
-  return dispatch => axios.get(`/api/search/roleDocuments/?title=${document}`)
+export const searchRoleDocuments = (document, limit, offset) => {
+  return dispatch => axios.get(`/api/search/roleDocuments/?title=${document}&limit=${limit || 9}&offset=${offset || 0}`)
     .then((response) => {
-      dispatch(searchRoleDocs(response.data.documents));
+      dispatch(searchRoleDocs(response.data));
     })
     .catch((error) => {
       toastr.error(error);

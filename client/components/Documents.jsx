@@ -27,6 +27,7 @@ export class Documents extends Component {
       isSearching: false,
       limit: 9,
       access: this.props.location.pathname,
+      searchQuery: '',
     };
     this.searchDocuments = this.searchDocuments.bind(this);
     this.handlePageChange = this.handlePageChange.bind(this);
@@ -53,10 +54,10 @@ export class Documents extends Component {
    * @memberof Documents
    */
   componentWillReceiveProps(nextProps) {
-    if (nextProps.location.pathname === '/publicDocuments') {
-      this.setState({ documents: this.state.isSearching ? { ...this.state.documents, documents: nextProps.searchedPublicDocuments } : nextProps.publicDocuments });
-    } else if (nextProps.location.pathname === '/rolesDocument') {
-      this.setState({ documents: this.state.isSearching ? { ...this.state.documents, documents: nextProps.searchedRoleDocuments } : nextProps.rolesDocument });
+    if (nextProps.location.pathname === '/publicDocuments' && !this.state.isSearching) {
+      this.setState({ documents: nextProps.publicDocuments });
+    } else if (nextProps.location.pathname === '/rolesDocument' && !this.state.isSearching) {
+      this.setState({ documents: nextProps.rolesDocument });
     }
     this.setState({ access: nextProps.location.pathname });
   }
@@ -68,9 +69,17 @@ export class Documents extends Component {
  */
   handlePageChange(page) {
     if (this.props.location.pathname === '/publicDocuments') {
-      this.props.DocumentAction.getAllPublicDocuments(this.state.limit, (page - 1) * this.state.limit);
+      if (this.state.isSearching) {
+        this.props.DocumentAction.searchPublicDocuments(this.state.searchQuery, this.state.limit, (page - 1) * this.state.limit);
+      } else {
+        this.props.DocumentAction.getAllPublicDocuments(this.state.limit, (page - 1) * this.state.limit);
+      }
     } else if (this.props.location.pathname === '/rolesDocument') {
-      this.props.DocumentAction.getAllRolesDocuments(this.state.limit, (page - 1) * this.state.limit);
+      if (this.state.isSearching) {
+        this.props.DocumentAction.searchRoleDocuments(this.state.searchQuery, this.state.limit, (page - 1) * this.state.limit);
+      } else {
+        this.props.DocumentAction.getAllRolesDocuments(this.state.limit, (page - 1) * this.state.limit);
+      }
     }
   }
 
@@ -81,12 +90,14 @@ export class Documents extends Component {
    * @memberof Documents
    */
   searchDocuments(event) {
-    const searchQuery = event.target.value;
-    this.setState({ isSearching: searchQuery.length > 0 });
-    if (this.props.location.pathname === '/publicDocuments') {
-      this.props.DocumentAction.searchPublicDocuments(searchQuery);
-    } else if (this.props.location.pathname === '/rolesDocument') {
-      this.props.DocumentAction.searchRoleDocuments(searchQuery);
+    this.setState({ searchQuery: event.target.value });
+    this.setState({ isSearching: event.target.value.length > 0 });
+    if (event.target.value.length > 0) {
+      if (this.props.location.pathname === '/publicDocuments') {
+        this.props.DocumentAction.searchPublicDocuments(event.target.value);
+      } else if (this.props.location.pathname === '/rolesDocument') {
+        this.props.DocumentAction.searchRoleDocuments(event.target.value);
+      }
     }
   }
 
@@ -97,19 +108,20 @@ export class Documents extends Component {
    */
   render() {
     const { isSearching } = this.state;
-    let documents = this.state.documents.documents;
-    let metaData = this.state.documents.metaData;
+    let documents = this.state.documents.documents || [];
+    let metaData = this.state.documents.metaData || {};
 
-    ({ documents = [], metaData = {} } = this.state.documents);
-
+    if (isSearching) {
+      ({ documents = [], metaData = {} } = this.props.searchDocuments);
+    }
     return (
       <div className="container">
         <div>
           {this.state.access === '/rolesDocument' &&
-          <h4>Roles documents</h4>
+            <h4>Roles documents</h4>
           }
           {this.state.access === '/publicDocuments' &&
-          <h4>Public documents</h4>
+            <h4>Public documents</h4>
           }
           <Search onChange={this.searchDocuments} />
           <div className="row">
@@ -141,13 +153,11 @@ export class Documents extends Component {
                 </div>)
               )}
           </div>
-          {isSearching ? <div /> :
-            <Pagination
-              pageCount={metaData.pages}
-              handleChange={this.handlePageChange}
-              currentPage={metaData.currentPage}
-            />
-          }
+          <Pagination
+            pageCount={metaData.pages}
+            handleChange={this.handlePageChange}
+            currentPage={metaData.currentPage}
+          />
         </div>
       </div>
     );
@@ -174,11 +184,13 @@ Documents.propTypes = {
     documents: propTypes.arrayOf(propTypes.object),
     metaData: propTypes.object,
   }),
+  searchDocuments: propTypes.shape({
+    documents: propTypes.arrayOf(propTypes.object),
+    metaData: propTypes.object,
+  }),
   location: propTypes.shape({
     pathname: propTypes.string,
   }),
-  searchedPublicDocuments: propTypes.arrayOf(propTypes.object),
-  searchedRoleDocuments: propTypes.arrayOf(propTypes.object),
 };
 
 /**
@@ -194,9 +206,8 @@ Documents.defaultProps = {
   },
   publicDocuments: {},
   rolesDocument: {},
-  searchedPublicDocuments: [],
+  searchDocuments: {},
   location: {},
-  searchedRoleDocuments: [],
 };
 
 /**
@@ -205,13 +216,12 @@ Documents.defaultProps = {
  * @return {object} mapped properties
  */
 function mapStateToProps({ DocumentReducer: {
-  publicDocuments = {}, rolesDocument = {}, loaded = '', searchedPublicDocuments = [], searchedRoleDocuments = [],
+  publicDocuments = {}, rolesDocument = {}, loaded = '', searchDocuments = {}
 } }) {
   return {
     publicDocuments,
-    searchedPublicDocuments,
-    searchedRoleDocuments,
     rolesDocument,
+    searchDocuments,
     loaded,
   };
 }

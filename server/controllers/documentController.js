@@ -16,7 +16,7 @@ const documentController = {
       .then((document) => {
         res.status(201).send({ message: 'Document created successfully' });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
   /**
    * @desc Get all public documents
@@ -81,7 +81,7 @@ const documentController = {
             metaData,
           });
         })
-        .catch(error => res.status(500).send({ error }));
+        .catch(error => res.status(500).json({ msg: error.message }));
     }
     return Documents
       .findAndCountAll({
@@ -152,7 +152,7 @@ const documentController = {
           return res.status(404).send({ message: 'document not found' });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
   /**
    * @desc search for public document(s)
@@ -161,15 +161,28 @@ const documentController = {
    * @return {object} json response
    */
   searchPublicDocuments(req, res) {
+    const limit = req.query.limit ? req.query.limit : 10;
+    const offset = req.query.offset ? req.query.offset : 0;
     const { title } = req.query;
     Documents
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         where: { title: { $iLike: `%${title}%` }, access: 'public' },
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
   /**
    * @desc Search my personal documets
@@ -178,15 +191,28 @@ const documentController = {
    * @return {object} json response
    */
   searchMyDocuments(req, res) {
+    const limit = req.query.limit ? req.query.limit : 9;
+    const offset = req.query.offset ? req.query.offset : 0;
     const { title } = req.query;
     Documents
-      .findAll({
+      .findAndCountAll({
+        limit,
+        offset,
         where: { title: { $iLike: `%${title}%` }, userID: req.decoded.id },
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
 
   /**
@@ -196,17 +222,28 @@ const documentController = {
    * @return {object} json response
    */
   searchRoleDocuments(req, res) {
+    const limit = req.query.limit ? req.query.limit : 9;
+    const offset = req.query.offset ? req.query.offset : 0;
     const { title } = req.query;
     let roleType;
     (req.decoded.roleID === 1) ? roleType = 'admin' : roleType = 'regular';
     Documents
-      .findAll({
+      .findAndCountAll({
         where: { title: { $iLike: `%${title}%` }, access: roleType },
       })
       .then((documents) => {
-        res.status(200).send({ documents });
+        const metaData = {
+          totalCount: documents.count,
+          pages: Math.ceil(documents.count / limit),
+          currentPage: Math.floor(offset / limit) + 1,
+          pageSize: documents.rows.length,
+        };
+        res.status(200).send({
+          documents: documents.rows,
+          metaData,
+        });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
   /**
    * @desc Updates document
@@ -230,7 +267,7 @@ const documentController = {
           return res.status(404).send({ message: 'Document not found' });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send({ msg: 'Server error', error }));
   },
   /**
    * @desc Deletes document
@@ -254,7 +291,7 @@ const documentController = {
           res.status(404).send({ message: 'Document not found' });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({ msg: error.message }));
   },
 };
 

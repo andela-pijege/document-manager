@@ -31,6 +31,7 @@ export class Dashboard extends Component {
       roleID: this.props.user.roleID || 0,
       isSearching: false,
       limit: 9,
+      searchQuery: '',
     };
     this.createDocument = this.createDocument.bind(this);
     this.openDocument = this.openDocument.bind(this);
@@ -95,9 +96,9 @@ export class Dashboard extends Component {
    * @memberof Dashboard
    */
   searchDocuments(event) {
-    const searchQuery = event.target.value;
-    this.setState({ isSearching: searchQuery.length > 0 });
-    this.props.actions.searchOwnDocuments(searchQuery);
+    this.setState({ searchQuery: event.target.value });
+    this.setState({ isSearching: event.target.value.length > 0 });
+    this.props.actions.searchOwnDocuments(event.target.value);
   }
 
   /**
@@ -147,7 +148,11 @@ export class Dashboard extends Component {
  * @memberof AllUsers
  */
   handlePageChange(page) {
-    this.props.actions.getUserDocuments(this.state.userID, this.state.limit, (page - 1) * this.state.limit);
+    if (this.state.isSearching) {
+      this.props.actions.searchOwnDocuments(this.state.searchQuery, this.state.limit, (page - 1) * this.state.limit);
+    } else {
+      this.props.actions.getUserDocuments(this.state.userID, this.state.limit, (page - 1) * this.state.limit);
+    }
   }
   /**
    * @desc search for public documents
@@ -192,7 +197,7 @@ export class Dashboard extends Component {
     let documentList;
     let metaData = {};
     if (isSearching) {
-      documentList = this.props.searchedPersonalDocuments;
+      ({ documents: documentList = [], metaData = {} } = this.props.searchDocuments);
     } else {
       ({ documents: documentList = [], metaData = {} } = this.state.documents);
     }
@@ -268,13 +273,11 @@ export class Dashboard extends Component {
                 </div>
               </div> : <h4>You have no documents! Go ahead and create one!!</h4>}
           </div>
-          {isSearching ? <div /> :
           <Pagination
             pageCount={metaData.pages}
             handleChange={this.handlePageChange}
             currentPage={metaData.currentPage}
           />
-          }
         </div>
       </div>
     );
@@ -303,7 +306,10 @@ Dashboard.propTypes = {
     documents: propTypes.arrayOf(propTypes.object),
     metaData: propTypes.object,
   }),
-  searchedPersonalDocuments: propTypes.arrayOf(propTypes.object),
+  searchDocuments: propTypes.shape({
+    documents: propTypes.arrayOf(propTypes.object),
+    metaData: propTypes.object,
+  })
 };
 /**
  * Sets default values for PublicDocument Proptype
@@ -323,7 +329,7 @@ Dashboard.defaultProps = {
     email: '',
     id: 0,
   },
-  searchedPersonalDocuments: [],
+  searchDocuments: {},
   documents: {},
 };
 
@@ -336,7 +342,7 @@ function mapStateToProps(state) {
   return {
     user: state.LoginReducer.user,
     documents: state.DocumentReducer.documents,
-    searchedPersonalDocuments: state.DocumentReducer.searchedPersonalDocuments,
+    searchDocuments: state.DocumentReducer.searchDocuments,
   };
 }
 

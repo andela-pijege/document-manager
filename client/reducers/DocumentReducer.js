@@ -13,18 +13,13 @@ const documentReducer = (state = initialState, action) => {
     case actionTypes.GET_ALL_PUBLIC_DOCUMENTS: {
       return { ...state, publicDocuments: action.documents };
     }
-    case actionTypes.SEARCH_MY_DOCUMENTS: {
-      return { ...state, searchedPersonalDocuments: action.documents };
-    }
-    case actionTypes.SEARCH_PUBLIC_DOCUMENTS: {
-      return { ...state, searchedPublicDocuments: action.documents };
-    }
     case actionTypes.GET_ALL_ROLE_DOCUMENTS: {
       return { ...state, rolesDocument: action.documents };
     }
-    case actionTypes.SEARCH_ROLE_DOCUMENTS: {
-      return { ...state, searchedRoleDocuments: action.documents };
-    }
+    case actionTypes.SEARCH_MY_DOCUMENTS:
+    case actionTypes.SEARCH_PUBLIC_DOCUMENTS:
+    case actionTypes.SEARCH_ROLE_DOCUMENTS:
+      return { ...state, searchDocuments: action.documents };
     case actionTypes.UPDATE_DOCUMENT_SUCCESS:
       return state;
     case actionTypes.CREATE_DOCUMENT_SUCCESS:
