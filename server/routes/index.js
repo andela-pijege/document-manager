@@ -11,6 +11,16 @@ const Routes = (app) => {
    * definition:
    *   Roles:
    *     properties:
+   *       roles:
+   *          type: array
+   *          items:
+   *             $ref: '#/definitions/RoleData'
+   */
+    /**
+   * @swagger
+   * definition:
+   *   RoleData:
+   *     properties:
    *       title:
    *         type: string
    */
@@ -64,10 +74,34 @@ const Routes = (app) => {
    *       access:
    *         type: string
    */
-      /**
+   /**
    * @swagger
    * definition:
    *   documentPagination:
+   *     properties:
+   *       Documents:
+   *         type: array
+   *         items:
+   *           $ref: '#/definitions/Documents'
+   *       metaData:
+   *         $ref: '#/definitions/metaData'
+   */
+   /**
+   * @swagger
+   * definition:
+   *   SearchUser:
+   *     properties:
+   *       Users:
+   *         type: array
+   *         items:
+   *           $ref: '#/definitions/Users'
+   *       metaData:
+   *         $ref: '#/definitions/metaData'
+   */
+    /**
+   * @swagger
+   * definition:
+   *   SearchDocument:
    *     properties:
    *       Documents:
    *         type: array
@@ -320,9 +354,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of users
+   *         description: An object containing an array of users and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Users'
+   *           $ref: '#/definitions/SearchUser'
    */
   app.get(
     '/api/search/users/?', authorization.authorize, UserController.searchUser,
@@ -493,9 +527,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing an array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/SearchDocument'
    */
   app.get(
     '/api/search/documents/?', authorization.authorize, DocumentController.searchPublicDocuments,
@@ -512,9 +546,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing an array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/SearchDocument'
    */
   app.get(
     '/api/search/myDocuments/?', authorization.authorize, DocumentController.searchMyDocuments,
@@ -531,9 +565,9 @@ const Routes = (app) => {
    *       - application/json
    *     responses:
    *       200:
-   *         description: An array of documents
+   *         description: An object containing an array of documents and an object of metaData
    *         schema:
-   *           $ref: '#/definitions/Documents'
+   *           $ref: '#/definitions/SearchDocument'
    */
   app.get(
     '/api/search/roleDocuments/?', authorization.authorize, DocumentController.searchRoleDocuments,

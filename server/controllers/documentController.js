@@ -1,5 +1,14 @@
 const Documents = require('../models').documents;
 
+const metaData = (documents, limit, offset) => {
+  return {
+    totalCount: documents.count,
+    pages: Math.ceil(documents.count / limit),
+    currentPage: Math.floor(offset / limit) + 1,
+    pageSize: documents.rows.length,
+  };
+};
+
 const documentController = {
   /**
    * @desc Create a new document
@@ -41,16 +50,10 @@ const documentController = {
           return res.status(404).send({ message: 'No document found' });
         }
 
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
 
         return res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error =>
@@ -83,15 +86,9 @@ const documentController = {
             return res.status(404).send({ message: 'No document found' });
           }
 
-          const metaData = {
-            totalCount: documents.count,
-            pages: Math.ceil(documents.count / limit),
-            currentPage: Math.floor(offset / limit) + 1,
-            pageSize: documents.rows.length,
-          };
           res.status(200).send({
             documents: documents.rows,
-            metaData,
+            metaData: metaData(documents, limit, offset),
           });
         })
         .catch(error => res.status(500).send({ msg: 'Server error', error }));
@@ -107,20 +104,15 @@ const documentController = {
           return res.status(404).send({ message: 'No document found' });
         }
 
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
+
         res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error =>
         res.status(500).send({ msg: 'Server error', error })
-    );
+      );
   },
   /**
    * @desc Get all personal documents
@@ -141,15 +133,10 @@ const documentController = {
         if (!documents) {
           return res.status(404).send({ message: 'No document found' });
         }
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
+
         res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error =>
@@ -194,15 +181,10 @@ const documentController = {
         if (!documents) {
           return res.status(404).send({ message: 'No document found' });
         }
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
+
         res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error => res.status(500).send({ msg: 'Server error', error }));
@@ -227,15 +209,10 @@ const documentController = {
         if (!documents) {
           return res.status(404).send({ message: 'No document found' });
         }
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
+
         res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error => res.status(500).send({ msg: 'Server error', error }));
@@ -263,15 +240,9 @@ const documentController = {
         if (!documents) {
           return res.status(404).send({ message: 'No document found' });
         }
-        const metaData = {
-          totalCount: documents.count,
-          pages: Math.ceil(documents.count / limit),
-          currentPage: Math.floor(offset / limit) + 1,
-          pageSize: documents.rows.length,
-        };
         res.status(200).send({
           documents: documents.rows,
-          metaData,
+          metaData: metaData(documents, limit, offset),
         });
       })
       .catch(error => res.status(500).send({ msg: 'Server error', error }));
