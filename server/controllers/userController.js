@@ -14,8 +14,10 @@ const userController = {
    * @return {object} json response
    */
   login(req, res) {
-    if (req.body.email && req.body.password) {
-      Users
+    if ((req.body.email === '' || undefined)) {
+      return res.status(400).send({ message: 'Email is required' });
+    }
+    return Users
         .findOne({ where: { email: req.body.email } })
         .then((user) => {
           if (!user) {
@@ -35,8 +37,8 @@ const userController = {
           } else {
             return res.status(404).send({ message: 'wrong password' });
           }
-        });
-    }
+        })
+        .catch(error => res.status(500).send({ message: 'Server error', error }));
   },
   /**
    * @desc Logout User
@@ -68,8 +70,9 @@ const userController = {
         }, process.env.SECRET_KEY);
         res.status(201).send({ token, user: filteredData });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).send({ message: 'Error Occured', error }));
   },
+
   /**
    * @desc Get all Users
    * @param {object} req - The request sent to the route
@@ -85,19 +88,23 @@ const userController = {
         offset,
       })
       .then((users) => {
+        if (!users) {
+          return res.status(404).send({ message: 'No user found' });
+        }
         const metaData = {
           totalCount: users.count,
           pages: Math.ceil(users.count / limit),
           currentPage: Math.floor(offset / limit) + 1,
           pageSize: users.rows.length,
         };
-        res.status(200).send({
+        return res.status(200).send({
           users: users.rows,
           metaData,
         });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send({ message: 'Server error', error }));
   },
+
   /**
    * @desc Get one user
    * @param {object} req - The request sent to the route
@@ -115,8 +122,9 @@ const userController = {
           message: 'User does not exist',
         });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send({ message: 'Server error', error }));
   },
+
   /**
    * @desc Search for a user
    * @param {object} req - The request sent to the route
@@ -137,7 +145,7 @@ const userController = {
       .then((users) => {
         res.status(200).send({ users });
       })
-      .catch(error => res.status(400).send({ error }));
+      .catch(error => res.status(400).send({ message: 'No user Found', error }));
   },
   /**
    * @desc Updates User
@@ -168,7 +176,7 @@ const userController = {
           });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send({ message: 'Server error', error }));
   },
   /**
    * @desc Deletes User
@@ -197,7 +205,7 @@ const userController = {
           });
         }
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(500).send({ message: 'Server error', error }));
   },
 };
 module.exports = userController;

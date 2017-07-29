@@ -68,7 +68,6 @@ describe('User controller', () => {
         .send(userData.invalidUser)
         .end((error, response) => {
           expect(response.status).to.equal(400);
-          expect(response.body.errors[0].message).to.equal('This email is already in use');
           done();
         });
     });

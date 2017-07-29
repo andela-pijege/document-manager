@@ -8,12 +8,15 @@ const roleController = {
    * @return {object} json response
    */
   create(req, res) {
+    if (req.body.title === '' || undefined) {
+      return res.status(404).send({ message: 'Invalid Title' });
+    }
     return Roles
       .create({
         title: req.body.title,
       })
       .then(() => res.status(201).send({ message: 'role created succesfully' }))
-      .catch(error => res.status(400).send({ msg: 'Role could not be created', error }));
+      .catch(error => res.status(500).send({ msg: 'Server Error', error }));
   },
 
  /**
@@ -28,7 +31,7 @@ const roleController = {
       .then((roles) => {
         response.status(200).send({ roles });
       })
-      .catch(error => response.status(400).json({ msg: error.message }));
+      .catch(error => response.status(500).send({ msg: error.message }));
   },
   /**
    * @desc updates an existing role role
@@ -50,7 +53,7 @@ const roleController = {
           return response.status(404).send({ message: 'Role not found' });
         }
       })
-      .catch(error => response.status(500).json({ msg: error.message }));
+      .catch(error => response.status(500).send({ msg: error.message }));
   },
   /**
    * @desc Create a new role
@@ -69,7 +72,7 @@ const roleController = {
         return role.destroy()
         .then(() => response.status(200).send({ message: 'Role deleted successfully' }));
       })
-      .catch(error => response.status(500).json({ msg: 'Server error', error }));
+      .catch(error => response.status(500).send({ msg: 'Server error', error }));
   },
 };
 

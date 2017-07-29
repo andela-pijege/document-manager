@@ -8,15 +8,18 @@ const documentController = {
    * @return {object} json response
    */
   create(req, res) {
+    if ((req.body.title === '' || undefined) || (req.body.access === '' || undefined)) {
+      return res.status(400).send({ message: 'Input fields cannot be empty' });
+    }
     if (req.decoded.id !== parseInt(req.body.userID, 10)) {
       return res.status(403).send({ message: 'UNAUTHORISED USER' });
     }
-    Documents
+    return Documents
       .create(req.body)
       .then((document) => {
         res.status(201).send({ message: 'Document created successfully' });
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(500).send({ msg: 'Server error', error }));
   },
   /**
    * @desc Get all public documents
@@ -34,21 +37,27 @@ const documentController = {
         where: { access: 'public' },
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
+
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
           currentPage: Math.floor(offset / limit) + 1,
           pageSize: documents.rows.length,
         };
-        res.status(200).send({
+
+        return res.status(200).send({
           documents: documents.rows,
           metaData,
         });
       })
       .catch(error =>
-        res.status(400).json({ msg: error.message }),
+        res.status(500).send({ msg: 'Server error', error }),
     );
   },
+
   /**
    * @desc Get all roles document
    * @param {object} req - The request sent to the route
@@ -70,6 +79,10 @@ const documentController = {
         }
       })
         .then((documents) => {
+          if (!documents) {
+            return res.status(404).send({ message: 'No document found' });
+          }
+
           const metaData = {
             totalCount: documents.count,
             pages: Math.ceil(documents.count / limit),
@@ -81,7 +94,7 @@ const documentController = {
             metaData,
           });
         })
-        .catch(error => res.status(500).json({ msg: error.message }));
+        .catch(error => res.status(500).send({ msg: 'Server error', error }));
     }
     return Documents
       .findAndCountAll({
@@ -90,6 +103,10 @@ const documentController = {
         where: { access: 'regular' }
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
+
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
@@ -102,7 +119,7 @@ const documentController = {
         });
       })
       .catch(error =>
-        res.status(400).json({ msg: error.message }),
+        res.status(500).send({ msg: 'Server error', error })
     );
   },
   /**
@@ -121,6 +138,9 @@ const documentController = {
         where: { userID: req.params.id },
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
@@ -133,7 +153,7 @@ const documentController = {
         });
       })
       .catch(error =>
-        res.status(400).json({ msg: error.message }),
+        res.status(500).send({ msg: 'Server error', error }),
     );
   },
   /**
@@ -152,7 +172,7 @@ const documentController = {
           return res.status(404).send({ message: 'document not found' });
         }
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(400).send({ msg: 'Server error', error }));
   },
   /**
    * @desc search for public document(s)
@@ -171,6 +191,9 @@ const documentController = {
         where: { title: { $iLike: `%${title}%` }, access: 'public' },
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
@@ -182,7 +205,7 @@ const documentController = {
           metaData,
         });
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(500).send({ msg: 'Server error', error }));
   },
   /**
    * @desc Search my personal documets
@@ -201,6 +224,9 @@ const documentController = {
         where: { title: { $iLike: `%${title}%` }, userID: req.decoded.id },
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
@@ -212,7 +238,7 @@ const documentController = {
           metaData,
         });
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(500).send({ msg: 'Server error', error }));
   },
 
   /**
@@ -229,9 +255,14 @@ const documentController = {
     (req.decoded.roleID === 1) ? roleType = 'admin' : roleType = 'regular';
     Documents
       .findAndCountAll({
+        limit,
+        offset,
         where: { title: { $iLike: `%${title}%` }, access: roleType },
       })
       .then((documents) => {
+        if (!documents) {
+          return res.status(404).send({ message: 'No document found' });
+        }
         const metaData = {
           totalCount: documents.count,
           pages: Math.ceil(documents.count / limit),
@@ -243,7 +274,7 @@ const documentController = {
           metaData,
         });
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(500).send({ msg: 'Server error', error }));
   },
   /**
    * @desc Updates document
@@ -291,7 +322,7 @@ const documentController = {
           res.status(404).send({ message: 'Document not found' });
         }
       })
-      .catch(error => res.status(400).json({ msg: error.message }));
+      .catch(error => res.status(400).send({ msg: error.message }));
   },
 };
 
